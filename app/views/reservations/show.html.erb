@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Project:</strong>
+  <%= @reservation.project %>
+</p>
+
+<p>
+  <strong>In time:</strong>
+  <%= @reservation.in_time %>
+</p>
+
+<p>
+  <strong>Out time:</strong>
+  <%= @reservation.out_time %>
+</p>
+
+<p>
+  <strong>Checked out time:</strong>
+  <%= @reservation.checked_out_time %>
+</p>
+
+<p>
+  <strong>Checked in time:</strong>
+  <%= @reservation.checked_in_time %>
+</p>
+
+<p>
+  <strong>Is approved:</strong>
+  <%= @reservation.is_approved %>
+</p>
+
+<p>
+  <strong>Check out comments:</strong>
+  <%= @reservation.check_out_comments %>
+</p>
+
+<p>
+  <strong>Check in comments:</strong>
+  <%= @reservation.check_in_comments %>
+</p>
+
+<%= link_to 'Edit', edit_reservation_path(@reservation) %> |
+<%= link_to 'Back', reservations_path %>

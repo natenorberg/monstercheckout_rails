@@ -11,7 +11,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140703162731) do
+ActiveRecord::Schema.define(version: 20140703165638) do
+
+  create_table "equipment", force: true do |t|
+    t.string   "name"
+    t.string   "brand"
+    t.integer  "quantity"
+    t.string   "condition"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "reservations", force: true do |t|
+    t.string   "project"
+    t.datetime "in_time"
+    t.datetime "out_time"
+    t.datetime "checked_out_time"
+    t.datetime "checked_in_time"
+    t.boolean  "is_approved"
+    t.text     "check_out_comments"
+    t.text     "check_in_comments"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "name"
