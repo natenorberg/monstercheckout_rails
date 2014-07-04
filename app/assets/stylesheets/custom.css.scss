@@ -69,6 +69,7 @@ $colHighlight   : #ffffff;
   border-radius: 0px;
   background-color: $bgDefault;
   border-color: $bgHighlight;
+  margin-bottom: 0px;
   .navbar-brand {
     color: $colDefault;
     &:hover, &:focus { 
@@ -163,7 +164,30 @@ h1.welcome-header {
   font-family: "Open Sans", "Helvetica Neue", arial, sans-serif;
 }
 
+.welcome-subheader {
+  font-family: "Open Sans", "Helvetica Neue", arial, sans-serif;
+  font-weight: 200;
+}
+
 .home-item {
-  margin-top: 40px;
-  margin-bottom: 10px;
+  margin-bottom: 40px;
+}
+
+.welcome-item {
+  color: #354958;
+  margin-bottom: 40px;
+
+  > p, h2 {
+    font-family: "Open Sans", "Helvetica Neue", arial, sans-serif;
+  }
+
+  > h2 {
+    font-weight: 400;
+  }
+
+  & > p {
+    font-size: 20px;
+    font-weight: 200;
+    line-height: 27px;
+  }
 }
