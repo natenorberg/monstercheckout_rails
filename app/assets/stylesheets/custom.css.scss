@@ -1,0 +1,169 @@
+@import "bootstrap";
+
+/* mixins */
+@mixin box_sizing {
+	-mox-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+/* variables */
+$grayMediumLight: #eaeaea;
+$grayDarker: #dddddd;
+$grayLighter: #aaaaaa;
+
+/* universal */ 
+
+html {
+  overflow-y: scroll;
+}
+
+section {
+  overflow: auto;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.center {
+  text-align: center;
+}
+
+.center h1 {
+  margin-bottom: 10px;
+}
+
+/* Fonts */
+h1, h2, h3, h4, h5, h6{
+	line-height: 1;
+  margin-top: 0px;
+}
+
+h1 {
+	font-size: 3em;
+	margin-bottom: 30px;
+	text-align: center;
+}
+
+p {
+  font-size: 1.1em;
+  line-height: 1.7em;
+}
+
+/* header */
+.navbar-default .navbar-nav > li > a {
+    /*padding: 15px 10px 10px 10px;*/
+    font-size: 15px;
+    & > .glyphicon {
+      margin-right: 3px;
+    }
+}
+
+$bgDefault      : #326fa7;
+$bgHighlight    : #225383;
+$colDefault     : #ecf0f1;
+$colHover       : #ffffff;
+$colHighlight   : #ffffff;
+.navbar-default {
+  border-radius: 0px;
+  background-color: $bgDefault;
+  border-color: $bgHighlight;
+  .navbar-brand {
+    color: $colDefault;
+    &:hover, &:focus { 
+      color: $colHighlight; 
+    }
+  }
+  .navbar-text {
+    color: $colDefault; 
+  }
+  .navbar-nav {
+    > li {
+      > a {
+        color: $colDefault;
+        &:hover,  &:focus {
+          color: $colHighlight; 
+        }
+      }
+    }
+    > .active {
+      > a, > a:hover, > a:focus {
+        color: $colHighlight;
+        background-color: $bgHighlight; 
+      }
+    }
+    > .open {
+      > a, > a:hover, > a:focus {
+        color: $colHighlight;
+        background-color: $bgHighlight; 
+      }
+    }
+  }
+  .navbar-toggle {
+    border-color: $bgHighlight;
+    &:hover, &:focus {
+      background-color: $bgHighlight; 
+    }
+    .icon-bar {
+      background-color: $colDefault; 
+    }
+  }
+  .navbar-collapse,
+  .navbar-form {
+    border-color: $colDefault; 
+  }
+  .navbar-link {
+    color: $colDefault;
+    &:hover {
+      color: $colHighlight; }
+    }
+  }
+@media (max-width: 767px) {
+  .navbar-default .navbar-nav .open .dropdown-menu {
+    > li > a {
+      color: $colDefault;
+      &:hover, &:focus {
+        color: $colHighlight; 
+      }
+    }
+    > .active {
+      > a, > a:hover, > a:focus, {
+        color: $colHighlight;
+        background-color: $bgHighlight; 
+      }
+    }
+  }
+}
+
+a.quick_link {
+  color: #333;
+  text-decoration: none;
+
+  & > p {
+    font-size: 20px;
+    font-weight: 200;
+    line-height: 27px;
+  }
+
+  > i {
+    margin-bottom: 12px;
+  }
+
+  &:hover {
+    color: #326fa7;
+  }
+}
+
+h1.welcome-header {
+  font-weight: 200;
+  font-size: 4em;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  font-family: "Open Sans", "Helvetica Neue", arial, sans-serif;
+}
+
+.home-item {
+  margin-top: 40px;
+  margin-bottom: 10px;
+}
