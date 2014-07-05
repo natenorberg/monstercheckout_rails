@@ -3,5 +3,6 @@ class StaticPagesController < ApplicationController
   end
 
   def welcome
+    @disable_nav = true
   end
 end

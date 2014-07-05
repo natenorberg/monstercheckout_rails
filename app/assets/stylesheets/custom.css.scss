@@ -167,10 +167,25 @@ h1.welcome-header {
 .welcome-subheader {
   font-family: "Open Sans", "Helvetica Neue", arial, sans-serif;
   font-weight: 200;
+  margin-bottom: 30px;
 }
 
 .home-item {
   margin-bottom: 40px;
+}
+
+.welcome-panel {
+  color: #fafafa;
+  background-color: #456988;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  border-radius: 0px;
+
+  > a {
+    color: #fafafa;
+    font-weight: 200;
+    font-size: 20px;
+  }
 }
 
 .welcome-item {

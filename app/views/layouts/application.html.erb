@@ -10,44 +10,7 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<header class="navbar navbar-default" role="navigation">
-	<div class="container-fluid">
-		<div class="navbar-header">
-			<button class="navbar-toggle">
-				<span class="sr-only">Toggle Navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<%= link_to "MONSTER Checkout" , root_path, id: "logo", class: "navbar-brand" %>
-		</div>
-
-		<div class="collapse navbar-collapse">
-			<ul class="nav navbar-nav navbar-right">
-				<li class="<%= 'active' if params[:controller] == 'reservations' %>">
-					<%= link_to reservations_path do %>
-						<i class="fa fa-calendar"></i> Reservations
-					<% end %>
-				</li>
-				<li class="<%= 'active' if params[:controller] == 'equipment' %>">
-					<%= link_to equipment_index_path do %>
-						<i class="fa fa-microphone"></i> Equipment
-					<% end %>		
-				</li>
-				<li class="<%= 'active' if params[:controller] == 'users' %>">
-					<%= link_to users_path do %>
-						<i class="fa fa-users"></i> Users
-					<% end %>		
-				</li>
-				<li class="<%= 'active' if params[:controller] == 'monitor' %>">
-					<%= link_to '#' do %>
-						<i class="fa fa-key"></i> Monitor
-					<% end %>		
-				</li>
-			</ul>
-		</div>
-	</div>
-</header>
+<%= render 'layouts/header' unless @disable_nav %>
 <%= yield %>
 </body>
 </html>
