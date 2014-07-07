@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
   root 'static_pages#home'
-  get 'home' => 'static_pages#home'
+  get 'home'    => 'static_pages#home'
   get 'welcome' => 'static_pages#welcome'
 
-  get 'signin' => 'sessions#new'
+  get 'signin'  => 'sessions#new'
+  get 'signout' => 'sessions#destroy'
   resources :sessions, only: [:create, :destroy]
 
   resources :reservations

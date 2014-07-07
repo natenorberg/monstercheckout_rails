@@ -32,6 +32,9 @@
 						<i class="fa fa-key"></i> Monitor
 					<% end %>		
 				</li>
+				<% if signed_in? %>
+					<li><%= @current_user.name %></li>
+				<% end %>
 			</ul>
 		</div>
 	</div>
