@@ -1,3 +1,8 @@
+<% if @user == current_user %> 
+	<% provide(:title, 'Settings') %> 
+<% else %> 
+	<% provide(:title, @user.name) %>
+<% end %>
 <h1>Editing user</h1>
 
 <%= render 'form' %>

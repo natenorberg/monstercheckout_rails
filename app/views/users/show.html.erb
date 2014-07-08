@@ -1,3 +1,8 @@
+<% if @user == current_user %> 
+	<% provide(:title, 'Profile') %> 
+<% else %> 
+	<% provide(:title, @user.name) %>
+<% end %>
 <p id="notice"><%= notice %></p>
 
 <p>
