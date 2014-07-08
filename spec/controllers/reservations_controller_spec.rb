@@ -34,7 +34,9 @@ RSpec.describe ReservationsController, :type => :controller do
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # ReservationsController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
+  def valid_session
+    controller.stub(:user_signed_in).and_return(true)
+  end
 
   describe "GET index" do
     it "assigns all reservations as @reservations" do

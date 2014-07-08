@@ -24,7 +24,7 @@ RSpec.describe EquipmentController, :type => :controller do
   # Equipment. As you add validations to Equipment, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    {name: 'Test Microphone', brand: 'Shure', quantity: '1', condition: 'Unknown'}
   }
 
   let(:invalid_attributes) {

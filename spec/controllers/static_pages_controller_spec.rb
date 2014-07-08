@@ -2,11 +2,15 @@ require 'rails_helper'
 
 RSpec.describe StaticPagesController, :type => :controller do
 
+  def valid_session
+    controller.stub(:signed_in?).and_return(true)
+  end
+
   subject { page }
 
   describe "GET 'home'" do
     it "returns http success" do
-      get 'home'
+      get :home, {}, valid_session
       expect(response).to be_success
     end
   end

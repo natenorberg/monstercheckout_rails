@@ -32,6 +32,7 @@ end
 group :test do 
   gem 'rspec-rails' 
   gem 'rspec-its'
+  gem 'rspec-mocks'
   gem 'capybara'
   gem 'factory_girl_rails', '1.4.0'
 end
