@@ -34,6 +34,11 @@ module SessionsHelper
     end
   end
 
+  # Filter for requests that require user be an admin
+  def user_is_admin
+    redirect_to root_path unless current_user && current_user.is_admin
+  end
+
   # Friendly forwarding
   def store_address
     session[:return_to] = request.fullpath

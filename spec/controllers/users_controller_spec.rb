@@ -36,6 +36,7 @@ RSpec.describe UsersController, :type => :controller do
   # UsersController. Be sure to keep this updated too.
   def valid_session
     controller.stub(:user_signed_in).and_return(true)
+    controller.stub(:user_is_admin).and_return(true)
   end
 
   describe "GET index" do
