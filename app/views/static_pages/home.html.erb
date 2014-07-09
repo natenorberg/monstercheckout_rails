@@ -20,13 +20,15 @@
 	</div>
 </div>
 <div class="row">
-	<div class="home-item col-sm-4 col-sm-offset-1 text-center">
-		<%= link_to users_path, class: 'quick_link' do %>
-			<i class="fa fa-users fa-5x"></i>
-			<h2>Users</h2>
-			<p>Administrator view of all the users in the system</p>
-		<% end %>
-	</div>
+	<% if current_user.is_admin? %>
+		<div class="home-item col-sm-4 col-sm-offset-1 text-center">
+			<%= link_to users_path, class: 'quick_link' do %>
+				<i class="fa fa-users fa-5x"></i>
+				<h2>Users</h2>
+				<p>Administrator view of all the users in the system</p>
+			<% end %>
+		</div>
+	<% end %>
 	<div class="home-item col-sm-4 col-sm-offset-1 text-center">
 		<%= link_to '#', class: 'quick_link' do %>
 			<i class="fa fa-key fa-5x"></i>
