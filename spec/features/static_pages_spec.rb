@@ -14,6 +14,8 @@ describe "Static Pages" do
 
   describe "Welcome page", type: :request do
     before { visit welcome_path }
+
+    it { should have_title('Welcome') }
   end
 
   describe "Home page", type: :request do
@@ -30,5 +32,11 @@ describe "Static Pages" do
       it { should have_selector('h1', text: 'Welcome to MONSTER Checkout') }
       it { should have_title('Welcome') }
     end
+  end
+
+  describe "About page" do
+    before { visit about_path }
+
+    it { should have_title('About') }
   end
 end

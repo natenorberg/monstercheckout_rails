@@ -185,6 +185,7 @@ h1.welcome-header {
     font-weight: 200;
     margin-top: 200px;
     margin-bottom: 50px;
+    font-family: "Open Sans", "Helvetica Neue", arial, sans-serif;
   }
 }
 
@@ -210,6 +211,13 @@ h1.welcome-header {
   }
 }
 
+.about-panel {
+  > h1 {
+    font-family: "Open Sans", "Helvetica Neue", arial, sans-serif;
+    font-weight: 200;
+  }
+}
+
 .welcome-item {
   color: #354958;
   margin-bottom: 40px;
@@ -226,5 +234,18 @@ h1.welcome-header {
     font-size: 20px;
     font-weight: 200;
     line-height: 27px;
+  }
+}
+
+.about-container {
+  > p {
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 200;
+    margin-bottom: 30px;
+
+    > a {
+      color: #3362a3;
+    }
   }
 }

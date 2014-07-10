@@ -8,4 +8,7 @@ class StaticPagesController < ApplicationController
   def welcome
     @disable_nav = true
   end
+
+  def about
+  end
 end
