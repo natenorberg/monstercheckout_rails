@@ -1,3 +1,4 @@
+<% provide(:title, 'Equipment') %>
 <h1>Listing equipment</h1>
 
 <table>
@@ -19,8 +20,10 @@
         <td><%= equipment.quantity %></td>
         <td><%= equipment.condition %></td>
         <td><%= link_to 'Show', equipment %></td>
-        <td><%= link_to 'Edit', edit_equipment_path(equipment) %></td>
-        <td><%= link_to 'Destroy', equipment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if current_user.is_admin? %>
+          <td><%= link_to 'Edit', edit_equipment_path(equipment) %></td>
+          <td><%= link_to 'Destroy', equipment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

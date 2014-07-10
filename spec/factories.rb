@@ -9,4 +9,11 @@ FactoryGirl.define do
       is_admin true
     end
   end
+
+  factory :equipment do
+    sequence(:name) { |n| "Mic #{n}" }
+    brand 'Test Brand'
+    quantity 1
+    condition 'Good'
+  end
 end

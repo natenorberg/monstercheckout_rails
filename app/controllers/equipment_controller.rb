@@ -1,5 +1,7 @@
 class EquipmentController < ApplicationController
-  before_action :set_equipment, only: [:show, :edit, :update, :destroy]
+  before_action :set_equipment,  only: [:show, :edit, :update, :destroy]
+  before_filter :user_signed_in,  only: [:new, :edit, :create, :update, :destroy]
+  before_filter :user_is_admin,  only: [:new, :edit, :create, :update, :destroy]
 
   # GET /equipment
   # GET /equipment.json

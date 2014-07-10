@@ -1,6 +1,7 @@
 class ReservationsController < ApplicationController
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
   before_filter :user_signed_in
+  # TODO: Filter destroy so that only the current user (or admin) can cancel a reservation
 
   # GET /reservations
   # GET /reservations.json

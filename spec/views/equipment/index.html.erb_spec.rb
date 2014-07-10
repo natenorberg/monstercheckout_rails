@@ -2,6 +2,9 @@ require 'rails_helper'
 
 RSpec.describe "equipment/index", :type => :view do
   before(:each) do
+    @user = stub_model(User)
+    @user.stub(:is_admin?).and_return(true)
+    view.stub(:current_user).and_return(@user)
     assign(:equipment, [
       Equipment.create!(
         :name => "Name",

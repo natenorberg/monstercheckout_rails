@@ -123,5 +123,4 @@ describe "User pages" do
       end
     end
   end
-  # TODO: Add sign in redirect tests for other views once we have a factory
 end
