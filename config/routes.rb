@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'home'    => 'static_pages#home'
   get 'welcome' => 'static_pages#welcome'
   get 'about'   => 'static_pages#about'
+  get 'help'    => 'static_pages#help'
 
   get 'signin'  => 'sessions#new'
   get 'signout' => 'sessions#destroy'

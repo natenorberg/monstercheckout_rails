@@ -43,4 +43,10 @@ describe "Static Pages" do
 
     it { should have_title('About') }
   end
+
+  describe "Help page" do
+    before { visit help_path }
+
+    it { should have_title('Help') }
+  end
 end

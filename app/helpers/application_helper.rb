@@ -22,5 +22,9 @@ module ApplicationHelper
       flash_type.to_s
     end
   end
+
+  def version_number
+    '1.0.0'
+  end
   
 end
