@@ -16,6 +16,8 @@ describe "Static Pages" do
     before { visit welcome_path }
 
     it { should have_title('Welcome') }
+    it { should have_link('About') }
+    it { should have_link('Help') }
   end
 
   describe "Home page", type: :request do
@@ -31,6 +33,8 @@ describe "Static Pages" do
     describe "for non-signed in users" do
       it { should have_selector('h1', text: 'Welcome to MONSTER Checkout') }
       it { should have_title('Welcome') }
+      it { should have_link('About') }
+      it { should have_link('Help') }
     end
   end
 

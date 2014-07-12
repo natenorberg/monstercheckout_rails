@@ -18,13 +18,11 @@
 							<i class="fa fa-calendar"></i> Reservations
 						<% end %>
 					</li>
-				<% end %>
-				<li class="<%= 'active' if params[:controller] == 'equipment' %>">
-					<%= link_to equipment_index_path do %>
-						<i class="fa fa-microphone"></i> Equipment
-					<% end %>		
-				</li>
-				<% if signed_in? %>
+					<li class="<%= 'active' if params[:controller] == 'equipment' %>">
+						<%= link_to equipment_index_path do %>
+							<i class="fa fa-microphone"></i> Equipment
+						<% end %>		
+					</li>
 					<% if current_user.is_admin? %>
 						<li class="<%= 'active' if params[:controller] == 'users' %>">
 							<%= link_to users_path do %>
@@ -61,6 +59,12 @@
 								<% end %>
 							</li>
 						</ul>
+					</li>
+				<% else %>
+					<li>
+						<%= link_to signin_path do %>
+							<i class="fa fa-sign-in"></i> Sign in
+						<% end %>
 					</li>
 				<% end %>
 			</ul>

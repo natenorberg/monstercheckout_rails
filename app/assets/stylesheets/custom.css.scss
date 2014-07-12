@@ -53,7 +53,6 @@ p {
 
 /* header */
 .navbar-default .navbar-nav > li > a {
-    /*padding: 15px 10px 10px 10px;*/
     font-size: 15px;
     & > .glyphicon {
       margin-right: 3px;
@@ -136,6 +135,40 @@ $colHighlight   : #ffffff;
     }
   }
 }
+
+/* footer */
+
+footer {
+  margin-top: 45px;
+  padding-top: 5px;
+  border-top: 1px solid $grayMediumLight;
+  color: #999;
+
+    a {
+      color: $gray;
+    }
+
+    a :hover {
+      color: $grayDarker;
+  }
+
+  small {
+      float: left;
+      margin-left: 15px;
+  }
+
+  ul {
+      float: right;
+      list-style: none;
+      margin-right: 15px;
+
+    li {
+        float: left;
+        margin-left: 10px;
+    }
+  }
+}
+
 
 a.quick_link {
   color: #333;
