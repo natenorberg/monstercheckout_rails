@@ -5,15 +5,48 @@
 <% end %>
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @user.name %>
-</p>
+<div class="row">
+	<div class="col-sm-5">
+		<div class="user-info">
+			<div class="row">
+				<div class="profile-pic">
+					<%= gravatar_for(@user, 120) %>
+				</div>
+				<div class="profile-info">
+					<h2><%= @user.name %> 
+						<% if @user.is_admin? %> <i class="fa fa-star" title='Administrator access'></i><% end %>
+						<!-- TODO: Add icon for monitor access if not admin -->
+					</h2>
+					
+					<h4>
+					  <a href="mailto:<%= @user.email %>"><%= @user.email %></a>
+					</h4>
+				</div>
+			</div>
 
-<p>
-  <strong>Email:</strong>
-  <%= @user.email %>
-</p>
-
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+			<!-- TODO: Add permission information once that's been implemented -->
+			
+			<%= link_to edit_user_path(@user), class: 'btn btn-large btn-primary' do %>
+				<i class="fa fa-edit"></i> Edit
+			<% end %>
+			<% if current_user.is_admin? && current_user != @user %>
+				<%= link_to @user, method: :delete, class: 'btn btn-large btn-danger', data: { confirm: 'Are you sure?' } do %>
+					<i class="fa fa-trash-o"></i> Delete
+				<% end %> 
+			<% end %>
+		</div>
+	</div>
+	<div class="col-sm-7">
+		<div class="user-reservations">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Reservations</h3>
+				</div>
+				<!-- TODO: Add list of reservations once that is hooked up -->
+				<div class="panel-body">
+					<em>No reservations made yet</em>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

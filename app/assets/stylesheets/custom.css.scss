@@ -281,3 +281,32 @@ h1.welcome-header {
     }
   }
 }
+
+/* User pages */
+.user-info, .user-reservations {
+  padding: 0 15px; 
+}
+
+.profile-pic, .profile-info {
+  display: inline-block;
+}
+
+.profile-pic {
+  margin: 0 10px 20px 15px;
+}
+
+.profile-info {
+  > h4 > a {
+    font-weight: 200;
+  }
+}
+
+/* Debug */
+.debug_dump {
+  clear: both;
+  float: left;
+  width: 100%;
+  border-radius: 0;
+  margin-bottom: 0;
+  @include box_sizing;
+}

@@ -59,6 +59,8 @@ describe "User pages" do
         end
 
         it { should have_title(user.name) }
+        it { should have_link('Edit') }
+        it { should have_link('Delete') }
       end
 
       describe "as correct user" do
