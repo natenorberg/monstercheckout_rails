@@ -34,6 +34,10 @@ textarea {
   margin-bottom: 10px;
 }
 
+a {
+  color: #326fa7;
+}
+
 /* Fonts */
 h1, h2, h3, h4, h5, h6{
 	line-height: 1;
@@ -282,6 +286,11 @@ h1.welcome-header {
   }
 }
 
+/* Forms */
+.input-group {
+  margin-bottom: 10px;
+}
+
 /* User pages */
 .user-info, .user-reservations {
   padding: 0 15px; 
@@ -299,6 +308,19 @@ h1.welcome-header {
   > h4 > a {
     font-weight: 200;
   }
+
+  > form {
+    display: inline-block;
+  }
+}
+
+.gravatar {
+  max-width: 100%;
+}
+
+ul.permissions-list {
+  padding: 0;
+  list-style-type: none;
 }
 
 /* Debug */
