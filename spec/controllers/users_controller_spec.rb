@@ -24,11 +24,15 @@ RSpec.describe UsersController, :type => :controller do
   # User. As you add validations to User, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    { name: 'Test User',
+      email: 'test@example.com',
+      password: 'password1',
+      password_confirmation: 'password1',
+      is_admin: false }
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    {name: '', email: '', password: 'pass', password_confirmation: 'different'}
   }
 
   # This should return the minimal set of values that should be in the session
@@ -37,6 +41,7 @@ RSpec.describe UsersController, :type => :controller do
   def valid_session
     controller.stub(:user_signed_in).and_return(true)
     controller.stub(:user_is_admin).and_return(true)
+    controller.stub(:current_user_or_admin).and_return(true)
   end
 
   describe "GET index" do
@@ -105,15 +110,20 @@ RSpec.describe UsersController, :type => :controller do
 
   describe "PUT update" do
     describe "with valid params" do
+      let(:new_name) { 'Test Update' }
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        { name: new_name,
+          email: 'test@example.com',
+          password: 'password1',
+          password_confirmation: 'password1',
+          is_admin: false }
       }
 
       it "updates the requested user" do
         user = User.create! valid_attributes
         put :update, {:id => user.to_param, :user => new_attributes}, valid_session
         user.reload
-        skip("Add assertions for updated state")
+        expect(user.name).to eq(new_name)
       end
 
       it "assigns the requested user as @user" do
