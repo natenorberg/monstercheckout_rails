@@ -7,7 +7,7 @@ RSpec.describe "users/edit", :type => :view do
     view.stub(:current_user).and_return(mock_user)
     @user = assign(:user, User.create!(
       :name => "MyString",
-      :email => "MyString",
+      :email => "my@email.invalid",
       :password => "password1",
       :password_confirmation => "password1"
     ))

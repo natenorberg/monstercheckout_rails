@@ -7,7 +7,7 @@ RSpec.describe "users/show", :type => :view do
     view.stub(:current_user).and_return(mock_user)
     @user = assign(:user, User.create!(
       :name => "Name",
-      :email => "Email",
+      :email => "email@example.fake",
       :password => "password1",
       :password_confirmation => "password1"
     ))
@@ -16,6 +16,6 @@ RSpec.describe "users/show", :type => :view do
   it "renders attributes in <p>" do
     render
     expect(rendered).to match(/Name/)
-    expect(rendered).to match(/Email/)
+    expect(rendered).to match(/email@example.fake/)
   end
 end
