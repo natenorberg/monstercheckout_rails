@@ -26,6 +26,5 @@ RSpec.describe "equipment/index", :type => :view do
     assert_select "tr>td", :text => "Name".to_s, :count => 2
     assert_select "tr>td", :text => "Brand".to_s, :count => 2
     assert_select "tr>td", :text => 1.to_s, :count => 2
-    assert_select "tr>td", :text => "Condition".to_s, :count => 2
   end
 end
