@@ -37,6 +37,10 @@ RSpec.describe EquipmentController, :type => :controller do
   # EquipmentController. Be sure to keep this updated too.
   def valid_session
     controller.stub(:user_signed_in).and_return(true)
+
+    mock_user = stub_model(User)
+    mock_user.stub(:is_admin?).and_return(false)
+    controller.stub(:current_user).and_return(mock_user)
   end
 
   def admin_session

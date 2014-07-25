@@ -12,8 +12,12 @@ end
 describe "Equipment pages" do
   subject { page }
 
-  describe "index page" do
-    before { visit equipment_index_path }
+  describe "index page", type: :request do
+    let(:user) { FactoryGirl.create(:user) }
+    before do 
+      sign_in(user)
+      visit equipment_index_path
+    end
 
     it { should have_title("Equipment") }
   end
