@@ -9,10 +9,12 @@
             <td><%= gravatar_for(user, 50) %></td>
             <td>
               <div class="profile-info">
-                <h4><%= user.name %> 
-                  <% if user.is_admin? %> <i class="fa fa-rocket" title='Administrator access'></i><% end %>
-                </h4>                  
-                <!-- TODO: Add icon for monitor access if not admin -->
+                <%= link_to user do %>
+                    <h4><%= user.name %> 
+                      <% if user.is_admin? %> <i class="fa fa-rocket" title='Administrator access'></i><% end %>
+                    </h4>                  
+                    <!-- TODO: Add icon for monitor access if not admin -->
+                <% end %>
                 
                 <h5>
                   <a href="mailto:<%= user.email %>"><%= user.email %></a>
@@ -20,8 +22,12 @@
               </div>
             </td>
             <td>
-              <%= link_to edit_user_path(user), class: 'btn btn-large' do %> <i class="fa fa-pencil"></i> Edit <% end %>
-              <%= link_to user, class: 'btn btn-large', method: :delete, data: { confirm: 'Are you sure?' } do %> <i class="fa fa-trash-o"></i> Delete <% end %></td>
+              <%= link_to edit_user_path(user), class: 'btn btn-large' do %> 
+                  <i class="fa fa-pencil"></i> Edit 
+              <% end %>
+              <%= link_to user, class: 'btn btn-large', method: :delete, data: { confirm: 'Are you sure?' } do %>     <i class="fa fa-trash-o"></i> Delete 
+              <% end %>
+            </td>
           </tr>
         <% end %>
       </tbody>

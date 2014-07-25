@@ -310,7 +310,7 @@ h1.welcome-header {
 }
 
 /* User pages */
-.user-info, .user-reservations {
+.info, .related-reservations {
   padding: 0 15px; 
 }
 
@@ -344,6 +344,37 @@ ul.permissions-list {
 /* Equipment pages */
 .equipment-table {
   border: 1px #ddd solid;
+}
+
+/* Reservation items */
+.reservation-icon, .reservation-info {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.status-msu > .reservation-icon{
+  color: #32a76f;
+}
+
+.status-checked-out > .reservation-icon{
+  color: #b99c5f;
+}
+
+.reservation-info {
+  padding-left: 15px;
+
+  > .reservation-user {
+    font-family: "Helvetica Neue", arial, sans-serif;
+    font-weight: 700;
+    font-size: 25px;
+    line-height: 30px;
+  }
+
+  > .reservation-project {
+    font-family: "Helvetica Neue", arial, sans-serif;
+    font-weight: 200;
+    font-size: 17px;
+  }
 }
 
 /* Debug */

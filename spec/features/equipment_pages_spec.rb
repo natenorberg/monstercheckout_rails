@@ -18,9 +18,13 @@ describe "Equipment pages" do
     it { should have_title("Equipment") }
   end
 
-  describe "show page" do
+  describe "show page", type: :request do
     let(:mic) { FactoryGirl.create(:equipment) }
-    before { visit equipment_path(mic) }
+    let(:user) { FactoryGirl.create(:user) }
+    before do
+      sign_in(user)
+      visit equipment_path(mic)
+    end
 
     it { should have_title(mic.name) }
   end

@@ -2,25 +2,77 @@
 
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @equipment.name %>
-</p>
+<div class="row">
+	<div class="col-sm-5">
+		<div class="info">
+			<h1><%= @equipment.name %></h1>
 
-<p>
-  <strong>Brand:</strong>
-  <%= @equipment.brand %>
-</p>
+			<h3><%= @equipment.brand %></h3>
 
-<p>
-  <strong>Quantity:</strong>
-  <%= @equipment.quantity %>
-</p>
 
-<p>
-  <strong>Condition:</strong>
-  <%= @equipment.condition %>
-</p>
+			<!-- TODO: Add permission information once that's been implemented -->
+			
+			<% if current_user.is_admin? %>
+				<%= link_to edit_equipment_path(@equipment), class: 'btn btn-large btn-primary' do %>
+					<i class="fa fa-edit"></i> Edit
+				<% end %>
+				<%= link_to @equipment, method: :delete, class: 'btn btn-large btn-danger', data: { confirm: 'Are you sure?' } do %>
+					<i class="fa fa-trash-o"></i> Delete
+				<% end %> 
+			<% end %>
+		</div>
+	</div>
+	<div class="col-sm-7">
+		<div class="related-reservations">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Status</h3>
+				</div>
+				<!-- TODO: Add list of reservations once that is hooked up -->
+				<ul class="list-group">
+					<li class="list-group-item status-msu">
+						<div class="reservation-icon">
+							<h2><i class="fa fa-home fa-2x"></i></h2>
+						</div>
+						<div class="reservation-info">
+							<span class="reservation-user">At MSU</span><br/>
+							<span class="reservation-project">Count: 4</span><br>
+						</div>
+					</li>
+					<li class="list-group-item status-checked-out">
+						<div class="reservation-icon">
+							<h2><i class="fa fa-sign-out fa-2x"></i></h2>
+						</div>
+						<div class="reservation-info">
+							<span class="reservation-user">Checked out</span><br>
+							<span class="reservation-project">to Nate Norberg (1)</span><br>
+							<span class="reservation-time">due 8/01/14 3:00pm</span>
+						</div>
+					</li>
+				</ul>
+			</div>
 
-<%= link_to 'Edit', edit_equipment_path(@equipment) %> |
-<%= link_to 'Back', equipment_index_path %>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Recent Reservations</h3>
+				</div>
+				<!-- TODO: Add list of reservations once that is hooked up -->
+				<ul class="list-group">
+					<li class="list-group-item">
+						<div class="reservation-icon">
+							<h2><i class="fa fa-calendar fa-2x"></i></h2>
+						</div>
+						<div class="reservation-info">
+							<span class="reservation-user">Nate Norberg</span><br/>
+							<span class="reservation-project">Recording 2</span><br>
+							<span class="reservation-time">7/30/14 3:00pm to 7/30/14 5:00pm</span>
+						</div>
+					</li>
+					<li class="list-group-item">
+						<a href="#">Show more</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
