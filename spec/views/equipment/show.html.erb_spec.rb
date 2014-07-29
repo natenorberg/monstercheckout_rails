@@ -9,7 +9,8 @@ RSpec.describe "equipment/show", :type => :view do
       :name => "Name",
       :brand => "Brand",
       :quantity => 1,
-      :condition => "Condition"
+      :condition => "Condition_",
+      :description => "Description_"
     ))
   end
 
@@ -18,6 +19,7 @@ RSpec.describe "equipment/show", :type => :view do
     expect(rendered).to match(/Name/)
     expect(rendered).to match(/Brand/)
     expect(rendered).to match(/1/)
-    # expect(rendered).to match(/Condition/)
+    expect(rendered).to match(/Condition_/)
+    expect(rendered).to match(/Description_/)
   end
 end

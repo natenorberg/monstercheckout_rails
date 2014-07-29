@@ -5,9 +5,13 @@
 <div class="row">
 	<div class="col-sm-5">
 		<div class="info">
-			<h1><%= @equipment.name %></h1>
+			<h1><%= @equipment.brand %> <%= @equipment.name %></h1>
 
-			<h3><%= @equipment.brand %></h3>
+			<h4>Condition</h4>
+			<p><%= @equipment.condition %></p>
+
+			<h4>Description</h4>
+			<p><%= @equipment.description %></p>
 
 
 			<!-- TODO: Add permission information once that's been implemented -->

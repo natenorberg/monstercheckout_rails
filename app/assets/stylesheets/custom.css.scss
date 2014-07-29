@@ -346,6 +346,10 @@ ul.permissions-list {
   border: 1px #ddd solid;
 }
 
+.edit_equipment > .form-control {
+  margin-bottom: 15px;
+}
+
 /* Reservation items */
 .reservation-icon, .reservation-info {
   display: inline-block;
