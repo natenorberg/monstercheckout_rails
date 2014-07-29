@@ -2,14 +2,29 @@ require 'rails_helper'
 
 # Specs in this file have access to a helper object that includes
 # the SessionsHelper. For example:
-#
-# describe SessionsHelper do
-#   describe "string concat" do
-#     it "concats two strings with spaces" do
-#       expect(helper.concat_strings("this","that")).to eq("this that")
-#     end
-#   end
-# end
+
 RSpec.describe SessionsHelper, :type => :helper do
-  pending "add some examples to (or delete) #{__FILE__}"
+  
+  it "should sign in user" do
+    mock_user = stub_model(User)
+    mock_user.stub(:remember_token).and_return('totem')
+    helper.sign_in(mock_user)
+
+    expect(helper.current_user).to eq(mock_user)
+    expect(cookies[:remember_token]).to eq('totem')
+  end
+
+  describe "signed_in?" do
+    it "should be false when current_user is nil" do
+      expect(helper.signed_in?).to eq(false)
+    end
+
+    it "should be true when current_user is not nil" do
+      mock_user = stub_model(User)
+      helper.current_user = mock_user
+
+      expect(helper.signed_in?).to eq(true)
+    end
+  end
+
 end
