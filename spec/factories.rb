@@ -15,5 +15,6 @@ FactoryGirl.define do
     brand 'Test Brand'
     quantity 1
     condition 'Good'
+    description 'A sample mic used for testing MONSTER Checkout'
   end
 end

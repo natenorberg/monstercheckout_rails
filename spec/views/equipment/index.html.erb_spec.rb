@@ -10,13 +10,15 @@ RSpec.describe "equipment/index", :type => :view do
         :name => "Name",
         :brand => "Brand",
         :quantity => 1,
-        :condition => "Condition"
+        :condition => "Condition",
+        :description => "A sample piece of equipment"
       ),
       Equipment.create!(
         :name => "Name",
         :brand => "Brand",
         :quantity => 1,
-        :condition => "Condition"
+        :condition => "Condition",
+        :description => "A sample piece of equipment"
       )
     ])
   end

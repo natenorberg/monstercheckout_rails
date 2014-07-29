@@ -29,4 +29,30 @@ RSpec.describe Equipment, :type => :model do
   it "should have a valid factory" do
     expect(@mic).to be_valid
   end
+
+  it "is invalid without a name" do
+    @mic.name = ""
+    expect(@mic).to_not be_valid
+  end
+
+  it "is invalid with quantity of zero" do
+    @mic.quantity = 0
+    expect(@mic).to_not be_valid
+  end
+
+  it "is invalid with non-integer length" do
+    @mic.quantity = 1.5
+    expect(@mic).to_not be_valid
+  end
+
+  it "is invalid without a condition" do
+    @mic.condition = ''
+    expect(@mic).to_not be_valid
+  end
+
+  it "is invalid without a description" do
+    @mic.description = ''
+    expect(@mic).to_not be_valid
+  end
+
 end

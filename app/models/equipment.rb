@@ -13,4 +13,8 @@
 #
 
 class Equipment < ActiveRecord::Base
+  validates :name, presence: true
+  validates :quantity, numericality: { only_integer: true, greater_than: 0 }
+  validates :condition, presence: true
+  validates :description, presence: true
 end

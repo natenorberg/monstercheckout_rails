@@ -24,12 +24,11 @@ RSpec.describe EquipmentController, :type => :controller do
   # Equipment. As you add validations to Equipment, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    {name: 'Test Microphone', brand: 'Shure', quantity: 1, condition: 'Unknown'}
+    {name: 'Test Microphone', brand: 'Shure', quantity: 1, condition: 'Unknown', description: 'Description'}
   }
 
   let(:invalid_attributes) {
-    # TODO: Add validation for this controller
-    skip("Add a hash of attributes invalid for your model")
+    {name: '', brand: '', quantity: 0, condition: '', description: ''}
   }
 
   # This should return the minimal set of values that should be in the session
@@ -115,14 +114,22 @@ RSpec.describe EquipmentController, :type => :controller do
   describe "PUT update" do
     describe "with valid params" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        { name: 'New Name',
+          brand: 'New Brand',
+          quantity: 2,
+          condition: 'Better',
+          description: 'New Description'}
       }
 
       it "updates the requested equipment" do
         equipment = Equipment.create! valid_attributes
         put :update, {:id => equipment.to_param, :equipment => new_attributes}, admin_session
         equipment.reload
-        skip("Add assertions for updated state")
+        expect(equipment.name).to eq('New Name')
+        expect(equipment.brand).to eq('New Brand')
+        expect(equipment.quantity).to eq(2)
+        expect(equipment.condition).to eq('Better')
+        expect(equipment.description).to eq('New Description')
       end
 
       it "assigns the requested equipment as @equipment" do
