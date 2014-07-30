@@ -1,33 +1,27 @@
-<%= form_for(@equipment) do |f| %>
-  <% if @equipment.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@equipment.errors.count, "error") %> prohibited this equipment from being saved:</h2>
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2">
+    <%= form_for(@equipment) do |f| %>
 
-      <ul>
-      <% @equipment.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+      <%= render 'shared/error_messages', object: f.object %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
+      <%= f.label :name %>
+      <%= f.text_field :name, class: 'form-control' %>
+    
+      <%= f.label :brand %>
+      <%= f.text_field :brand, class: 'form-control' %>
+    
+      <%= f.label :quantity %>
+      <%= f.number_field :quantity, min: 1, step: 1, class: 'form-control' %> 
+      <!-- TODO: Check to see if this lets you save a non-integer -->
+    
+      <%= f.label :condition %>
+      <%= f.text_field :condition, class: 'form-control' %>
+    
+      <%= f.label :description %>
+      <%= f.text_area :description, class: 'form-control' %>
+    
+      <%= f.submit "Submit", class: 'btn btn-large btn-primary' %>
+      
+    <% end %>
   </div>
-  <div class="field">
-    <%= f.label :brand %><br>
-    <%= f.text_field :brand %>
-  </div>
-  <div class="field">
-    <%= f.label :quantity %><br>
-    <%= f.number_field :quantity %>
-  </div>
-  <div class="field">
-    <%= f.label :condition %><br>
-    <%= f.text_field :condition %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+</div>
