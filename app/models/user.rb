@@ -14,6 +14,9 @@
 
 class User < ActiveRecord::Base
   has_secure_password
+  has_many :reservations
+  has_many :monitor_checkouts, foreign_key: 'checked_out_by_id', class_name: 'Reservation'
+  has_many :monitor_checkins, foreign_key: 'checked_in_by_id', class_name: 'Reservation'
 
   before_save { |user| user.email = email.downcase }
   before_save :create_remember_token

@@ -25,6 +25,9 @@ describe "User" do
     expect(@user).to respond_to(:password_confirmation)
     expect(@user).to respond_to(:password_digest)
     expect(@user).to respond_to(:is_admin?)
+    expect(@user).to respond_to(:reservations)
+    expect(@user).to respond_to(:monitor_checkouts)
+    expect(@user).to respond_to(:monitor_checkins)
   end
 
   it "should have a valid factory" do

@@ -13,6 +13,9 @@
 #  check_in_comments  :text
 #  created_at         :datetime
 #  updated_at         :datetime
+#  user_id            :integer
+#  checked_out_by_id  :integer
+#  checked_in_by_id   :integer
 #
 
 class Reservation < ActiveRecord::Base

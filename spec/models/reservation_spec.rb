@@ -13,6 +13,9 @@
 #  check_in_comments  :text
 #  created_at         :datetime
 #  updated_at         :datetime
+#  user_id            :integer
+#  checked_out_by_id  :integer
+#  checked_in_by_id   :integer
 #
 
 require 'rails_helper'
@@ -30,6 +33,9 @@ RSpec.describe Reservation, :type => :model do
     expect(@reservation).to respond_to(:is_approved?)
     expect(@reservation).to respond_to(:check_out_comments)
     expect(@reservation).to respond_to(:check_in_comments)
+    expect(@reservation).to respond_to(:user_id)
+    expect(@reservation).to respond_to(:checked_out_by_id)
+    expect(@reservation).to respond_to(:checked_in_by_id)
   end
 
   it "should have valid factories" do
