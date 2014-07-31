@@ -17,4 +17,12 @@ FactoryGirl.define do
     condition 'Good'
     description 'A sample mic used for testing MONSTER Checkout'
   end
+
+  factory :reservation do
+    project 'Record all the stuff'
+    out_time 1.days.ago
+    in_time 2.days.from_now
+    checked_out_time 1.days.ago
+    check_out_comments 'Lookin good'
+  end
 end

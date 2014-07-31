@@ -4,6 +4,8 @@ RSpec.describe "reservations/edit", :type => :view do
   before(:each) do
     @reservation = assign(:reservation, Reservation.create!(
       :project => "MyString",
+      :out_time => 1.days.ago,
+      :in_time => 1.days.from_now,
       :is_approved => false,
       :check_out_comments => "MyText",
       :check_in_comments => "MyText"

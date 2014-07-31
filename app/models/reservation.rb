@@ -16,4 +16,7 @@
 #
 
 class Reservation < ActiveRecord::Base
+  validates :project,  presence: true
+  validates :out_time, presence: true
+  validates :in_time,  presence: true
 end
