@@ -32,9 +32,17 @@ RSpec.describe Reservation, :type => :model do
     expect(@reservation).to respond_to(:check_in_comments)
   end
 
-  it "should have a valid factory" do
+  it "should have valid factories" do
+    expect(@reservation).to be_valid
+
+    @reservation = FactoryGirl.create(:checkout)
+    expect(@reservation).to be_valid
+
+    @reservation = FactoryGirl.create(:checkin)
     expect(@reservation).to be_valid
   end
+
+  # Validation tests 
 
   it "should be invalid without a project" do
     @reservation.project = ''
@@ -49,6 +57,74 @@ RSpec.describe Reservation, :type => :model do
   it "should be invalid without in_time" do
     @reservation.in_time = nil
     expect(@reservation).to_not be_valid
+  end
+
+  it "should be invalid if out_time is after in_time" do
+    @reservation.out_time = 50.days.from_now
+    expect(@reservation).to_not be_valid
+  end
+
+  it "should be invalid if checking out without check_out_comments" do
+    @reservation.checked_out_time = Time.now
+    @reservation.check_out_comments = ''
+
+    expect(@reservation).to_not be_valid
+  end
+
+  it "should be invalid if checking_in without check_in_comments" do
+    @reservation = FactoryGirl.create(:checkout)
+    @reservation.checked_in_time = Time.now
+    @reservation.check_in_comments = ''
+
+    expect(@reservation).to_not be_valid
+  end
+
+  it "should be invalid if changing checked_out_time" do
+    @reservation = FactoryGirl.create(:checkout)
+    @reservation.checked_out_time = Time.now
+
+    expect(@reservation).to_not be_valid
+  end
+
+  it "should be invalid if changing checked_in_time" do
+    @reservation = FactoryGirl.create(:checkin)
+    @reservation.checked_in_time = Time.now
+
+    expect(@reservation).to_not be_valid
+  end
+
+  it "should be invalid if trying to check in without checking out" do
+    @reservation.checked_in_time = Time.now
+    @reservation.check_in_comments = 'What am i even doing?'
+
+    expect(@reservation).to_not be_valid
+  end
+
+  # Helper method tests
+  describe "checked_out?" do
+    
+    it "should return true if checked_out is set" do
+      @reservation = FactoryGirl.create(:checkout)
+      expect(@reservation.checked_out?).to eq(true)
+    end
+
+    it "should return false if checked_out is not set" do
+      @reservation = FactoryGirl.create(:reservation)
+      expect(@reservation.checked_out?).to eq(false)
+    end
+  end
+
+  describe "checked_in?" do
+    
+    it "should return true if checked_in is set" do
+      @reservation = FactoryGirl.create(:checkin)
+      expect(@reservation.checked_in?).to eq(true)
+    end
+
+    it "should return false if checked_in is not set" do
+      @reservation = FactoryGirl.create(:checkout)
+      expect(@reservation.checked_in?).to eq(false)
+    end
   end
 
 end
