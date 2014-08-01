@@ -24,6 +24,7 @@ RSpec.describe Equipment, :type => :model do
     expect(@mic).to respond_to(:quantity)
     expect(@mic).to respond_to(:condition)
     expect(@mic).to respond_to(:description)
+    expect(@mic).to respond_to(:reservations)
   end
 
   it "should have a valid factory" do

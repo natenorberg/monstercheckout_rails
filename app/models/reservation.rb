@@ -19,6 +19,8 @@
 #
 
 class Reservation < ActiveRecord::Base
+  has_many :equipment, through: :reservation_equipment
+
   validates :project,  presence: true
   validates :out_time, presence: true
   validates :in_time,  presence: true

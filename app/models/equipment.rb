@@ -13,6 +13,8 @@
 #
 
 class Equipment < ActiveRecord::Base
+  has_many :reservations, through: :reservation_equipment
+
   validates :name, presence: true
   validates :quantity, numericality: { only_integer: true, greater_than: 0 }
   validates :condition, presence: true

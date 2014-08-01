@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140731214109) do
+ActiveRecord::Schema.define(version: 20140801025057) do
 
   create_table "equipment", force: true do |t|
     t.string   "name"
@@ -22,6 +22,16 @@ ActiveRecord::Schema.define(version: 20140731214109) do
     t.datetime "updated_at"
     t.string   "description"
   end
+
+  create_table "reservation_equipment", force: true do |t|
+    t.integer "reservation_id"
+    t.integer "equipment_id"
+    t.integer "quantity"
+  end
+
+  add_index "reservation_equipment", ["equipment_id"], name: "index_reservation_equipment_on_equipment_id"
+  add_index "reservation_equipment", ["reservation_id", "equipment_id"], name: "index_reservation_equipment_on_reservation_id_and_equipment_id", unique: true
+  add_index "reservation_equipment", ["reservation_id"], name: "index_reservation_equipment_on_reservation_id"
 
   create_table "reservations", force: true do |t|
     t.string   "project"
