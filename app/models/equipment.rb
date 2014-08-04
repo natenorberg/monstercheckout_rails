@@ -19,4 +19,6 @@ class Equipment < ActiveRecord::Base
   validates :quantity, numericality: { only_integer: true, greater_than: 0 }
   validates :condition, presence: true
   validates :description, presence: true
+
+  accepts_nested_attributes_for :reservations
 end

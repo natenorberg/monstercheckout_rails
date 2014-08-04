@@ -15,7 +15,7 @@
     <%= f.label :project %><br>
     <%= f.text_field :project %>
   </div>
-  <div class="container">
+  <!-- <div class="container">
     <div class="col-sm-6" style="height:75px;">
        <div class='col-md-5'>
             <div class="form-group">
@@ -48,15 +48,23 @@
             });
         });
     </script>
-</div>
+</div> -->
   <div class="field">
+    <%= f.label :out_time %><br>
+    <%= f.datetime_select :out_time %>
+  </div>
+  <div class="field">
+    <%= f.label :in_time %><br>
+    <%= f.datetime_select :in_time %>
+  </div>
+  <!-- <div class="field">
     <%= f.label :checked_out_time %><br>
     <%= f.datetime_select :checked_out_time %>
   </div>
   <div class="field">
     <%= f.label :checked_in_time %><br>
     <%= f.datetime_select :checked_in_time %>
-  </div>
+  </div> -->
   <div class="field">
     <%= f.label :is_approved %><br>
     <%= f.check_box :is_approved %>

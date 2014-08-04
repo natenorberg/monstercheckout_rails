@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140801025057) do
+ActiveRecord::Schema.define(version: 20140802180616) do
 
   create_table "equipment", force: true do |t|
     t.string   "name"
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 20140801025057) do
     t.integer  "user_id"
     t.integer  "checked_out_by_id"
     t.integer  "checked_in_by_id"
+    t.integer  "status"
   end
 
   add_index "reservations", ["user_id"], name: "index_reservations_on_user_id"

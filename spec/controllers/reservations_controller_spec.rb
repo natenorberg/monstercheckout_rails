@@ -24,11 +24,14 @@ RSpec.describe ReservationsController, :type => :controller do
   # Reservation. As you add validations to Reservation, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    { user_id: FactoryGirl.create(:user).id,
+      project: 'Make phat beats',
+      out_time: 1.days.ago,
+      in_time: 2.days.from_now} 
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    { project: '', out_time: Time.now, in_time: 1.days.ago }
   }
 
   # This should return the minimal set of values that should be in the session
@@ -104,15 +107,20 @@ RSpec.describe ReservationsController, :type => :controller do
 
   describe "PUT update" do
     describe "with valid params" do
+      # If we use from_now in tests we need to define a constant
+      let(:new_out_time) { 1.days.from_now.change(:usec => 0) }
+      let(:new_in_time) { 2.days.from_now.change(:usec => 0) }
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        { project: 'Make more phat beats', out_time: new_out_time, in_time: new_in_time }
       }
 
       it "updates the requested reservation" do
         reservation = Reservation.create! valid_attributes
         put :update, {:id => reservation.to_param, :reservation => new_attributes}, valid_session
         reservation.reload
-        skip("Add assertions for updated state")
+        expect(reservation.project).to eq('Make more phat beats')
+        expect(reservation.out_time).to eq(new_out_time)
+        expect(reservation.in_time).to eq(new_in_time)
       end
 
       it "assigns the requested reservation as @reservation" do
@@ -157,5 +165,5 @@ RSpec.describe ReservationsController, :type => :controller do
       expect(response).to redirect_to(reservations_url)
     end
   end
-
 end
+

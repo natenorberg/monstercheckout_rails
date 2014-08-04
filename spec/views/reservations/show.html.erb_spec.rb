@@ -2,21 +2,23 @@ require 'rails_helper'
 
 RSpec.describe "reservations/show", :type => :view do
   before(:each) do
+    @out_time = 1.days.ago
+    @in_time = 1.days.from_now
+    @user = FactoryGirl.create(:user)
     @reservation = assign(:reservation, Reservation.create!(
+      :user_id => @user.id,
       :project => "Project",
-      :out_time => 1.days.ago,
-      :in_time => 1.days.from_now,
+      :out_time => @out_time,
+      :in_time => @in_time,
       :is_approved => false,
-      :check_out_comments => "MyText",
-      :check_in_comments => "MyText"
     ))
   end
 
-  it "renders attributes in <p>" do
+  it "renders attributes" do
     render
+    expect(rendered).to match(@user.name)
     expect(rendered).to match(/Project/)
-    expect(rendered).to match(/false/)
-    expect(rendered).to match(/MyText/)
-    expect(rendered).to match(/MyText/)
+    expect(rendered).to match(@out_time.strftime('%A, %B %Y, %I:%M %p'))
+    expect(rendered).to match(@in_time.strftime('%A, %B %Y, %I:%M %p'))
   end
 end

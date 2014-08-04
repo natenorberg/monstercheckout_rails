@@ -19,6 +19,7 @@ FactoryGirl.define do
   end
 
   factory :reservation do
+    user
     project 'Record all the stuff'
     out_time 1.days.ago
     in_time 2.days.from_now

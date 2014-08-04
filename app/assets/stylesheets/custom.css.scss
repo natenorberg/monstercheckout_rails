@@ -396,6 +396,43 @@ ul.permissions-list {
   }
 }
 
+.reservation-details {
+  padding: 15px;
+}
+
+.reservation-header-info {
+  display: inline-block;
+  margin-left: 15px;
+
+  > h2 {
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 28px;
+  }
+
+  > h4 {
+    font-weight: 200;
+  }
+}
+
+.status-text-requested, .status-text-out {
+  color: #326fa7;
+}
+
+.status-text-approved, .status-text-returned {
+  color: #32a76f;
+}
+
+.status-text-overdue, .status-text-returned_late , .status-text-denied {
+  color: #d73f32;
+}
+
+.status-text-forgotten {
+  color: #88a;
+}
+
+
+
 /* Debug */
 .debug_dump {
   clear: both;

@@ -35,7 +35,11 @@ RSpec.describe ReservationEquipment, :type => :model do
     expect(@association).to_not be_valid
   end
 
+<<<<<<< HEAD
   it "should be invlaid without an equipment_id" do
+=======
+  it "should be invalid without an equipment_id" do
+>>>>>>> Apply stash in reservations
     @association.equipment_id = nil
     expect(@association).to_not be_valid
   end

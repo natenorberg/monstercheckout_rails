@@ -16,10 +16,12 @@
 #  user_id            :integer
 #  checked_out_by_id  :integer
 #  checked_in_by_id   :integer
+#  status             :integer
 #
 
 class Reservation < ActiveRecord::Base
   has_many :equipment, through: :reservation_equipment
+  belongs_to :user
 
   validates :project,  presence: true
   validates :out_time, presence: true
@@ -30,6 +32,10 @@ class Reservation < ActiveRecord::Base
   validate  :checked_out_time_should_not_change
   validate  :checked_in_time_should_not_change
   validates :checked_in_time, absence: true, if: '!checked_out?'
+
+  accepts_nested_attributes_for :equipment
+
+  enum status: [:requested, :approved, :denied, :out, :overdue, :returned, :returned_late, :forgotten]
 
   def checked_out?
     checked_out_time != nil

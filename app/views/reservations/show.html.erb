@@ -1,44 +1,23 @@
+<% provide(:title, @reservation.project) %>
+
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Project:</strong>
-  <%= @reservation.project %>
-</p>
+<div class="row">
+  <div class="col-sm-7">
+    <div class="reservation-details">
+      <div class="reservation-icon">
+        <h2><i class="fa fa-calendar fa-2x"></i></h2>
+      </div>
+      <div class="reservation-header-info">
+        <h2><%= @reservation.project %></h2>
+        
+        <h4><%= @user.name %></h4>
+      </div>
 
-<p>
-  <strong>In time:</strong>
-  <%= @reservation.in_time %>
-</p>
+      <p><strong>Reserved from:</strong> <%= @reservation.out_time.strftime('%A, %B %Y, %I:%M %p') %> <br><strong>to:</strong> <%= @reservation.in_time.strftime('%A, %B %Y, %I:%M %p') %></p>
 
-<p>
-  <strong>Out time:</strong>
-  <%= @reservation.out_time %>
-</p>
+      <h4><strong>Status: </strong><%= status_text(@reservation).html_safe %></h4>
 
-<p>
-  <strong>Checked out time:</strong>
-  <%= @reservation.checked_out_time %>
-</p>
-
-<p>
-  <strong>Checked in time:</strong>
-  <%= @reservation.checked_in_time %>
-</p>
-
-<p>
-  <strong>Is approved:</strong>
-  <%= @reservation.is_approved %>
-</p>
-
-<p>
-  <strong>Check out comments:</strong>
-  <%= @reservation.check_out_comments %>
-</p>
-
-<p>
-  <strong>Check in comments:</strong>
-  <%= @reservation.check_in_comments %>
-</p>
-
-<%= link_to 'Edit', edit_reservation_path(@reservation) %> |
-<%= link_to 'Back', reservations_path %>
+    </div>
+  </div>
+</div>
