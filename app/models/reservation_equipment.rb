@@ -16,5 +16,6 @@ class ReservationEquipment < ActiveRecord::Base
 
   validates :reservation_id, presence: true
   validates :equipment_id, presence: true
-  validates :quantity, presence: true, numericality: { only_integer: true, greater_than: 0}
+  # Throwing errors with checkboxes; temporarily removing validation
+  # validates :quantity, presence: true, numericality: { only_integer: true, greater_than: 0}
 end

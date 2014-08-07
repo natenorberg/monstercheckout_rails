@@ -18,6 +18,19 @@
 
       <h4><strong>Status: </strong><%= status_text(@reservation).html_safe %></h4>
 
+      <h4>Equipment</h4>
+
+      <ul>
+        <% @equipment.each do |item| %>
+          <li><%= item.name %></li>
+        <% end %>
+      </ul>
+  
+      <!-- TODO: Check permission for this -->
+      <%= link_to edit_reservation_path(@reservation), class: 'btn btn-large btn-primary' do %>
+        <i class="fa fa-pencil"></i> Edit
+      <% end %>
+
     </div>
   </div>
 </div>

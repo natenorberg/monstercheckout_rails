@@ -2,13 +2,15 @@ require 'rails_helper'
 
 RSpec.describe "reservations/edit", :type => :view do
   before(:each) do
+    @out_time = 1.days.ago
+    @in_time = 1.days.from_now
+    @user = FactoryGirl.create(:user)
     @reservation = assign(:reservation, Reservation.create!(
-      :project => "MyString",
-      :out_time => 1.days.ago,
-      :in_time => 1.days.from_now,
+      :user_id => @user.id,
+      :project => "Project",
+      :out_time => @out_time,
+      :in_time => @in_time,
       :is_approved => false,
-      :check_out_comments => "MyText",
-      :check_in_comments => "MyText"
     ))
   end
 
@@ -18,12 +20,6 @@ RSpec.describe "reservations/edit", :type => :view do
     assert_select "form[action=?][method=?]", reservation_path(@reservation), "post" do
 
       assert_select "input#reservation_project[name=?]", "reservation[project]"
-
-      assert_select "input#reservation_is_approved[name=?]", "reservation[is_approved]"
-
-      assert_select "textarea#reservation_check_out_comments[name=?]", "reservation[check_out_comments]"
-
-      assert_select "textarea#reservation_check_in_comments[name=?]", "reservation[check_in_comments]"
     end
   end
 end

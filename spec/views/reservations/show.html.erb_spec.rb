@@ -5,6 +5,7 @@ RSpec.describe "reservations/show", :type => :view do
     @out_time = 1.days.ago
     @in_time = 1.days.from_now
     @user = FactoryGirl.create(:user)
+    @equipment = [FactoryGirl.create(:equipment), FactoryGirl.create(:equipment)]
     @reservation = assign(:reservation, Reservation.create!(
       :user_id => @user.id,
       :project => "Project",

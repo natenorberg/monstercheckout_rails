@@ -20,6 +20,7 @@
 #
 
 class Reservation < ActiveRecord::Base
+  has_many :reservation_equipment
   has_many :equipment, through: :reservation_equipment
   belongs_to :user
 

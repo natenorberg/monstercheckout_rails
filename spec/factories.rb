@@ -34,4 +34,10 @@ FactoryGirl.define do
       end
     end
   end
+
+  factory :reservation_equipment do
+    reservation
+    equipment
+    quantity 2
+  end
 end

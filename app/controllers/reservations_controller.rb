@@ -68,10 +68,11 @@ class ReservationsController < ApplicationController
     def set_reservation
       @reservation = Reservation.find(params[:id])
       @user = User.find(@reservation.user_id)
+      @equipment = @reservation.equipment
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def reservation_params
-      params.require(:reservation).permit(:project, :in_time, :out_time, :checked_out_time, :checked_in_time, :is_approved, :check_out_comments, :check_in_comments)
+      params.require(:reservation).permit(:project, :in_time, :out_time, :checked_out_time, :checked_in_time, :is_approved, :check_out_comments, :check_in_comments, equipment_ids: [])
     end
 end

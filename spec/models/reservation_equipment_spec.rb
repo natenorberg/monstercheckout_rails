@@ -15,9 +15,7 @@ RSpec.describe ReservationEquipment, :type => :model do
   before do
     equipment = FactoryGirl.create(:equipment)
     reservation = FactoryGirl.create(:reservation)
-    @association = ReservationEquipment.create!({ equipment_id: equipment.id,
-                                                  reservation_id: reservation.id,
-                                                  quantity: 2})
+    @association = FactoryGirl.create(:reservation_equipment)
   end
 
   it "should respond to attributes" do
@@ -40,18 +38,20 @@ RSpec.describe ReservationEquipment, :type => :model do
     expect(@association).to_not be_valid
   end
 
-  it "should be invalid without a quantity" do
-    @association.quantity = nil
-    expect(@association).to_not be_valid
-  end
+  # Temporarily removing quantity validation
 
-  it "should be invalid if quantity is not greater than 0" do
-    @association.quantity = 0
-    expect(@association).to_not be_valid
-  end
+  # it "should be invalid without a quantity" do
+  #   @association.quantity = nil
+  #   expect(@association).to_not be_valid
+  # end
 
-  it "should be invalid if quantity is not an integer" do
-    @association.quantity = 1.7
-    expect(@association).to_not be_valid
-  end
+  # it "should be invalid if quantity is not greater than 0" do
+  #   @association.quantity = 0
+  #   expect(@association).to_not be_valid
+  # end
+
+  # it "should be invalid if quantity is not an integer" do
+  #   @association.quantity = 1.7
+  #   expect(@association).to_not be_valid
+  # end
 end
