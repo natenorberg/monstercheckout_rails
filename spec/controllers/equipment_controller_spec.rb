@@ -47,72 +47,72 @@ RSpec.describe EquipmentController, :type => :controller do
     controller.stub(:user_is_admin).and_return(true)
   end
 
-  describe "GET index" do
-    it "assigns all equipment as @equipment" do
+  describe 'GET index' do
+    it 'assigns all equipment as @equipment' do
       equipment = Equipment.create! valid_attributes
       get :index, {}, valid_session
       expect(assigns(:equipment)).to eq([equipment])
     end
   end
 
-  describe "GET show" do
-    it "assigns the requested equipment as @equipment" do
+  describe 'GET show' do
+    it 'assigns the requested equipment as @equipment' do
       equipment = Equipment.create! valid_attributes
       get :show, {:id => equipment.to_param}, valid_session
       expect(assigns(:equipment)).to eq(equipment)
     end
   end
 
-  describe "GET new" do
-    it "assigns a new equipment as @equipment" do
+  describe 'GET new' do
+    it 'assigns a new equipment as @equipment' do
       get :new, {}, admin_session
       expect(assigns(:equipment)).to be_a_new(Equipment)
     end
   end
 
-  describe "GET edit" do
-    it "assigns the requested equipment as @equipment" do
+  describe 'GET edit' do
+    it 'assigns the requested equipment as @equipment' do
       equipment = Equipment.create! valid_attributes
       get :edit, {:id => equipment.to_param}, admin_session
       expect(assigns(:equipment)).to eq(equipment)
     end
   end
 
-  describe "POST create" do
-    describe "with valid params" do
-      it "creates a new Equipment" do
+  describe 'POST create' do
+    describe 'with valid params' do
+      it 'creates a new Equipment' do
         expect {
           post :create, {:equipment => valid_attributes}, admin_session
         }.to change(Equipment, :count).by(1)
       end
 
-      it "assigns a newly created equipment as @equipment" do
+      it 'assigns a newly created equipment as @equipment' do
         post :create, {:equipment => valid_attributes}, admin_session
         expect(assigns(:equipment)).to be_a(Equipment)
         expect(assigns(:equipment)).to be_persisted
       end
 
-      it "redirects to the created equipment" do
+      it 'redirects to the created equipment' do
         post :create, {:equipment => valid_attributes}, admin_session
         expect(response).to redirect_to(Equipment.last)
       end
     end
 
-    describe "with invalid params" do
-      it "assigns a newly created but unsaved equipment as @equipment" do
+    describe 'with invalid params' do
+      it 'assigns a newly created but unsaved equipment as @equipment' do
         post :create, {:equipment => invalid_attributes}, admin_session
         expect(assigns(:equipment)).to be_a_new(Equipment)
       end
 
       it "re-renders the 'new' template" do
         post :create, {:equipment => invalid_attributes}, admin_session
-        expect(response).to render_template("new")
+        expect(response).to render_template('new')
       end
     end
   end
 
-  describe "PUT update" do
-    describe "with valid params" do
+  describe 'PUT update' do
+    describe 'with valid params' do
       let(:new_attributes) {
         { name: 'New Name',
           brand: 'New Brand',
@@ -121,7 +121,7 @@ RSpec.describe EquipmentController, :type => :controller do
           description: 'New Description'}
       }
 
-      it "updates the requested equipment" do
+      it 'updates the requested equipment' do
         equipment = Equipment.create! valid_attributes
         put :update, {:id => equipment.to_param, :equipment => new_attributes}, admin_session
         equipment.reload
@@ -132,21 +132,21 @@ RSpec.describe EquipmentController, :type => :controller do
         expect(equipment.description).to eq('New Description')
       end
 
-      it "assigns the requested equipment as @equipment" do
+      it 'assigns the requested equipment as @equipment' do
         equipment = Equipment.create! valid_attributes
         put :update, {:id => equipment.to_param, :equipment => valid_attributes}, admin_session
         expect(assigns(:equipment)).to eq(equipment)
       end
 
-      it "redirects to the equipment" do
+      it 'redirects to the equipment' do
         equipment = Equipment.create! valid_attributes
         put :update, {:id => equipment.to_param, :equipment => valid_attributes}, admin_session
         expect(response).to redirect_to(equipment)
       end
     end
 
-    describe "with invalid params" do
-      it "assigns the equipment as @equipment" do
+    describe 'with invalid params' do
+      it 'assigns the equipment as @equipment' do
         equipment = Equipment.create! valid_attributes
         put :update, {:id => equipment.to_param, :equipment => invalid_attributes}, admin_session
         expect(assigns(:equipment)).to eq(equipment)
@@ -155,20 +155,20 @@ RSpec.describe EquipmentController, :type => :controller do
       it "re-renders the 'edit' template" do
         equipment = Equipment.create! valid_attributes
         put :update, {:id => equipment.to_param, :equipment => invalid_attributes}, admin_session
-        expect(response).to render_template("edit")
+        expect(response).to render_template('edit')
       end
     end
   end
 
-  describe "DELETE destroy" do
-    it "destroys the requested equipment" do
+  describe 'DELETE destroy' do
+    it 'destroys the requested equipment' do
       equipment = Equipment.create! valid_attributes
       expect {
         delete :destroy, {:id => equipment.to_param}, admin_session
       }.to change(Equipment, :count).by(-1)
     end
 
-    it "redirects to the equipment list" do
+    it 'redirects to the equipment list' do
       equipment = Equipment.create! valid_attributes
       delete :destroy, {:id => equipment.to_param}, admin_session
       expect(response).to redirect_to(equipment_index_url)

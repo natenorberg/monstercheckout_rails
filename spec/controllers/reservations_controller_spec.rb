@@ -41,72 +41,72 @@ RSpec.describe ReservationsController, :type => :controller do
     controller.stub(:user_signed_in).and_return(true)
   end
 
-  describe "GET index" do
-    it "assigns all reservations as @reservations" do
+  describe 'GET index' do
+    it 'assigns all reservations as @reservations' do
       reservation = Reservation.create! valid_attributes
       get :index, {}, valid_session
       expect(assigns(:reservations)).to eq([reservation])
     end
   end
 
-  describe "GET show" do
-    it "assigns the requested reservation as @reservation" do
+  describe 'GET show' do
+    it 'assigns the requested reservation as @reservation' do
       reservation = Reservation.create! valid_attributes
       get :show, {:id => reservation.to_param}, valid_session
       expect(assigns(:reservation)).to eq(reservation)
     end
   end
 
-  describe "GET new" do
-    it "assigns a new reservation as @reservation" do
+  describe 'GET new' do
+    it 'assigns a new reservation as @reservation' do
       get :new, {}, valid_session
       expect(assigns(:reservation)).to be_a_new(Reservation)
     end
   end
 
-  describe "GET edit" do
-    it "assigns the requested reservation as @reservation" do
+  describe 'GET edit' do
+    it 'assigns the requested reservation as @reservation' do
       reservation = Reservation.create! valid_attributes
       get :edit, {:id => reservation.to_param}, valid_session
       expect(assigns(:reservation)).to eq(reservation)
     end
   end
 
-  describe "POST create" do
-    describe "with valid params" do
-      it "creates a new Reservation" do
+  describe 'POST create' do
+    describe 'with valid params' do
+      it 'creates a new Reservation' do
         expect {
           post :create, {:reservation => valid_attributes}, valid_session
         }.to change(Reservation, :count).by(1)
       end
 
-      it "assigns a newly created reservation as @reservation" do
+      it 'assigns a newly created reservation as @reservation' do
         post :create, {:reservation => valid_attributes}, valid_session
         expect(assigns(:reservation)).to be_a(Reservation)
         expect(assigns(:reservation)).to be_persisted
       end
 
-      it "redirects to the created reservation" do
+      it 'redirects to the created reservation' do
         post :create, {:reservation => valid_attributes}, valid_session
         expect(response).to redirect_to(Reservation.last)
       end
     end
 
-    describe "with invalid params" do
-      it "assigns a newly created but unsaved reservation as @reservation" do
+    describe 'with invalid params' do
+      it 'assigns a newly created but unsaved reservation as @reservation' do
         post :create, {:reservation => invalid_attributes}, valid_session
         expect(assigns(:reservation)).to be_a_new(Reservation)
       end
 
       it "re-renders the 'new' template" do
         post :create, {:reservation => invalid_attributes}, valid_session
-        expect(response).to render_template("new")
+        expect(response).to render_template('new')
       end
     end
   end
 
-  describe "PUT update" do
-    describe "with valid params" do
+  describe 'PUT update' do
+    describe 'with valid params' do
       # If we use from_now in tests we need to define a constant
       let(:new_out_time) { 1.days.from_now.change(:usec => 0) }
       let(:new_in_time) { 2.days.from_now.change(:usec => 0) }
@@ -114,7 +114,7 @@ RSpec.describe ReservationsController, :type => :controller do
         { project: 'Make more phat beats', out_time: new_out_time, in_time: new_in_time }
       }
 
-      it "updates the requested reservation" do
+      it 'updates the requested reservation' do
         reservation = Reservation.create! valid_attributes
         put :update, {:id => reservation.to_param, :reservation => new_attributes}, valid_session
         reservation.reload
@@ -123,21 +123,21 @@ RSpec.describe ReservationsController, :type => :controller do
         expect(reservation.in_time).to eq(new_in_time)
       end
 
-      it "assigns the requested reservation as @reservation" do
+      it 'assigns the requested reservation as @reservation' do
         reservation = Reservation.create! valid_attributes
         put :update, {:id => reservation.to_param, :reservation => valid_attributes}, valid_session
         expect(assigns(:reservation)).to eq(reservation)
       end
 
-      it "redirects to the reservation" do
+      it 'redirects to the reservation' do
         reservation = Reservation.create! valid_attributes
         put :update, {:id => reservation.to_param, :reservation => valid_attributes}, valid_session
         expect(response).to redirect_to(reservation)
       end
     end
 
-    describe "with invalid params" do
-      it "assigns the reservation as @reservation" do
+    describe 'with invalid params' do
+      it 'assigns the reservation as @reservation' do
         reservation = Reservation.create! valid_attributes
         put :update, {:id => reservation.to_param, :reservation => invalid_attributes}, valid_session
         expect(assigns(:reservation)).to eq(reservation)
@@ -151,15 +151,15 @@ RSpec.describe ReservationsController, :type => :controller do
     end
   end
 
-  describe "DELETE destroy" do
-    it "destroys the requested reservation" do
+  describe 'DELETE destroy' do
+    it 'destroys the requested reservation' do
       reservation = Reservation.create! valid_attributes
       expect {
         delete :destroy, {:id => reservation.to_param}, valid_session
       }.to change(Reservation, :count).by(-1)
     end
 
-    it "redirects to the reservations list" do
+    it 'redirects to the reservations list' do
       reservation = Reservation.create! valid_attributes
       delete :destroy, {:id => reservation.to_param}, valid_session
       expect(response).to redirect_to(reservations_url)

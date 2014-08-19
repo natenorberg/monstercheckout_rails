@@ -12,13 +12,13 @@
 
 require 'rails_helper'
 
-describe "User" do
+describe 'User' do
   
   before { @user = FactoryGirl.create(:user) }
 
   subject { @user }
 
-  it "should respond to attributes" do
+  it 'should respond to attributes' do
     expect(@user).to respond_to(:name)
     expect(@user).to respond_to(:email)
     expect(@user).to respond_to(:password)
@@ -30,23 +30,23 @@ describe "User" do
     expect(@user).to respond_to(:monitor_checkins)
   end
 
-  it "should have a valid factory" do
+  it 'should have a valid factory' do
     expect(@user).to be_valid
   end
 
   # Name tests
-  it "is invalid without a name" do
+  it 'is invalid without a name' do
     @user.name = ''
     expect(@user).to_not be_valid
   end
 
   # Email tests
-  it "is invalid without an email" do
+  it 'is invalid without an email' do
     @user.email = ''
     expect(@user).to_not be_valid
   end
 
-  it "is invalid when email format is invalid" do
+  it 'is invalid when email format is invalid' do
     addresses = %w[user@foo,com user_at_foo.org example.user@foo.
                        foo@bar_baz.com foo@bar+baz.com]
     addresses.each do |invalid_address|
@@ -55,7 +55,7 @@ describe "User" do
     end
   end
 
-  it "is valid when email format is valid" do
+  it 'is valid when email format is valid' do
     addresses = %w[user@foo.COM A_US-ER@f.b.org frst.lst@foo.jp a+b@baz.cn]
     addresses.each do |valid_address|
       @user.email = valid_address
@@ -63,17 +63,17 @@ describe "User" do
     end
   end
 
-  it "is invalid when email has already been taken" do
+  it 'is invalid when email has already been taken' do
     other_user = @user.dup
     other_user.email = @user.email.upcase
 
     expect(other_user).to_not be_valid
   end
 
-  describe "email address with mixed case" do 
-    let(:mixed_case_email) { "Foo@ExAMPle.CoM" }
+  describe 'email address with mixed case' do
+    let(:mixed_case_email) { 'Foo@ExAMPle.CoM' }
 
-    it "should be saved as all lower-case" do
+    it 'should be saved as all lower-case' do
         @user.email = mixed_case_email
         @user.save
 
@@ -82,7 +82,7 @@ describe "User" do
   end 
 
   # Password/confirmation tests
-  it "should be invalid when password is blank" do
+  it 'should be invalid when password is blank' do
     @user.password = @user.password_confirmation = ''
     expect(@user).to_not be_valid
   end
@@ -92,21 +92,21 @@ describe "User" do
     expect(@user).to_not be_valid
   end
 
-  it "should be invalid when password is too short" do
+  it 'should be invalid when password is too short' do
     @user.password = @user.password_confirmation = 'n' * 5
     expect(@user).to_not be_valid
   end
 
   # Authentication tests
-  describe "return value of authenticate method" do
+  describe 'return value of authenticate method' do
     before { @user.save }
     let(:found_user) { User.find_by_email(@user.email) }
 
-    it "should authenticate with valid password" do
+    it 'should authenticate with valid password' do
       expect(@user).to eq(found_user.authenticate(@user.password))
     end
 
-    it "should not authentice with invalid password" do
+    it 'should not authenticate with invalid password' do
       user_for_invalid_password = found_user.authenticate('invalid')
 
       expect(@user).to_not eq(user_for_invalid_password)
@@ -115,7 +115,7 @@ describe "User" do
   end
 
   # Remember token tests
-  it "should create remember_token on save" do
+  it 'should create remember_token on save' do
     @user.save
     expect(@user.remember_token).to_not be_blank
   end

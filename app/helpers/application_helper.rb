@@ -2,7 +2,7 @@ module ApplicationHelper
 
   # Renders the full title for the page
   def full_title(page_title)
-    base_title = "MONSTER Checkout"
+    base_title = 'MONSTER Checkout'
     if page_title.empty?
       base_title
     else
@@ -13,11 +13,11 @@ module ApplicationHelper
   def bootstrap_class_for(flash_type)
     case flash_type
     when 'success'
-      "alert-success"
+      'alert-success'
     when 'notice'
-      "alert-warning"
+      'alert-warning'
     when 'error'
-      "alert-danger"
+      'alert-danger'
     else
       flash_type.to_s
     end

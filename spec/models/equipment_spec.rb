@@ -18,7 +18,7 @@ RSpec.describe Equipment, :type => :model do
   
   before { @mic = FactoryGirl.create(:equipment) }
 
-  it "should respond to attributes" do
+  it 'should respond to attributes' do
     expect(@mic).to respond_to(:name)
     expect(@mic).to respond_to(:brand)
     expect(@mic).to respond_to(:quantity)
@@ -27,31 +27,31 @@ RSpec.describe Equipment, :type => :model do
     expect(@mic).to respond_to(:reservations)
   end
 
-  it "should have a valid factory" do
+  it 'should have a valid factory' do
     expect(@mic).to be_valid
   end
 
-  it "is invalid without a name" do
-    @mic.name = ""
+  it 'is invalid without a name' do
+    @mic.name = ''
     expect(@mic).to_not be_valid
   end
 
-  it "is invalid with quantity of zero" do
+  it 'is invalid with quantity of zero' do
     @mic.quantity = 0
     expect(@mic).to_not be_valid
   end
 
-  it "is invalid with non-integer length" do
+  it 'is invalid with non-integer length' do
     @mic.quantity = 1.5
     expect(@mic).to_not be_valid
   end
 
-  it "is invalid without a condition" do
+  it 'is invalid without a condition' do
     @mic.condition = ''
     expect(@mic).to_not be_valid
   end
 
-  it "is invalid without a description" do
+  it 'is invalid without a description' do
     @mic.description = ''
     expect(@mic).to_not be_valid
   end

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "static_pages/home.html.erb", :type => :view do
+RSpec.describe 'static_pages/home.html.erb', :type => :view do
 
   before do
     mock_user = stub_model(User)
@@ -8,7 +8,7 @@ RSpec.describe "static_pages/home.html.erb", :type => :view do
     view.stub(:current_user).and_return(mock_user)
   end
   
-  it "should show reservations and equipment quick links" do
+  it 'should show reservations and equipment quick links' do
     render
 
     assert_select '.home-item>a.quick_link>h2', 'Reservations'
@@ -17,7 +17,7 @@ RSpec.describe "static_pages/home.html.erb", :type => :view do
 
   # TODO: Add a case for lab monitors special permission
 
-  it "should show users quick link to admin" do
+  it 'should show users quick link to admin' do
     mock_admin = stub_model(User)
     mock_admin.stub(:is_admin?).and_return(true)
     view.stub(:current_user).and_return(mock_admin)

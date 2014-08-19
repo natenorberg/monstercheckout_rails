@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "reservations/show", :type => :view do
+RSpec.describe 'reservations/show', :type => :view do
   before(:each) do
     @out_time = 1.days.ago
     @in_time = 1.days.from_now
@@ -8,14 +8,14 @@ RSpec.describe "reservations/show", :type => :view do
     @equipment = [FactoryGirl.create(:equipment), FactoryGirl.create(:equipment)]
     @reservation = assign(:reservation, Reservation.create!(
       :user_id => @user.id,
-      :project => "Project",
+      :project => 'Project',
       :out_time => @out_time,
       :in_time => @in_time,
       :is_approved => false,
     ))
   end
 
-  it "renders attributes" do
+  it 'renders attributes' do
     render
     expect(rendered).to match(@user.name)
     expect(rendered).to match(/Project/)
