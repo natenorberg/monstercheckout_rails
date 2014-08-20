@@ -30,4 +30,13 @@ module ReservationsHelper
 
     return "<span class=\"status-text-#{reservation.status}\"><i class=\"fa fa-#{icon}\"></i> #{status_message}</span>"
   end
+
+  def setup_reservation_form(reservation)
+
+    (Equipment.all - reservation.equipment).each do |equipment|
+      reservation.reservation_equipment.build(equipment: equipment)
+    end
+
+    # reservation.reservation_equipment.sort_by { |x| x.equipment.name }
+  end
 end

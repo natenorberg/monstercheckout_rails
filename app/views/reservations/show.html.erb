@@ -1,7 +1,5 @@
 <% provide(:title, @reservation.project) %>
 
-<p id="notice"><%= notice %></p>
-
 <div class="row">
   <div class="col-sm-7">
     <div class="reservation-details">
@@ -21,8 +19,8 @@
       <h4>Equipment</h4>
 
       <ul>
-        <% @equipment.each do |item| %>
-          <li><%= item.name %></li>
+        <% @reservation.reservation_equipment.each do |item| %>
+          <li><%= item.equipment.name %> (Quantity: <%= item.quantity %>)</li>
         <% end %>
       </ul>
   

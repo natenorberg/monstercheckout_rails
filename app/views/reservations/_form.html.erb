@@ -1,7 +1,7 @@
 <%= form_for(@reservation) do |f| %>
   <% if @reservation.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@reservation.errors.count, "error") %> prohibited this reservation from being saved:</h2>
+      <h2><%= pluralize(@reservation.errors.count, 'error') %> prohibited this reservation from being saved:</h2>
 
       <ul>
       <% @reservation.errors.full_messages.each do |message| %>
@@ -59,7 +59,17 @@
   </div>
   <div class="field">
     <%= f.label :equipment %>
-    <%= f.collection_check_boxes(:equipment_ids, Equipment.all, :id, :name) %>  
+
+    <!-- TODO: Filter this to only equipment that's allowed -->
+    <% Equipment.all.each_with_index do |equipment, i| %>
+        <div>
+          <%= check_box_tag 'reservation[equipment_ids][]', equipment.id, @reservation.equipment.include?(equipment) %>
+          <%= equipment.name %>
+          <span>Quantity: </span>
+          <%= number_field_tag "reservation[quantity][#{equipment.id}]" %>
+        </div>
+    <% end %>
+    
   </div>
   <div class="actions">
     <%= f.submit %>

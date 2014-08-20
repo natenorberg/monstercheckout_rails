@@ -34,7 +34,7 @@ class Reservation < ActiveRecord::Base
   validate  :checked_in_time_should_not_change
   validates :checked_in_time, absence: true, if: '!checked_out?'
 
-  accepts_nested_attributes_for :equipment
+  accepts_nested_attributes_for :equipment, :allow_destroy => true
 
   enum status: [:requested, :approved, :denied, :out, :overdue, :returned, :returned_late, :forgotten]
 

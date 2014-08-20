@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   resources :reservations
   resources :equipment
   resources :users
+  resources :reservation_equipment
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

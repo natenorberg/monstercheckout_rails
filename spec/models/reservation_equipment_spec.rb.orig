@@ -36,6 +36,24 @@ RSpec.describe ReservationEquipment, :type => :model do
     expect(@association).to_not be_valid
   end
 
+<<<<<<< Updated upstream
+  # Temporarily removing quantity validation
+
+  # it 'should be invalid without a quantity' do
+  #   @association.quantity = nil
+  #   expect(@association).to_not be_valid
+  # end
+  #
+  # it 'should be invalid if quantity is not greater than 0' do
+  #   @association.quantity = 0
+  #   expect(@association).to_not be_valid
+  # end
+  #
+  # it 'should be invalid if quantity is not an integer' do
+  #   @association.quantity = 1.7
+  #   expect(@association).to_not be_valid
+  # end
+=======
   it "should be invalid without a quantity" do
     skip('Quantity validation disabled while working with nested forms')
     @association.quantity = nil
@@ -55,4 +73,5 @@ RSpec.describe ReservationEquipment, :type => :model do
   end
 
   # TODO: Test that quantity can't be higher than the total quantity of the equipment
+>>>>>>> Stashed changes
 end

@@ -13,6 +13,7 @@
 #
 
 class Equipment < ActiveRecord::Base
+  has_many :reservation_equipment
   has_many :reservations, through: :reservation_equipment
 
   validates :name, presence: true

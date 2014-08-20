@@ -21,6 +21,9 @@ class ReservationsController < ApplicationController
 
   # GET /reservations/1/edit
   def edit
+    Equipment.all.each do |item|
+      @reservation.reservation_equipment.build(equipment: item, quantity: 1)
+    end
   end
 
   # POST /reservations
@@ -30,7 +33,7 @@ class ReservationsController < ApplicationController
 
     respond_to do |format|
       if @reservation.save
-        format.html { redirect_to @reservation, notice: 'Reservation was successfully created.' }
+        format.html { redirect_to @reservation, flash: { success: 'Reservation was successfully created.' } }
         format.json { render :show, status: :created, location: @reservation }
       else
         format.html { render :new }
@@ -42,9 +45,21 @@ class ReservationsController < ApplicationController
   # PATCH/PUT /reservations/1
   # PATCH/PUT /reservations/1.json
   def update
+    params[:reservation][:equipment_ids] ||= []
+    selected_equipment = params[:reservation][:equipment_ids]
+    selected_equipment.each_with_index do |id, i|
+      item = Equipment.find(id)
+      quantity = params[:reservation][:quantity][id.to_s]
+      puts "#{id}: #{item.name} quantity: #{quantity}"
+    end
     respond_to do |format|
       if @reservation.update(reservation_params)
-        format.html { redirect_to @reservation, notice: 'Reservation was successfully updated.' }
+        @reservation.equipment.each do |item|
+          association = ReservationEquipment.where(reservation_id: @reservation.id, equipment_id: item.id).first
+          association.quantity = params[:reservation][:quantity][item.id.to_s]
+          association.save()
+        end
+        format.html { redirect_to @reservation, flash: { success: 'Reservation was successfully updated.' } }
         format.json { render :show, status: :ok, location: @reservation }
       else
         format.html { render :edit }
@@ -73,6 +88,13 @@ class ReservationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def reservation_params
-      params.require(:reservation).permit(:project, :in_time, :out_time, :checked_out_time, :checked_in_time, :is_approved, :check_out_comments, :check_in_comments, equipment_ids: [])
+      params.require(:reservation).permit(:project,
+                                          :in_time, :out_time,
+                                          :checked_out_time, :checked_in_time,
+                                          :is_approved,
+                                          :check_out_comments, :check_in_comments,
+                                          :reservation_equipment => [],
+                                          equipment_ids: [],
+                                          quantity: [])
     end
 end
