@@ -13,7 +13,7 @@ FactoryGirl.define do
   factory :equipment do
     sequence(:name) { |n| "Mic #{n}" }
     brand 'Test Brand'
-    quantity 1
+    quantity 2
     condition 'Good'
     description 'A sample mic used for testing MONSTER Checkout'
   end

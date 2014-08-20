@@ -9,7 +9,7 @@
       <div class="reservation-header-info">
         <h2><%= @reservation.project %></h2>
         
-        <h4><%= @user.name %></h4>
+        <h4><%= @reservation.user.name %></h4>
       </div>
 
       <p><strong>Reserved from:</strong> <%= @reservation.out_time.strftime('%A, %B %Y, %I:%M %p') %> <br><strong>to:</strong> <%= @reservation.in_time.strftime('%A, %B %Y, %I:%M %p') %></p>

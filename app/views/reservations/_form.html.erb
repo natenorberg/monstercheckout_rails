@@ -11,6 +11,8 @@
     </div>
   <% end %>
 
+  <%= f.hidden_field :user_id, value: current_user.id %>
+
   <div class="field">
     <%= f.label :project %><br>
     <%= f.text_field :project %>
@@ -61,7 +63,7 @@
     <%= f.label :equipment %>
 
     <!-- TODO: Filter this to only equipment that's allowed -->
-    <% Equipment.all.each_with_index do |equipment, i| %>
+    <% Equipment.all.each do |equipment| %>
         <div>
           <%= check_box_tag 'reservation[equipment_ids][]', equipment.id, @reservation.equipment.include?(equipment) %>
           <%= equipment.name %>

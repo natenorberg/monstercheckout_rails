@@ -5,6 +5,7 @@ RSpec.describe 'reservations/index', :type => :view do
     assign(:reservations, [
       Reservation.create!(
         :project => 'Project',
+        :user_id => FactoryGirl.create(:user).id,
         :out_time => 1.days.ago,
         :in_time => 1.days.from_now,
         :is_approved => false,
@@ -13,6 +14,7 @@ RSpec.describe 'reservations/index', :type => :view do
       ),
       Reservation.create!(
         :project => 'Project',
+        :user_id => FactoryGirl.create(:user).id,
         :out_time => 1.days.ago,
         :in_time => 1.days.from_now,
         :is_approved => false,

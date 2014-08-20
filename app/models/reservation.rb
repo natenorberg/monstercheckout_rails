@@ -25,6 +25,7 @@ class Reservation < ActiveRecord::Base
   belongs_to :user
 
   validates :project,  presence: true
+  validates :user_id, presence: true
   validates :out_time, presence: true
   validates :in_time,  presence: true
   validate  :in_time_must_be_after_out_time
@@ -33,8 +34,6 @@ class Reservation < ActiveRecord::Base
   validate  :checked_out_time_should_not_change
   validate  :checked_in_time_should_not_change
   validates :checked_in_time, absence: true, if: '!checked_out?'
-
-  accepts_nested_attributes_for :equipment, :allow_destroy => true
 
   enum status: [:requested, :approved, :denied, :out, :overdue, :returned, :returned_late, :forgotten]
 

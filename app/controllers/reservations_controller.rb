@@ -21,18 +21,16 @@ class ReservationsController < ApplicationController
 
   # GET /reservations/1/edit
   def edit
-    Equipment.all.each do |item|
-      @reservation.reservation_equipment.build(equipment: item, quantity: 1)
-    end
   end
 
   # POST /reservations
   # POST /reservations.json
   def create
+    params[:reservation][:equipment_ids] ||= []
     @reservation = Reservation.new(reservation_params)
-
     respond_to do |format|
       if @reservation.save
+        update_quantities
         format.html { redirect_to @reservation, flash: { success: 'Reservation was successfully created.' } }
         format.json { render :show, status: :created, location: @reservation }
       else
@@ -46,19 +44,9 @@ class ReservationsController < ApplicationController
   # PATCH/PUT /reservations/1.json
   def update
     params[:reservation][:equipment_ids] ||= []
-    selected_equipment = params[:reservation][:equipment_ids]
-    selected_equipment.each_with_index do |id, i|
-      item = Equipment.find(id)
-      quantity = params[:reservation][:quantity][id.to_s]
-      puts "#{id}: #{item.name} quantity: #{quantity}"
-    end
     respond_to do |format|
       if @reservation.update(reservation_params)
-        @reservation.equipment.each do |item|
-          association = ReservationEquipment.where(reservation_id: @reservation.id, equipment_id: item.id).first
-          association.quantity = params[:reservation][:quantity][item.id.to_s]
-          association.save()
-        end
+        update_quantities
         format.html { redirect_to @reservation, flash: { success: 'Reservation was successfully updated.' } }
         format.json { render :show, status: :ok, location: @reservation }
       else
@@ -82,19 +70,24 @@ class ReservationsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_reservation
       @reservation = Reservation.find(params[:id])
-      @user = User.find(@reservation.user_id)
-      @equipment = @reservation.equipment
+    end
+
+    def update_quantities
+      @reservation.equipment.each do |item|
+        association = ReservationEquipment.where(reservation_id: @reservation.id, equipment_id: item.id).first
+        association.quantity = params[:reservation][:quantity][item.id.to_s]
+        association.save()
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def reservation_params
       params.require(:reservation).permit(:project,
+                                          :user_id,
                                           :in_time, :out_time,
                                           :checked_out_time, :checked_in_time,
                                           :is_approved,
                                           :check_out_comments, :check_in_comments,
-                                          :reservation_equipment => [],
-                                          equipment_ids: [],
-                                          quantity: [])
+                                          equipment_ids: [])
     end
 end
