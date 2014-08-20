@@ -31,12 +31,12 @@ module ReservationsHelper
     return "<span class=\"status-text-#{reservation.status}\"><i class=\"fa fa-#{icon}\"></i> #{status_message}</span>"
   end
 
-  def setup_reservation_form(reservation)
-
-    (Equipment.all - reservation.equipment).each do |equipment|
-      reservation.reservation_equipment.build(equipment: equipment)
+  def get_previous_quantity(reservation_id, equipment_id)
+    association = ReservationEquipment.where(:reservation_id => reservation_id, :equipment_id => equipment_id).first
+    if association != nil
+      association.quantity
+    else
+      return 1
     end
-
-    # reservation.reservation_equipment.sort_by { |x| x.equipment.name }
   end
 end

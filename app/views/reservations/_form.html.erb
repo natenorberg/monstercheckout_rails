@@ -67,7 +67,7 @@
           <%= equipment.name %>
           <% if equipment.quantity > 1 %>
             <span>Quantity: </span>
-            <%= number_field_tag "reservation[quantity][#{equipment.id}]", 1, min: 1, max: equipment.quantity %>
+            <%= number_field_tag "reservation[quantity][#{equipment.id}]", get_previous_quantity(@reservation.id, equipment.id), min: 1, max: equipment.quantity %>
           <% else %>
             <%= hidden_field_tag "reservation[quantity][#{equipment.id}]", 1 %>
           <% end %>
