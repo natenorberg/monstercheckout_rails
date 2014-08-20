@@ -66,7 +66,7 @@
           <%= check_box_tag 'reservation[equipment_ids][]', equipment.id, @reservation.equipment.include?(equipment) %>
           <%= equipment.name %>
           <span>Quantity: </span>
-          <%= number_field_tag "reservation[quantity][#{equipment.id}]" %>
+          <%= number_field_tag "reservation[quantity][#{equipment.id}]", 1, min: 1, max: equipment.quantity %>
         </div>
     <% end %>
     
