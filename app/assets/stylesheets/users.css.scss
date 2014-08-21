@@ -1,3 +1,35 @@
 // Place all the styles related to the Users controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+/* User pages */
+.info, .related-reservations {
+  padding: 0 15px; 
+}
+
+.profile-pic, .profile-info {
+  display: inline-block;
+}
+
+.profile-pic {
+  margin: 0 10px 20px 15px;
+}
+
+.profile-info {
+  > h4 > a {
+    font-weight: 200;
+  }
+
+  > form {
+    display: inline-block;
+  }
+}
+
+.gravatar {
+  max-width: 100%;
+}
+
+ul.permissions-list {
+  padding: 0;
+  list-style-type: none;
+}
