@@ -12,7 +12,7 @@
         <h4><%= @reservation.user.name %></h4>
       </div>
 
-      <p><strong>Reserved from:</strong> <%= @reservation.out_time.strftime('%A, %B %Y, %I:%M %p') %> <br><strong>to:</strong> <%= @reservation.in_time.strftime('%A, %B %Y, %I:%M %p') %></p>
+      <p><strong>Reserved from:</strong> <%= @reservation.out_time.strftime('%A, %B %d, %Y, %I:%M %p') %> <br><strong>to:</strong> <%= @reservation.in_time.strftime('%A, %B %d, %Y, %I:%M %p') %></p>
 
       <h4><strong>Status: </strong><%= status_text(@reservation).html_safe %></h4>
 

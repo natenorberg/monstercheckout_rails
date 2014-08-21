@@ -1,83 +1,82 @@
-<%= form_for(@reservation) do |f| %>
-  <% if @reservation.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@reservation.errors.count, 'error') %> prohibited this reservation from being saved:</h2>
-
-      <ul>
-      <% @reservation.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <%= f.hidden_field :user_id, value: current_user.id %>
-
-  <div class="field">
-    <%= f.label :project %><br>
-    <%= f.text_field :project %>
-  </div>
-  <!-- <div class="container">
-    <div class="col-sm-6" style="height:75px;">
-       <div class='col-md-5'>
-            <div class="form-group">
-                <div class='input-group date' id='datetimepicker8'>
-                    <input type='text' class="form-control" />
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class='col-md-5'>
-            <div class="form-group">
-                <div class='input-group date' id='datetimepicker9'>
-                    <input type='text' class="form-control" />
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script type="text/javascript">
-        $(function () {
-            $('#datetimepicker8').datetimepicker();
-            $('#datetimepicker9').datetimepicker();
-            $("#datetimepicker8").on("dp.change",function (e) {
-               $('#datetimepicker9').data("DateTimePicker").setMinDate(e.date);
-            });
-            $("#datetimepicker9").on("dp.change",function (e) {
-               $('#datetimepicker8').data("DateTimePicker").setMaxDate(e.date);
-            });
-        });
-    </script>
-</div> -->
-  <div class="field">
-    <%= f.label :out_time %><br>
-    <%= f.datetime_select :out_time %>
-  </div>
-  <div class="field">
-    <%= f.label :in_time %><br>
-    <%= f.datetime_select :in_time %>
-  </div>
-  <div class="field">
-    <%= f.label :equipment %>
-
-    <!-- TODO: Filter this to only equipment that's allowed -->
-    <% Equipment.all.each do |equipment| %>
-        <div>
-          <%= check_box_tag 'reservation[equipment_ids][]', equipment.id, @reservation.equipment.include?(equipment) %>
-          <%= equipment.name %>
-          <% if equipment.quantity > 1 %>
-            <span>Quantity: </span>
-            <%= number_field_tag "reservation[quantity][#{equipment.id}]", get_previous_quantity(@reservation.id, equipment.id), min: 1, max: equipment.quantity %>
-          <% else %>
-            <%= hidden_field_tag "reservation[quantity][#{equipment.id}]", 1 %>
-          <% end %>
-        </div>
-    <% end %>
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-1">
+    <%= form_for(@reservation) do |f| %>
+      <% if @reservation.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@reservation.errors.count, 'error') %> prohibited this reservation from being saved:</h2>
     
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+          <ul>
+          <% @reservation.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+          </ul>
+        </div>
+      <% end %>
+    
+      <%= f.hidden_field :user_id, value: current_user.id %>
+    
+      <div class="field">
+        <%= f.label :project %><br>
+        <%= f.text_field :project, class: 'form-control' %>
+      </div>
+      <div class="field">
+        <div class="row">
+          <div class="col-sm-6">
+              <%= f.label :out_time %>
+              <div class='input-group'>
+                  <input type='text' class="form-control" id='datetimepicker1'/>
+                  <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                  </span>
+              </div>
+          </div>
+          <div class="col-sm-6">
+            <%= f.label :in_time %>
+              <div class="form-group">
+                  <div class='input-group'>
+                      <input type='text' class="form-control"  id='datetimepicker2'/>
+                      <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                      </span>
+                  </div>
+              </div>
+          </div>
+          <div class="col-sm-1"></div>
+        </div>
+    </div>
+      <div class="field">
+        <%= f.label :equipment %>
+    
+        <ul class="table table-striped">
+          <!-- TODO: Filter this to only equipment that's allowed -->
+          <% Equipment.all.each do |equipment| %>
+              <li>
+                <%= check_box_tag 'reservation[equipment_ids][]', equipment.id, @reservation.equipment.include?(equipment) %>
+                <%= equipment.name %>
+                <% if equipment.quantity > 1 %>
+                  <span>Quantity: </span>
+                  <%= number_field_tag "reservation[quantity][#{equipment.id}]", get_previous_quantity(@reservation.id, equipment.id), min: 1, max: equipment.quantity %>
+                <% else %>
+                  <%= hidden_field_tag "reservation[quantity][#{equipment.id}]", 1 %>
+                <% end %>
+              </li>
+          <% end %>
+        </ul>
+        
+      </div>
+      <div class="actions">
+        <%= f.submit class: 'btn btn-large btn-primary' %>
+      </div>
+    <% end %></div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker1').datetimepicker();
+        $('#datetimepicker2').datetimepicker();
+        $("#datetimepicker1").on("dp.change",function (e) {
+           $('#datetimepicker2').data("DateTimePicker").setMinDate(e.date);
+        });
+        $("#datetimepicker2").on("dp.change",function (e) {
+           $('#datetimepicker1').data("DateTimePicker").setMaxDate(e.date);
+        });
+    });
+</script>

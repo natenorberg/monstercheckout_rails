@@ -19,7 +19,7 @@ RSpec.describe 'reservations/show', :type => :view do
     render
     expect(rendered).to match(@user.name)
     expect(rendered).to match(/Project/)
-    expect(rendered).to match(@out_time.strftime('%A, %B %Y, %I:%M %p'))
-    expect(rendered).to match(@in_time.strftime('%A, %B %Y, %I:%M %p'))
+    expect(rendered).to match(@out_time.strftime('%A, %B %d, %Y, %I:%M %p'))
+    expect(rendered).to match(@in_time.strftime('%A, %B %d, %Y, %I:%M %p'))
   end
 end

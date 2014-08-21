@@ -39,6 +39,8 @@ GEM
       debug_inspector (>= 0.0.1)
     bootstrap-sass (3.1.1.1)
       sass (~> 3.2)
+    bootstrap3-datetimepicker-rails (3.1.1)
+      momentjs-rails (>= 2.8.1)
     builder (3.2.2)
     capybara (2.3.0)
       mime-types (>= 1.16)
@@ -80,6 +82,8 @@ GEM
     mime-types (1.25.1)
     mini_portile (0.6.0)
     minitest (5.3.5)
+    momentjs-rails (2.8.1)
+      railties (>= 3.1)
     multi_json (1.10.1)
     nokogiri (1.6.2.1)
       mini_portile (= 0.6.0)
@@ -182,12 +186,14 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bootstrap-sass (>= 3.0)
+  bootstrap3-datetimepicker-rails (~> 3.1.1)
   capybara
   coffee-rails (~> 4.0.0)
   factory_girl_rails (= 1.4.0)
   faker
   jbuilder (~> 2.0)
   jquery-rails
+  momentjs-rails (>= 2.8.1)
   pg
   rails (= 4.1.1)
   rails_12factor
