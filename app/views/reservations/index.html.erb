@@ -3,29 +3,28 @@
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1">
     <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Project</th>
-          <th>Out time</th>
-          <th>In time</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
     
       <tbody>
-        <% @reservations.each do |reservation| %>
+        <% @user_reservations.each do |reservation| %>
           <tr>
-            <td><strong><%= link_to reservation.project, reservation %></strong></td>
-            <td><%= reservation.out_time.strftime('%a, %b %d, %Y, %I:%M %p') %></td>
-            <td><%= reservation.in_time.strftime('%a, %b %d, %Y, %I:%M %p') %></td>
-            <td><%= status_text(reservation).html_safe %></td>
+            <td>
+              <div class="reservation-icon">
+                <h2><i class="fa fa-calendar fa-2x"></i></h2>
+              </div>
+              <div class="reservation-info">
+                <span class="reservation-header"><%= reservation.project %></span><br/>
+                <span class="reservation-subheader"><%= status_text(reservation).html_safe %></span><br>
+                <span class="reservation-time"><%= reservation.out_time.strftime(ReservationsHelper::INDEX_DATETIME_FORMAT) %> to <%= reservation.in_time.strftime(ReservationsHelper::INDEX_DATETIME_FORMAT) %></span>
+              </div>
+            </td>
             <td>
               <%= link_to edit_reservation_path(reservation), class: 'btn btn-large' do %>
                 <i class="fa fa-pencil"></i> Edit
               <% end %>
-              <%= link_to reservation, class: 'btn btn-large', method: :delete, data: { confirm: 'Are you sure?' } do %>
-                <i class="fa fa-trash-o"></i> Delete
+              <% if reservation.can_cancel?(current_user) %>
+                <%= link_to reservation, class: 'btn btn-large', method: :delete, data: { confirm: 'Are you sure?' } do %>
+                  <i class="fa fa-times"></i> Cancel
+                <% end %>
               <% end %>
             </td>
           </tr>

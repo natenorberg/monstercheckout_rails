@@ -123,6 +123,23 @@ RSpec.describe Reservation, :type => :model do
     end
   end
 
+  describe 'can_cancel?' do
+    
+    it 'should return false if not current user' do
+      another_user = FactoryGirl.create(:user)
+      expect(@reservation.can_cancel?(another_user)).to eq(false)
+    end
+
+    it 'should return true if not checked out' do
+      expect(@reservation.can_cancel?(@reservation.user)).to eq(true)
+    end
+
+    it 'should return false if checked out' do
+      @reservation.stub(:checked_out?).and_return true
+      expect(@reservation.can_cancel?(@reservation.user)).to eq(false)
+    end
+  end
+
   describe 'checked_in?' do
     
     it 'should return true if checked_in is set' do

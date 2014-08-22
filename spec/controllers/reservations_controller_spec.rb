@@ -42,10 +42,11 @@ RSpec.describe ReservationsController, :type => :controller do
   end
 
   describe 'GET index' do
-    it 'assigns all reservations as @reservations' do
+    it 'assigns user reservations as @user_reservations' do
       reservation = Reservation.create! valid_attributes
+      controller.stub(:current_user).and_return reservation.user
       get :index, {}, valid_session
-      expect(assigns(:reservations)).to eq([reservation])
+      expect(assigns(:user_reservations)).to eq([reservation])
     end
   end
 

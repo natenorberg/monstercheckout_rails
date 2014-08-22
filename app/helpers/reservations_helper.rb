@@ -39,4 +39,6 @@ module ReservationsHelper
       return 1
     end
   end
+
+  INDEX_DATETIME_FORMAT = '%a, %m/%d/%y, %I:%M %p'
 end
