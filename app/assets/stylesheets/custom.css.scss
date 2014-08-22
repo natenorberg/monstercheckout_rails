@@ -103,17 +103,6 @@ a.quick_link {
   color: #f00;
 }
 
-/* Equipment pages */
-.equipment-table {
-  border: 1px #ddd solid;
-}
-
-.edit_equipment, .new_equipment {
-  > .form-control {
-    margin-bottom: 15px;
-  }
-}
-
 /* Debug */
 .debug_dump {
   clear: both;
