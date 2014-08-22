@@ -86,6 +86,11 @@ RSpec.describe ReservationsController, :type => :controller do
         expect(assigns(:reservation)).to be_persisted
       end
 
+      it 'has a status of requested' do
+        post :create, {:reservation => valid_attributes}, valid_session
+        expect(assigns(:reservation).status).to eq('requested')
+      end
+
       it 'redirects to the created reservation' do
         post :create, {:reservation => valid_attributes}, valid_session
         expect(response).to redirect_to(Reservation.last)

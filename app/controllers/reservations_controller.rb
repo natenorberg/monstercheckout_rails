@@ -29,6 +29,7 @@ class ReservationsController < ApplicationController
     format_time_input
     params[:reservation][:equipment_ids] ||= []
     @reservation = Reservation.new(reservation_params)
+    @reservation.status = :requested
     respond_to do |format|
       if @reservation.save
         update_quantities
