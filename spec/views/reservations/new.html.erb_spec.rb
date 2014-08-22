@@ -33,6 +33,8 @@ RSpec.describe 'reservations/new', :type => :view do
 
         assert_select 'li>input[name=?][value=?]', 'reservation[equipment_ids][]', @equipment.id
       end
+
+      assert_select 'input[name=commit][value=Create Reservation]'
     end
   end
 end
