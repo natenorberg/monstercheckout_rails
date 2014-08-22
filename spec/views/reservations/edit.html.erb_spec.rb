@@ -22,6 +22,17 @@ RSpec.describe 'reservations/edit', :type => :view do
     assert_select 'form[action=?][method=?]', reservation_path(@reservation), 'post' do
 
       assert_select 'input#reservation_project[name=?]', 'reservation[project]'
+
+      assert_select 'input#reservation_out_time[name=?]', 'reservation[out_time]'
+
+      assert_select 'input#reservation_in_time[name=?]', 'reservation[in_time]'
+
+      assert_select 'ul.equipment-list' do
+        
+        assert_select 'li>span.equipment-choice-label', @equipment.name
+
+        assert_select 'li>input[name=?][value=?]', 'reservation[equipment_ids][]', @equipment.id
+      end
     end
   end
 end
