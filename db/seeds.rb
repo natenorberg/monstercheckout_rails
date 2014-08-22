@@ -13,3 +13,7 @@ nate.password_confirmation = 'password'
 nate.save()
 nate.is_admin = true
 nate.save()
+
+seed_file = File.join(Rails.root, 'db', 'seed.yml')
+config = YAML::load_file(seed_file)
+Equipment.create(config["equipment"])

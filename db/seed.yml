@@ -1,0 +1,192 @@
+equipment:
+    - name: SM57
+      brand: Shure
+      quantity: 4
+      condition: Good
+      description: A good, inexpensive mic that can be used for many different things.
+
+    - name: SM58
+      brand: Shure
+      quantity: 2
+      condition: Good
+      description: A basic vocal mic.  Identical to SM57, but with wind screen.
+
+    - name: C414 Stereo Pair
+      brand: AKG
+      quantity: 1
+      condition: Mic clip is broken
+      description: Large diaphram condensor mic pair
+
+    - name: D112
+      brand: AKG
+      quantity: 1
+      condition: Good
+      description: Good for kick drum or bass amps, but not much else
+
+    - name: CR-5
+      brand: T.H.E.
+      quantity: 2
+      condition: Good
+      description: No description yet
+
+    - name: e609 Silver
+      brand: Sennheiser
+      quantity: 2
+      condition: Good
+      description: No description yet
+
+    - name: e912
+      brand: Sennheiser
+      quantity: 2
+      condition: Good
+      description: No description yet
+
+    - name: Fat Head II Stereo Pair
+      brand: Cascade
+      quantity: 1
+      condition: Good
+      description: Pair of ribbon mics.
+
+    - name: K2
+      brand: Rode
+      quantity: 1
+      condition: Good
+      description: No description yet
+
+    - name: M23
+      brand: Earthworks
+      quantity: 1
+      condition: Good
+      description: A very accurate mic used for measurements.
+
+    - name: M88 TG
+      brand: Beyerdynamic
+      quantity: 1
+      condition: Good
+      description: No description yet
+
+    - name: MD 421 II
+      brand: Sennheiser
+      quantity: 2
+      condition: Good
+      description: No description yet
+
+    - name: MK-012 Stereo Pair
+      brand: Oktava
+      quantity: 1
+      condition: Good
+      description: A pair of small diaphram condensers that can be assembled with different polar patterns.
+
+    - name: NT4
+      brand: Rode
+      quantity: 1
+      condition: Good
+      description: Stereo mic
+
+    - name: RE20
+      brand: Electro-Voice
+      quantity: 1
+      condition: Good
+      description: No description yet
+
+    - name: SM7B
+      brand: Shure
+      quantity: 1
+      condition: Good
+      description: No description yet
+
+    - name: SM81-LC
+      brand: Shure
+      quantity: 2
+      condition: Good
+      description: No description yet
+
+    - name: TLM 127
+      brand: Neumann
+      quantity: 2
+      condition: Good
+      description: Very high-end vintage condenser mic
+
+    - name: DP5a Drum Kit Set
+      brand: Audix
+      quantity: 1
+      condition: Good
+      description: 5 mics, 4 Goodeneck clips, 2 mic clips
+
+    - name: CloudLifter CL-2 Mic Activator
+      brand: Cloud Microphones
+      quantity: 1
+      condition: Good
+      description: No description yet
+
+    - name: DI400P Passive DI Box
+      brand: Ultra-DI
+      quantity: 3
+      condition: Good
+      description: A basic DI box
+
+    - name: J48 Active DI Box
+      brand: Radial
+      quantity: 2
+      condition: Good
+      description: A high-end DI box
+
+    - name: Headphone Remote Mixing Station
+      brand: Furman
+      quantity: 1
+      condition: Good
+      description: A headphone mixing station that handles 4 separate mixes
+
+    - name: 4-Channel Headphone Amp
+      brand: Presonus
+      quantity: 1
+      condition: Good
+      description: No description
+
+    - name: Pop filter
+      brand:
+      quantity: 2
+      condition: Good
+      description: Filters pops out of vocal recordings
+
+    - name: APC40
+      brand: Akai
+      quantity: 1
+      condition: Good
+      description: Control surface for Ableton Live
+
+    - name: APC40
+      brand: Akai
+      quantity: 1
+      condition: Good
+      description: Control surface for Ableton Live
+
+    - name: Mic stand
+      brand:
+      quantity: 10
+      condition: Mostly good
+      description: No description
+
+    - name: Stereo Bar
+      brand:
+      quantity: 1
+      condition: Good
+      description: Lets you put two mics on one mic stand
+
+    - name: Stereo Bar (A27M)
+      brand: Shure
+      quantity: 1
+      condition: Good
+      description: A high-end stereo bar
+
+    - name: EMW Omnidirectional Lavalier
+      brand: Countryman
+      quantity: 1
+      condition: Good
+      description: Lav kit
+
+    - name: AT897 Shotgun
+      brand: Audio-Technica
+      quantity: 1
+      condition: Good
+      description: Used for film sound.  Needs kit options
