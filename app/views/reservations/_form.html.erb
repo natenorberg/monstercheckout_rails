@@ -24,7 +24,7 @@
           <div class="col-sm-6">
               <%= f.label :out_time %>
               <div class='input-group'>
-                  <input type='text' name='reservation[out_time]' class="form-control" id='datetimepicker1'/>
+                  <input type='text' name='reservation[out_time]' value="<%= @reservation.out_time.strftime('%m/%d/%Y %l:%m %p') if @reservation.out_time %>" class="form-control" id='datetimepicker1'/>
                   <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                   </span>
               </div>
@@ -33,7 +33,7 @@
             <%= f.label :in_time %>
               <div class="form-group">
                   <div class='input-group'>
-                      <input type='text' name='reservation[in_time]' class="form-control"  id='datetimepicker2'/>
+                      <input type='text' name='reservation[in_time]' value="<%= @reservation.in_time.strftime('%m/%d/%Y %l:%m %p') if @reservation.in_time %>" class="form-control"  id='datetimepicker2'/>
                       <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                       </span>
                   </div>
@@ -71,8 +71,13 @@
 
 <script type="text/javascript">
     $(function () {
-        $('#datetimepicker1').datetimepicker();
-        $('#datetimepicker2').datetimepicker();
+        $('#datetimepicker1').datetimepicker({
+          defaultDate: "<%= @reservation.out_time.strftime('%m/%d/%Y %l:%m %p') if @reservation.out_time %>"
+        });
+        $('#datetimepicker2').datetimepicker({
+          defaultDate: "<%= @reservation.in_time.strftime('%m/%d/%Y %l:%m %p') if @reservation.in_time %>",
+          minDate: "<%= @reservation.out_time.strftime('%m/%d/%Y %l:%m %p') if @reservation.out_time %>"
+        });
         $("#datetimepicker1").on("dp.change",function (e) {
            $('#datetimepicker2').data("DateTimePicker").setMinDate(e.date);
         });
