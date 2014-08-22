@@ -26,6 +26,7 @@ class ReservationsController < ApplicationController
   # POST /reservations
   # POST /reservations.json
   def create
+    format_time_input
     params[:reservation][:equipment_ids] ||= []
     @reservation = Reservation.new(reservation_params)
     respond_to do |format|
@@ -43,6 +44,7 @@ class ReservationsController < ApplicationController
   # PATCH/PUT /reservations/1
   # PATCH/PUT /reservations/1.json
   def update
+    format_time_input
     params[:reservation][:equipment_ids] ||= []
     respond_to do |format|
       if @reservation.update(reservation_params)
@@ -70,6 +72,13 @@ class ReservationsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_reservation
       @reservation = Reservation.find(params[:id])
+    end
+
+    def format_time_input
+      if params[:datetime_format]
+        params[:reservation][:out_time] = DateTime.strptime(params[:reservation][:out_time], '%m/%d/%Y %I:%M %p')
+        params[:reservation][:in_time] = DateTime.strptime(params[:reservation][:in_time], '%m/%d/%Y %I:%M %p')
+      end
     end
 
     def update_quantities

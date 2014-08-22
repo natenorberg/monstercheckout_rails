@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'reservations/edit', :type => :view do
   before(:each) do
-    FactoryGirl.create(:equipment)
+    @equipment = FactoryGirl.create(:equipment)
     @out_time = 1.days.ago
     @in_time = 1.days.from_now
     @user = FactoryGirl.create(:user)

@@ -24,7 +24,7 @@
           <div class="col-sm-6">
               <%= f.label :out_time %>
               <div class='input-group'>
-                  <input type='text' class="form-control" id='datetimepicker1'/>
+                  <input type='text' name='reservation[out_time]' class="form-control" id='datetimepicker1'/>
                   <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                   </span>
               </div>
@@ -33,7 +33,7 @@
             <%= f.label :in_time %>
               <div class="form-group">
                   <div class='input-group'>
-                      <input type='text' class="form-control"  id='datetimepicker2'/>
+                      <input type='text' name='reservation[in_time]' class="form-control"  id='datetimepicker2'/>
                       <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                       </span>
                   </div>
@@ -42,18 +42,19 @@
           <div class="col-sm-1"></div>
         </div>
     </div>
+    <%= hidden_field_tag 'datetime_format', '%m/%d/%y %l:%m %p' %>
       <div class="field">
         <%= f.label :equipment %>
     
-        <ul class="table table-striped">
+        <ul class="equipment-list">
           <!-- TODO: Filter this to only equipment that's allowed -->
           <% Equipment.all.each do |equipment| %>
               <li>
                 <%= check_box_tag 'reservation[equipment_ids][]', equipment.id, @reservation.equipment.include?(equipment) %>
-                <%= equipment.name %>
+                <span class="equipment-choice-label" title='<%= equipment.description %>'><%= equipment.name %></span>
                 <% if equipment.quantity > 1 %>
-                  <span>Quantity: </span>
-                  <%= number_field_tag "reservation[quantity][#{equipment.id}]", get_previous_quantity(@reservation.id, equipment.id), min: 1, max: equipment.quantity %>
+                  <span class="equipment-choice-label pull-right">Quantity:
+                  <%= number_field_tag "reservation[quantity][#{equipment.id}]", get_previous_quantity(@reservation.id, equipment.id), min: 1, max: equipment.quantity, class: 'form-control quantity-box' %> / <%= equipment.quantity %></span>
                 <% else %>
                   <%= hidden_field_tag "reservation[quantity][#{equipment.id}]", 1 %>
                 <% end %>

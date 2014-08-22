@@ -78,12 +78,14 @@ ul.equipment-list {
     border-left: 1px solid #c5c5c5;
     border-right: 1px solid #c5c5c5;
 
-    padding: 5px;
+    padding: 2px 5px;
+    height: 30px;
 
     span.equipment-choice-label {
-      color: #666582;
+      color: #46557a;
       font-weight: 700;
       margin-left: 2px;
+      line-height: 27px;
     }
 
     .quantity-box {
