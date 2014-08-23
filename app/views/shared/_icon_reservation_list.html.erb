@@ -15,4 +15,11 @@
 			<em>You have no reservations</em>
 		</div>
 	<% end %>
+	<% if create_new %>
+		<div class="panel-body">
+			<%= link_to new_reservation_path, class: 'btn btn-large btn-primary' do %>
+		      <i class="fa fa-plus"></i> New Reservation
+		    <% end %>
+		</div>
+	<% end %>
 </div>

@@ -9,7 +9,7 @@
               <th>Name</th>
               <th>Brand</th>
               <th>Quantity</th>
-              <th>Actions</th>
+              <% if current_user.is_admin? %><th></th><% end %>
             </tr>
           </thead>
         
@@ -19,16 +19,16 @@
                 <td><strong><%= link_to equipment.name, equipment %></strong></td>
                 <td><%= equipment.brand %></td>
                 <td><%= equipment.quantity %></td>
-                <td>
                 <% if current_user.is_admin? %>
-                  <%= link_to edit_equipment_path(equipment), class: 'btn btn-large' do %>
-                      <i class="fa fa-pencil"></i> Edit
-                  <% end %>
-                  <%= link_to equipment, class: 'btn btn-large', method: :delete, data: { confirm: 'Are you sure?' } do %>
-                      <i class="fa fa-trash-o"></i> Delete
-                  <% end %>
+                  <td>
+                    <%= link_to edit_equipment_path(equipment), class: 'btn btn-large' do %>
+                        <i class="fa fa-pencil"></i> <span class="hide-small">Edit</span>
+                    <% end %>
+                    <%= link_to equipment, class: 'btn btn-large', method: :delete, data: { confirm: 'Are you sure?' } do %>
+                        <i class="fa fa-trash-o"></i> <span class="hide-small">Delete</span>
+                    <% end %>
+                  </td>
                 <% end %>
-                </td>
               </tr>
             <% end %>
           </tbody>

@@ -6,7 +6,7 @@
 			<%= render 'shared/user_reservation_list', reservations: @awaiting_approval, 
 			title: 'Awaiting Approval', empty_text: 'There are no reservations that need approval' %>
 
-			<%= render 'shared/icon_reservation_list', reservations: @user_reservations, title: 'Your Reservations' %>
+			<%= render 'shared/icon_reservation_list', reservations: @user_reservations, title: 'Your Reservations', create_new: true %>
 		</div>
 		<div class="col-sm-6">
 			<%= render 'shared/user_reservation_list', reservations: @all_reservations, title: 'All Reservations' %>
