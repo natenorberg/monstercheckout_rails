@@ -39,6 +39,10 @@ module SessionsHelper
   def user_is_admin
     redirect_to root_path unless current_user && current_user.is_admin
   end
+  
+  def current_user_or_admin
+    redirect_to root_path unless current_user.is_admin? || current_user == @user
+  end
 
   # Friendly forwarding
   def store_address

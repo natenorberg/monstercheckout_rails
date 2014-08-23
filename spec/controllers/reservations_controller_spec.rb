@@ -41,6 +41,20 @@ RSpec.describe ReservationsController, :type => :controller do
     controller.stub(:user_signed_in).and_return(true)
   end
 
+  def non_admin_session
+    valid_session
+    admin = stub_model(User)
+    admin.stub(:is_admin?).and_return false
+    controller.stub(:current_user).and_return(admin)
+  end
+
+  def admin_session
+    valid_session
+    admin = stub_model(User)
+    admin.stub(:is_admin?).and_return true
+    controller.stub(:current_user).and_return(admin)
+  end
+
   describe 'GET index' do
     it 'assigns user reservations as @user_reservations' do
       reservation = Reservation.create! valid_attributes
@@ -158,17 +172,34 @@ RSpec.describe ReservationsController, :type => :controller do
   end
 
   describe 'DELETE destroy' do
-    it 'destroys the requested reservation' do
-      reservation = Reservation.create! valid_attributes
-      expect {
-        delete :destroy, {:id => reservation.to_param}, valid_session
-      }.to change(Reservation, :count).by(-1)
+    describe 'when current_user is admin' do
+      it 'destroys the requested reservation' do
+        reservation = Reservation.create! valid_attributes
+        expect {
+          delete :destroy, {:id => reservation.to_param}, admin_session
+        }.to change(Reservation, :count).by(-1)
+      end
+
+      it 'redirects to the reservations list' do
+        reservation = Reservation.create! valid_attributes
+        delete :destroy, {:id => reservation.to_param}, admin_session
+        expect(response).to redirect_to(reservations_url)
+      end
     end
 
-    it 'redirects to the reservations list' do
-      reservation = Reservation.create! valid_attributes
-      delete :destroy, {:id => reservation.to_param}, valid_session
-      expect(response).to redirect_to(reservations_url)
+    describe 'when current_user is not admin' do
+      it 'does not destroy the requested reservation' do
+        reservation = Reservation.create! valid_attributes
+        expect {
+          delete :destroy, {:id => reservation.to_param}, non_admin_session
+        }.to_not change(Reservation, :count)
+      end
+
+      it 'redirects to the reservations list' do
+        reservation = Reservation.create! valid_attributes
+        delete :destroy, {:id => reservation.to_param}, non_admin_session
+        expect(response).to redirect_to(root_path)
+      end
     end
   end
 end

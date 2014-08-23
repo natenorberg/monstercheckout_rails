@@ -69,4 +69,18 @@ RSpec.describe ReservationsHelper, :type => :helper do
       expect(helper.status_text(@mock_reservation)).to match('Forgotten')
     end
   end
+
+  describe 'get_previous_quantity' do
+    
+    it 'should return quantity from association' do
+      association = FactoryGirl.create(:reservation_equipment)
+
+      expect(helper.get_previous_quantity(association.reservation.id, association.equipment.id)).to eq(association.quantity)
+    end
+
+    it 'should return 1 if association is nil' do
+
+      expect(helper.get_previous_quantity(999, 999)).to eq(1)
+    end
+  end
 end
