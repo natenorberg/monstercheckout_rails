@@ -45,7 +45,7 @@
 				<% if @user.reservations.any? %>
 					<ul class="list-group">
 						<% @user.reservations.each do |reservation| %>
-							<li class="list-group-item"><%= render 'shared/user_reservation', reservation: reservation %></li>
+							<li class="list-group-item"><%= render 'shared/icon_reservation', reservation: reservation %></li>
 						<% end %>
 					</ul>
 				<% else %>

@@ -1,8 +1,8 @@
 <div class="reservation-icon">
-	<%= gravatar_for(reservation.user, size=70) %>
+	<h2><i class="fa fa-calendar fa-2x"></i></h2>
 </div>
 <div class="reservation-info">
-	<span class="reservation-header"><%= link_to reservation.user.name, reservation.user %></span><br/>
-	<span class="reservation-subheader"><%= link_to reservation.project, reservation %></span><br>
+	<span class="reservation-header"><%= link_to reservation.project, reservation %></span><br/>
+	<span class="reservation-subheader"><%= status_text(reservation).html_safe %></span><br>
 	<span class="reservation-time"><%= reservation.out_time.strftime(ReservationsHelper::INDEX_DATETIME_FORMAT) %> to <%= reservation.in_time.strftime(ReservationsHelper::INDEX_DATETIME_FORMAT) %></span>
 </div>

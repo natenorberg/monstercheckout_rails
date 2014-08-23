@@ -32,22 +32,19 @@
 				<div class="panel-heading">
 					<h3 class="panel-title">Recent Reservations</h3>
 				</div>
-				<!-- TODO: Add list of reservations once that is hooked up -->
+				<% if @equipment.reservations.any? %>
 				<ul class="list-group">
-					<li class="list-group-item">
-						<div class="reservation-icon">
-							<h2><i class="fa fa-calendar fa-2x"></i></h2>
-						</div>
-						<div class="reservation-info">
-							<span class="reservation-header">Nate Norberg</span><br/>
-							<span class="reservation-subheader">Recording 2</span><br>
-							<span class="reservation-time">7/30/14 3:00pm to 7/30/14 5:00pm</span>
-						</div>
-					</li>
-					<li class="list-group-item">
-						<a href="#">Show more</a>
-					</li>
+					<% @equipment.reservations.each do |reservation| %>
+						<li class="list-group-item">
+							<%= render 'shared/user_reservation', reservation: reservation %>
+						</li>
+					<% end %>
 				</ul>
+				<% else %>
+				<div class="panel-body">
+					<em>This equipment has not been reserved</em>
+				</div>
+				<% end %>
 			</div>
 		</div>
 	</div>

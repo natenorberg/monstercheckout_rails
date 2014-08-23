@@ -37,6 +37,9 @@ class Reservation < ActiveRecord::Base
 
   enum status: [:requested, :approved, :denied, :out, :overdue, :returned, :returned_late, :forgotten]
 
+  # Set the default order for reservations to be chronological
+  default_scope {order('out_time ASC')}
+
   def checked_out?
     checked_out_time != nil
   end
