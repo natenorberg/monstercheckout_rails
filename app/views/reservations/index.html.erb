@@ -28,22 +28,6 @@
     <%= link_to new_reservation_path, class: 'btn btn-large btn-primary' do %>
       <i class="fa fa-plus"></i> New Reservation
     <% end %>
-
-    <% if current_user.is_admin? %>
-      <h1>All Reservations</h1>
-      <table class="table table-striped">
-        <tbody>
-          <% @all_reservations.each do |reservation| %>
-            <tr>
-              <td>
-                  <%= render 'shared/user_reservation', reservation: reservation %>
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    
-    <% end %>
   </div>
 </div>
 
