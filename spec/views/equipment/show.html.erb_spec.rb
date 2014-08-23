@@ -21,5 +21,6 @@ RSpec.describe 'equipment/show', :type => :view do
     expect(rendered).to match(/1/)
     expect(rendered).to match(/Condition_/)
     expect(rendered).to match(/Description_/)
+    expect(rendered).to render_template(:partial => 'shared/_user_reservation_list')
   end
 end

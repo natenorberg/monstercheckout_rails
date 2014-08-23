@@ -17,5 +17,6 @@ RSpec.describe 'users/show', :type => :view do
     render
     expect(rendered).to match(/Name/)
     expect(rendered).to match(/email@example.fake/)
+    expect(rendered).to render_template(:partial => 'shared/_icon_reservation_list')
   end
 end
