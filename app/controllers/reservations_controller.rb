@@ -8,7 +8,9 @@ class ReservationsController < ApplicationController
   def index
     @user_reservations = Reservation.where(user: current_user)
     if current_user.is_admin?
+      @awaiting_approval = Reservation.where(status: 'requested')
       @all_reservations = Reservation.all
+      render :admin_index
     end
   end
 

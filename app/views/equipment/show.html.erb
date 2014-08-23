@@ -28,24 +28,8 @@
 	</div>
 	<div class="col-sm-7">
 		<div class="related-reservations">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">Recent Reservations</h3>
-				</div>
-				<% if @equipment.reservations.any? %>
-				<ul class="list-group">
-					<% @equipment.reservations.each do |reservation| %>
-						<li class="list-group-item">
-							<%= render 'shared/user_reservation', reservation: reservation %>
-						</li>
-					<% end %>
-				</ul>
-				<% else %>
-				<div class="panel-body">
-					<em>This equipment has not been reserved</em>
-				</div>
-				<% end %>
-			</div>
+			<%= render 'shared/user_reservation_list', reservations: @equipment.reservations, 
+			title: 'Recent Reservations', empty_text: 'This equipment has not been reserved' %>
 		</div>
 	</div>
 </div>

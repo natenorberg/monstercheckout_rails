@@ -38,22 +38,7 @@
 	</div>
 	<div class="col-sm-7">
 		<div class="related-reservations">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">Reservations</h3>
-				</div>
-				<% if @user.reservations.any? %>
-					<ul class="list-group">
-						<% @user.reservations.each do |reservation| %>
-							<li class="list-group-item"><%= render 'shared/icon_reservation', reservation: reservation %></li>
-						<% end %>
-					</ul>
-				<% else %>
-					<div class="panel-body">
-						<em>No reservations made yet</em>
-					</div>
-				<% end %>
-			</div>
+			<%= render 'shared/icon_reservation_list', reservations: @user.reservations, title: 'Reservations' %> 
 		</div>
 	</div>
 </div>

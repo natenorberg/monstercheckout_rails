@@ -1,0 +1,18 @@
+<div class="panel panel-default reservation-panel">
+	<div class='panel-heading'>
+		<h3 class="panel-title"><%= title %></h3>
+	</div>
+	<% if reservations.any? %>
+	<ul class="list-group">
+		<% reservations.each do |reservation| %>
+			<li class="list-group-item">
+				<%= render 'shared/icon_reservation', reservation: reservation %>
+			</li>
+		<% end %>
+	</ul>
+	<% else %>
+		<div class="panel-body">
+			<em>You have no reservations</em>
+		</div>
+	<% end %>
+</div>
