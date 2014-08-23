@@ -1,5 +1,8 @@
 module ReservationsHelper
 
+  SHORT_DATETIME_FORMAT = '%a, %m/%d/%y, %I:%M %p'
+  LONG_DATETIME_FORMAT = '%A, %B %d, %Y, %I:%M %p'
+
   def status_text(reservation)
     case reservation.status
     when 'requested'
@@ -40,5 +43,7 @@ module ReservationsHelper
     end
   end
 
-  INDEX_DATETIME_FORMAT = '%a, %m/%d/%y, %I:%M %p'
+  def auto_shrink_date(date)
+    "<span class='hide-small'>#{date.strftime(LONG_DATETIME_FORMAT)}</span><span class='show-small'>#{date.strftime(SHORT_DATETIME_FORMAT)}</span>"
+  end
 end

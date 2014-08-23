@@ -43,6 +43,19 @@ a {
   color: #326fa7;
 }
 
+@media screen and (max-width:570px) {
+    i.hide-small { display:none; }
+    .hide-small { display:none; }
+}
+
+.show-small {
+  display: none;
+}
+
+@media screen and (max-width:570px) {
+    span.show-small { display:inline; }
+}
+
 /* Fonts */
 h1, h2, h3, h4, h5, h6{
 	line-height: 1;

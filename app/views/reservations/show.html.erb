@@ -1,7 +1,9 @@
 <% provide(:title, @reservation.project) %>
 
+<p id="notice"><%= notice %></p>
+
 <div class="row">
-  <div class="col-sm-7">
+  <div class="col-sm-5">
     <div class="reservation-details">
       <div class="reservation-icon">
         <h2><i class="fa fa-calendar fa-2x"></i></h2>
@@ -12,15 +14,15 @@
         <h4><%= @reservation.user.name %></h4>
       </div>
 
-      <p><strong>Reserved from:</strong> <%= @reservation.out_time.strftime('%A, %B %d, %Y, %I:%M %p') %> <br><strong>to:</strong> <%= @reservation.in_time.strftime('%A, %B %d, %Y, %I:%M %p') %></p>
+      <p><strong>Reserved from:</strong> <%= @reservation.out_time.strftime(ReservationsHelper::LONG_DATETIME_FORMAT) %> <br><strong>to:</strong> <%= @reservation.in_time.strftime(ReservationsHelper::LONG_DATETIME_FORMAT) %></p>
 
       <h4><strong>Status: </strong><%= status_text(@reservation).html_safe %></h4>
 
       <h4>Equipment</h4>
 
-      <ul>
+      <ul class="equipment-show-list">
         <% @reservation.reservation_equipment.each do |item| %>
-          <li><%= item.equipment.name %> (Quantity: <%= item.quantity %>)</li>
+          <li><%= item.equipment.name %> <% if item.quantity > 1 %>(x<%= item.quantity %>)<% end %></li>
         <% end %>
       </ul>
   
@@ -29,6 +31,27 @@
         <i class="fa fa-pencil"></i> Edit
       <% end %>
 
+    </div>
+  </div>
+  <div class="col-sm-7">
+    <div class="timeline">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Timeline</h3>
+        </div>
+        <ul class="list-group timeline-list-group">
+          <% if @reservation.updated_at > @reservation.created_at %>
+          <li class="list-group-item">
+            <strong class='status-text-updated'><i class="fa fa-history"></i> Last Updated:</strong> 
+            <%= auto_shrink_date(@reservation.updated_at).html_safe %>
+          </li>
+          <% end %>
+          <li class="list-group-item">
+            <strong class='status-text-requested'><i class="fa fa-inbox"></i> Submitted:</strong> 
+            <%= auto_shrink_date(@reservation.created_at).html_safe %>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>

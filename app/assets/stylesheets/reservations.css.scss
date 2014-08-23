@@ -56,7 +56,7 @@
     .reservation-icon { display:none }
 }
 
-.status-text-requested, .status-text-out {
+.status-text-requested, .status-text-out, .status-text-updated {
   color: #326fa7;
 }
 
@@ -102,4 +102,33 @@ ul.equipment-list {
   
   li:nth-child(odd)  { background-color:#f1f4f7; }
   li:nth-child(even) { background-color:#fff; }
+}
+
+ul.equipment-show-list {
+  list-style: none;
+  padding-left: 10px;
+
+  li {
+    font-size: 15px;
+    line-height: 20px;
+  }
+}
+
+.timeline {
+  padding: 0 15px;
+}
+
+.timeline-event {
+  font-size: 16px;
+  text-align: right;
+}
+
+.timeline-timestamp {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.timeline-list-group {
+  font-size: 16px;
+  font-weight: 400;
 }
