@@ -29,6 +29,10 @@ RSpec.describe 'reservations/admin_index', :type => :view do
     assign(:user_reservations, reservations)
     assign(:awaiting_approval, reservations)
     assign(:all_reservations, reservations)
+
+    mock_user = stub_model(User)
+    mock_user.stub(:is_admin?).and_return true
+    view.stub(:current_user).and_return mock_user
   end
 
   it 'renders the index widgets' do

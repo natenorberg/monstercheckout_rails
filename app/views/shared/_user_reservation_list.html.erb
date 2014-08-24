@@ -6,7 +6,7 @@
 <ul class="list-group">
 	<% reservations.each do |reservation| %>
 		<li class="list-group-item">
-			<%= render 'shared/user_reservation', reservation: reservation %>
+			<%= render 'shared/user_reservation', reservation: reservation, show_approve_deny_buttons: show_approve_deny_buttons %>
 		</li>
 	<% end %>
 </ul>
