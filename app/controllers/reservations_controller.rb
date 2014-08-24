@@ -1,8 +1,8 @@
 class ReservationsController < ApplicationController
-  before_action :set_reservation, only: [:show, :edit, :update, :destroy, :approve]
+  before_action :set_reservation, only: [:show, :edit, :update, :destroy, :approve, :deny]
   before_filter :user_signed_in
   before_filter :current_user_or_admin, only: [:destroy]
-  before_filter :user_is_admin, only: [:approve]
+  before_filter :user_is_admin, only: [:approve, :deny]
 
   # GET /reservations
   # GET /reservations.json
@@ -79,7 +79,7 @@ class ReservationsController < ApplicationController
   # GET /reservations/1/approve.json
   def approve
     @reservation.is_approved = true
-    @reservation.status = 'approved'
+    @reservation.status = :approved
     @reservation.admin_response_time = Time.now
     respond_to do |format|
       if @reservation.save
@@ -87,7 +87,24 @@ class ReservationsController < ApplicationController
         format.json { render :show, status: :ok, location: @reservation }
       else  
         format.html { render :show }
-        format.json { render json: @equipment.errors, status: :unprocessable_entity }
+        format.json { render json: @reservation.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # GET /reservations/1/deny
+  # GET /reservations/1/deny.json
+  def deny
+    @reservation.is_denied = true
+    @reservation.status = :denied
+    @reservation.admin_response_time = Time.now
+    respond_to do |format|
+      if @reservation.save
+        format.html { redirect_to @reservation, flash: { error: 'Reservation has been denied' } }
+        format.json { render :show, status: :ok, location: @reservation }
+      else
+        format.html { render :show }
+        format.json { render json: @reservation.errors, status: :unprocessable_entity }
       end
     end
   end

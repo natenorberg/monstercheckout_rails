@@ -240,5 +240,42 @@ RSpec.describe ReservationsController, :type => :controller do
       end
     end
   end
+
+  describe 'GET deny' do
+    describe 'when current_user is admin' do
+      it 'changes the denied status of the reservation' do
+        reservation = FactoryGirl.create(:reservation)
+        get :deny, {:id => reservation.to_param}, admin_session
+        reservation.reload
+        expect(reservation.is_denied?).to eq(true)
+        expect(reservation.status).to eq('denied')
+        expect(reservation.admin_response_time).to_not eq(nil)
+      end
+
+      it 'redirects to show page' do
+        reservation = FactoryGirl.create(:reservation)
+        get :deny, {:id => reservation.to_param}, admin_session
+
+        expect(response).to redirect_to(reservation)
+      end
+    end
+
+    describe 'when current_user is not admin' do
+      it 'does not change the denied status of the reservation' do
+        reservation = FactoryGirl.create(:reservation)
+        get :deny, {:id => reservation.to_param}, non_admin_session
+        reservation.reload
+        expect(reservation.is_denied?).to eq(false)
+        expect(reservation.status).to eq('requested')
+      end
+
+      it 'redirects to show page' do
+        reservation = FactoryGirl.create(:reservation)
+        get :deny, {:id => reservation.to_param}, non_admin_session
+
+        expect(response).to redirect_to(root_path)
+      end
+    end
+  end
 end
 
