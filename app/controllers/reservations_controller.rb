@@ -80,6 +80,7 @@ class ReservationsController < ApplicationController
   def approve
     @reservation.is_approved = true
     @reservation.status = 'approved'
+    @reservation.admin_response_time = Time.now
     respond_to do |format|
       if @reservation.save
         format.html { redirect_to @reservation, flash: { success: 'Reservation has been approved' } }

@@ -212,6 +212,7 @@ RSpec.describe ReservationsController, :type => :controller do
         reservation.reload
         expect(reservation.is_approved?).to eq(true)
         expect(reservation.status).to eq('approved')
+        expect(reservation.admin_response_time).to_not eq(nil)
       end
 
       it 'redirects to show page' do

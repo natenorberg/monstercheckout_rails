@@ -40,7 +40,7 @@
           <h3 class="panel-title">Timeline</h3>
         </div>
         <ul class="list-group timeline-list-group">
-          <% if @reservation.updated_at > @reservation.created_at %>
+          <% if @reservation.updated_at > @reservation.created_at && @reservation.requested? %>
           <li class="list-group-item">
             <strong class='status-text-updated'><i class="fa fa-history"></i> Last Updated:</strong> 
             <%= auto_shrink_date(@reservation.updated_at).html_safe %>

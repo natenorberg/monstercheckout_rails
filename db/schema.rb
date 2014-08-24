@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140802180616) do
+ActiveRecord::Schema.define(version: 20140824005115) do
 
   create_table "equipment", force: true do |t|
     t.string   "name"
@@ -48,6 +48,8 @@ ActiveRecord::Schema.define(version: 20140802180616) do
     t.integer  "checked_out_by_id"
     t.integer  "checked_in_by_id"
     t.integer  "status"
+    t.boolean  "is_denied"
+    t.datetime "admin_response_time"
   end
 
   add_index "reservations", ["user_id"], name: "index_reservations_on_user_id"
