@@ -52,7 +52,8 @@ RSpec.describe ReservationsController, :type => :controller do
     valid_session
     admin = stub_model(User)
     admin.stub(:is_admin?).and_return true
-    controller.stub(:current_user).and_return(admin)
+    controller.stub(:current_user).and_return admin 
+    controller.stub(:user_is_admin).and_return true
   end
 
   describe 'GET index' do
@@ -198,6 +199,42 @@ RSpec.describe ReservationsController, :type => :controller do
       it 'redirects to the reservations list' do
         reservation = Reservation.create! valid_attributes
         delete :destroy, {:id => reservation.to_param}, non_admin_session
+        expect(response).to redirect_to(root_path)
+      end
+    end
+  end
+
+  describe 'GET approve' do
+    describe 'when current_user is admin' do
+      it 'changes the approved status of the reservation' do
+        reservation = FactoryGirl.create(:reservation)
+        get :approve, {:id => reservation.to_param}, admin_session
+        reservation.reload
+        expect(reservation.is_approved?).to eq(true)
+        expect(reservation.status).to eq('approved')
+      end
+
+      it 'redirects to show page' do
+        reservation = FactoryGirl.create(:reservation)
+        get :approve, {:id => reservation.to_param}, admin_session
+
+        expect(response).to redirect_to(reservation)
+      end
+    end
+
+    describe 'when current_user is not admin' do
+      it 'does not change the approved status of the reservation' do
+        reservation = FactoryGirl.create(:reservation)
+        get :approve, {:id => reservation.to_param}, non_admin_session
+        reservation.reload
+        expect(reservation.is_approved?).to eq(false)
+        expect(reservation.status).to eq('requested')
+      end
+
+      it 'redirects to show page' do
+        reservation = FactoryGirl.create(:reservation)
+        get :approve, {:id => reservation.to_param}, non_admin_session
+
         expect(response).to redirect_to(root_path)
       end
     end

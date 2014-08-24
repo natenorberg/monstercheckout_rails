@@ -1,7 +1,8 @@
 class ReservationsController < ApplicationController
-  before_action :set_reservation, only: [:show, :edit, :update, :destroy]
+  before_action :set_reservation, only: [:show, :edit, :update, :destroy, :approve]
   before_filter :user_signed_in
   before_filter :current_user_or_admin, only: [:destroy]
+  before_filter :user_is_admin, only: [:approve]
 
   # GET /reservations
   # GET /reservations.json
@@ -71,6 +72,22 @@ class ReservationsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to reservations_url, notice: 'Reservation was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  # GET /reservations/1/approve
+  # GET /reservations/1/approve.json
+  def approve
+    @reservation.is_approved = true
+    @reservation.status = 'approved'
+    respond_to do |format|
+      if @reservation.save
+        format.html { redirect_to @reservation, flash: { success: 'Reservation has been approved' } }
+        format.json { render :show, status: :ok, location: @reservation }
+      else  
+        format.html { render :show }
+        format.json { render json: @equipment.errors, status: :unprocessable_entity }
+      end
     end
   end
 

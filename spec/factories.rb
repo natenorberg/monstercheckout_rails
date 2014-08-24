@@ -23,14 +23,17 @@ FactoryGirl.define do
     project 'Record all the stuff'
     out_time 1.days.ago
     in_time 2.days.from_now
+    status 'requested'
 
     factory :checkout do
       checked_out_time 1.days.ago
       check_out_comments 'Lookin good'
+      status 'out'
 
       factory :checkin do
         checked_in_time Time.now
         check_in_comments 'Still lookin good'
+        status 'returned'
       end
     end
   end
