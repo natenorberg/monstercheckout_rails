@@ -26,9 +26,18 @@
         <% end %>
       </ul>
   
-      <!-- TODO: Check permission for this -->
-      <%= link_to edit_reservation_path(@reservation), class: 'btn btn-large btn-primary' do %>
-        <i class="fa fa-pencil"></i> Edit
+      <% if @reservation.can_edit?(current_user) %>
+        <%= link_to edit_reservation_path(@reservation), class: 'btn btn-large btn-primary' do %>
+          <i class="fa fa-pencil"></i> Edit
+        <% end %>
+      <% end %>
+      <% if current_user.is_admin? && @reservation.requested? %>
+        <%= link_to approve_reservation_path(@reservation), class: 'btn btn-large btn-success' do %>
+          <i class="fa fa-check"></i> Approve
+        <% end %>
+        <%= link_to deny_reservation_path(@reservation), class: 'btn btn-large btn-danger' do %>
+          <i class="fa fa-times"></i> Deny
+        <% end %>
       <% end %>
 
     </div>

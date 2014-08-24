@@ -54,6 +54,10 @@ class Reservation < ActiveRecord::Base
     current_user == user && !checked_out?
   end
 
+  def can_edit?(current_user)
+    current_user == user && !checked_out?
+  end
+
   private
 
     def in_time_must_be_after_out_time

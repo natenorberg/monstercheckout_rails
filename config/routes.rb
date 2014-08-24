@@ -9,13 +9,15 @@ Rails.application.routes.draw do
   get 'signout' => 'sessions#destroy'
   resources :sessions, only: [:create, :destroy]
 
-  resources :reservations
+  resources :reservations do
+    member do
+      get 'approve'
+      get 'deny'
+    end
+  end
   resources :equipment
   resources :users
   resources :reservation_equipment
-
-  get 'reservations/:id/approve' => 'reservations#approve'
-  get 'reservations/:id/deny' => 'reservations#deny'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
