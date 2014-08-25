@@ -56,6 +56,7 @@ class ReservationsController < ApplicationController
     respond_to do |format|
       if @reservation.update(reservation_params)
         update_quantities
+        reset_approval_status
         format.html { redirect_to @reservation, flash: { success: 'Reservation was successfully updated.' } }
         format.json { render :show, status: :ok, location: @reservation }
       else
@@ -128,6 +129,13 @@ class ReservationsController < ApplicationController
         association.quantity = params[:reservation][:quantity][item.id.to_s]
         association.save()
       end
+    end
+
+    def reset_approval_status
+      @reservation.is_approved = false
+      @reservation.is_denied = false
+      @reservation.status = :requested
+      @reservation.save
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

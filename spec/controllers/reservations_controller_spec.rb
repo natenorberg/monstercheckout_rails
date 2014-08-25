@@ -155,6 +155,34 @@ RSpec.describe ReservationsController, :type => :controller do
         put :update, {:id => reservation.to_param, :reservation => valid_attributes}, valid_session
         expect(response).to redirect_to(reservation)
       end
+
+      describe 'with approved reservation' do
+        it 'unapproves the reservation' do
+          reservation = Reservation.create! valid_attributes
+          reservation.is_approved = true
+          reservation.status = :approved
+          reservation.save
+
+          put :update, {:id => reservation.to_param, :reservation => valid_attributes}, valid_session
+          reservation.reload
+          expect(reservation.is_approved).to eq(false)
+          expect(reservation.status).to eq('requested')
+        end
+      end
+
+      describe 'with denied reservation' do
+        it 'unapproves the reservation' do
+          reservation = Reservation.create! valid_attributes
+          reservation.is_denied = true
+          reservation.status = :denied
+          reservation.save
+
+          put :update, {:id => reservation.to_param, :reservation => valid_attributes}, valid_session
+          reservation.reload
+          expect(reservation.is_denied).to eq(false)
+          expect(reservation.status).to eq('requested')
+        end
+      end
     end
 
     describe 'with invalid params' do
