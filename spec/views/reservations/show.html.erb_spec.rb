@@ -24,6 +24,7 @@ RSpec.describe 'reservations/show', :type => :view do
     expect(rendered).to match(/Project/)
     expect(rendered).to match(@out_time.strftime('%A, %B %d, %Y, %I:%M %p'))
     expect(rendered).to match(@in_time.strftime('%A, %B %d, %Y, %I:%M %p'))
+    expect(rendered).to render_template(:partial => '_timeline')
   end
 
   describe 'when reservation is awaiting approval' do
