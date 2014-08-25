@@ -54,24 +54,6 @@
     </div>
   </div>
   <div class="col-sm-7">
-    <div class="timeline">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">Timeline</h3>
-        </div>
-        <ul class="list-group timeline-list-group">
-          <% if @reservation.updated_at > @reservation.created_at && @reservation.requested? %>
-          <li class="list-group-item">
-            <strong class='status-text-updated'><i class="fa fa-history"></i> Last Updated:</strong> 
-            <%= auto_shrink_date(@reservation.updated_at).html_safe %>
-          </li>
-          <% end %>
-          <li class="list-group-item">
-            <strong class='status-text-requested'><i class="fa fa-inbox"></i> Submitted:</strong> 
-            <%= auto_shrink_date(@reservation.created_at).html_safe %>
-          </li>
-        </ul>
-      </div>
-    </div>
+    <%= render 'timeline' %>
   </div>
 </div>

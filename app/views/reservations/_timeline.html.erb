@@ -1,0 +1,31 @@
+<div class="timeline">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Timeline</h3>
+    </div>
+    <ul class="list-group timeline-list-group">
+      <% if @reservation.is_approved? %>
+      <li class="list-group-item">
+        <strong class='status-text-approved'><i class="fa fa-thumbs-o-up"></i> Approved:</strong> 
+        <%= auto_shrink_date(@reservation.admin_response_time).html_safe %>
+      </li>
+      <% end %>
+      <% if @reservation.is_denied? %>
+      <li class="list-group-item">
+        <strong class='status-text-denied'><i class="fa fa-thumbs-o-down"></i> Denied:</strong> 
+        <%= auto_shrink_date(@reservation.admin_response_time).html_safe %>
+      </li>
+      <% end %>
+      <% if @reservation.updated_at > @reservation.created_at && @reservation.requested? %>
+      <li class="list-group-item">
+        <strong class='status-text-updated'><i class="fa fa-history"></i> Last Updated:</strong> 
+        <%= auto_shrink_date(@reservation.updated_at).html_safe %>
+      </li>
+      <% end %>
+      <li class="list-group-item">
+        <strong class='status-text-requested'><i class="fa fa-inbox"></i> Submitted:</strong> 
+        <%= auto_shrink_date(@reservation.created_at).html_safe %>
+      </li>
+    </ul>
+  </div>
+</div>
