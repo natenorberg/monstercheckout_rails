@@ -4,6 +4,7 @@
 <div class="reservation-info">
 	<span class="reservation-header"><%= link_to reservation.user.name, reservation.user %></span><br/>
 	<span class="reservation-subheader"><%= link_to reservation.project, reservation %></span><br>
+	<span class="reservation-subheader"><%= status_text(reservation).html_safe %></span><br>
 	<span class="reservation-time"><%= reservation.out_time.strftime(ReservationsHelper::SHORT_DATETIME_FORMAT) %> to <%= reservation.in_time.strftime(ReservationsHelper::SHORT_DATETIME_FORMAT) %></span><br>
 	<% if show_approve_deny_buttons && current_user.is_admin? && reservation.requested? %>
 		<%= link_to approve_reservation_path(reservation), class: 'btn btn-large btn-success' do %>

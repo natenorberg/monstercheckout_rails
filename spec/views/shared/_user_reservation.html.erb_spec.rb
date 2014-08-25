@@ -6,6 +6,7 @@ RSpec.describe 'shared/user_reservation', :type => :view do
     @test_user = stub_model(User)
     @test_user.stub(:is_admin?).and_return false
     view.stub(:current_user).and_return @test_user
+    view.stub(:status_text).and_return 'Status text'
   end
 
   it 'renders a list of reservations' do
@@ -17,6 +18,7 @@ RSpec.describe 'shared/user_reservation', :type => :view do
       
       assert_select 'span.reservation-header>a', :text => @reservation.user.name
       assert_select 'span.reservation-subheader>a', :text => @reservation.project
+      assert_select 'span.reservation-subheader', :text => /Status text/
       assert_select 'span.reservation-time', :text => "#{@reservation.out_time.strftime(ReservationsHelper::SHORT_DATETIME_FORMAT)} to #{@reservation.in_time.strftime(ReservationsHelper::SHORT_DATETIME_FORMAT)}"
     end
   end
