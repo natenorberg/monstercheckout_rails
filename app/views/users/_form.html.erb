@@ -19,6 +19,15 @@
     <%= f.label :email %><br>
     <%= f.text_field :email %>
   </div>
+
+  <h3>Permissions</h3>
+
+  <ul class="permissions-list">
+    <li><%= f.check_box :is_monitor %> <%= f.label :is_admin, 'Lab Monitor access' %></li>
+    
+    <li><%= f.check_box :is_admin %> <%= f.label :is_admin, 'Administrator access' %></li>
+  </ul>
+
   <div class="actions">
     <%= f.submit %>
   </div>

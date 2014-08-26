@@ -25,6 +25,7 @@ describe 'User' do
     expect(@user).to respond_to(:password_confirmation)
     expect(@user).to respond_to(:password_digest)
     expect(@user).to respond_to(:is_admin?)
+    expect(@user).to respond_to(:is_monitor?)
     expect(@user).to respond_to(:reservations)
     expect(@user).to respond_to(:monitor_checkouts)
     expect(@user).to respond_to(:monitor_checkins)
@@ -118,5 +119,29 @@ describe 'User' do
   it 'should create remember_token on save' do
     @user.save
     expect(@user.remember_token).to_not be_blank
+  end
+
+  describe 'monitor_access?' do
+    
+    it 'should be true if user is monitor' do
+      @user.is_monitor = true
+      @user.is_admin = false
+
+      expect(@user.monitor_access?).to eq(true)
+    end
+
+    it 'should be true if user is admin' do
+      @user.is_monitor = false
+      @user.is_admin = true
+
+      expect(@user.monitor_access?).to eq(true)
+    end
+
+    it 'should not be true otherwise' do
+      @user.is_monitor = false
+      @user.is_admin = false
+
+      expect(@user.monitor_access?).to eq(false)
+    end
   end
 end

@@ -25,6 +25,17 @@
 					<% end %>
 				</h1>
 					<%= form_for(@user) do |f| %>
+					<% if @user.errors.any? %>
+					    <div id="error_explanation">
+					      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+					      <ul>
+					      <% @user.errors.full_messages.each do |message| %>
+					        <li><%= message %></li>
+					      <% end %>
+					      </ul>
+					    </div>
+					  <% end %>
 						<%= f.label :name %>
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-user"></i></span>
@@ -41,7 +52,12 @@
 							<h3>Permissions</h3>
 
 							<ul class="permissions-list">
-								<li><%= f.check_box :is_admin %> <%= f.label :is_admin, 'Administrator access' %></li>
+								<li><%= f.check_box :is_monitor %> <%= f.label :is_admin, 'Lab Monitor access' %></li>
+								
+								<!-- Don't give admins the option to un-admin themselves -->
+								<% if @user != current_user %>
+									<li><%= f.check_box :is_admin %> <%= f.label :is_admin, 'Administrator access' %></li>
+								<% end %>
 							</ul>
 						<% end %>
 					

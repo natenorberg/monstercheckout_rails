@@ -12,8 +12,8 @@
                 <%= link_to user do %>
                     <h4><%= user.name %> 
                       <% if user.is_admin? %> <i class="fa fa-rocket" title='Administrator access'></i><% end %>
+                      <% if user.is_monitor? && !user.is_admin? %> <i class="fa fa-key" title='Lab Monitor access'></i><% end %>
                     </h4>                  
-                    <!-- TODO: Add icon for monitor access if not admin -->
                 <% end %>
                 
                 <h5>

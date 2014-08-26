@@ -14,8 +14,11 @@
 				</div>
 				<div class="profile-info">
 					<h2><%= @user.name %> 
-						<% if @user.is_admin? %> <i class="fa fa-rocket" title='Administrator access'></i><% end %>
-						<!-- TODO: Add icon for monitor access if not admin -->
+						<% if @user.is_admin? %> <i class="fa fa-rocket" title='Administrator access'></i>
+						<% end %>
+						<% if @user.is_monitor? && !@user.is_admin? %> <i class="fa fa-key" title='Lab Monitor access'></i>
+						<% end %>
+						
 					</h2>
 					
 					<h4>
