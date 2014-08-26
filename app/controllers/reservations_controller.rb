@@ -1,8 +1,9 @@
 class ReservationsController < ApplicationController
-  before_action :set_reservation, only: [:show, :edit, :update, :destroy, :approve, :deny]
+  before_action :set_reservation, only: [:show, :edit, :update, :destroy, :approve, :deny, :checkout]
   before_filter :user_signed_in
   before_filter :current_user_or_admin, only: [:destroy]
   before_filter :user_is_admin, only: [:approve, :deny]
+  before_filter :user_is_monitor, only: [:checkout]
 
   # GET /reservations
   # GET /reservations.json
@@ -108,6 +109,12 @@ class ReservationsController < ApplicationController
         format.json { render json: @reservation.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  # GET /reservations/1/checkout
+  # GET /reservations/1/checkout.json
+  def checkout
+    
   end
 
   private

@@ -43,9 +43,9 @@ RSpec.describe ReservationsController, :type => :controller do
 
   def non_admin_session
     valid_session
-    admin = stub_model(User)
-    admin.stub(:is_admin?).and_return false
-    controller.stub(:current_user).and_return(admin)
+    user = stub_model(User)
+    user.stub(:is_admin?).and_return false
+    controller.stub(:current_user).and_return(user)
   end
 
   def admin_session
@@ -53,6 +53,22 @@ RSpec.describe ReservationsController, :type => :controller do
     admin = stub_model(User)
     admin.stub(:is_admin?).and_return true
     controller.stub(:current_user).and_return admin 
+    controller.stub(:user_is_admin).and_return true
+  end
+
+  def monitor_session
+    valid_session
+    monitor = stub_model(User)
+    monitor.stub(:monitor_access?).and_return true
+    controller.stub(:current_user).and_return monitor 
+    controller.stub(:user_is_admin).and_return true
+  end
+
+  def non_monitor_session
+    valid_session
+    user = stub_model(User)
+    user.stub(:monitor_access?).and_return false
+    controller.stub(:current_user).and_return user 
     controller.stub(:user_is_admin).and_return true
   end
 
@@ -301,6 +317,24 @@ RSpec.describe ReservationsController, :type => :controller do
         reservation = FactoryGirl.create(:reservation)
         get :deny, {:id => reservation.to_param}, non_admin_session
 
+        expect(response).to redirect_to(root_path)
+      end
+    end
+  end
+
+  describe 'GET checkout' do
+    describe 'when current_user is monitor' do
+      it 'assigns the requested reservation as @reservation' do
+        reservation = Reservation.create! valid_attributes
+        get :checkout, {:id => reservation.to_param}, monitor_session
+        expect(assigns(:reservation)).to eq(reservation)
+      end
+    end
+
+    describe 'when current_user is not monitor' do
+      it 'redirects to root_path' do
+        reservation = Reservation.create! valid_attributes
+        get :checkout, {:id => reservation.to_param}, non_monitor_session
         expect(response).to redirect_to(root_path)
       end
     end

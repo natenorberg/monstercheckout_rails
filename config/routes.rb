@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     member do
       get 'approve'
       get 'deny'
+      get 'checkout'
     end
   end
   resources :equipment
