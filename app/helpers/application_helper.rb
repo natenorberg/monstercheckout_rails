@@ -23,6 +23,14 @@ module ApplicationHelper
     end
   end
 
+  def is_monitor_action?(controller, action)
+    if controller == 'monitor'
+      true
+    elsif controller == 'reservations'
+       action == 'checkout' || action == 'checkin'
+    end
+  end
+
   def version_number
     '1.0.0 Development'
   end

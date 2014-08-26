@@ -31,4 +31,16 @@ RSpec.describe ApplicationHelper, :type => :helper do
       expect(helper.bootstrap_class_for('marshmallow')).to eq('marshmallow')
     end
   end
+
+  describe 'is_monitor_action?' do
+    
+    it 'should be true if controller is monitor' do
+      expect(helper.is_monitor_action?('monitor', 'anything')).to eq(true)
+    end
+
+    it 'should be true for checkout and checkin' do
+      expect(helper.is_monitor_action?('reservations', 'checkout')).to eq(true)
+      expect(helper.is_monitor_action?('reservations', 'checkin')).to eq(true)
+    end
+  end
 end
