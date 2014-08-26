@@ -6,7 +6,7 @@
 <ul class="list-group">
 	<% reservations.each do |reservation| %>
 		<li class="list-group-item">
-			<%= render 'shared/user_reservation', reservation: reservation, show_approve_deny_buttons: show_approve_deny_buttons %>
+			<%= render 'shared/user_reservation', reservation: reservation %>
 			<% if show_approve_deny_buttons && current_user.is_admin? && reservation.requested? %>
 				<%= link_to approve_reservation_path(reservation), class: 'btn btn-large btn-success', id:"approve_button_#{reservation.id}" do %>
 		          <i class="fa fa-check"></i> Approve

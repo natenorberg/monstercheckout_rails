@@ -44,6 +44,10 @@ module SessionsHelper
     redirect_to root_path unless current_user.is_admin? || current_user == @user
   end
 
+  def user_is_monitor
+    redirect_to root_path unless current_user.monitor_access?
+  end
+
   # Friendly forwarding
   def store_address
     session[:return_to] = request.fullpath

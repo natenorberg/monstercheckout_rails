@@ -14,7 +14,7 @@ RSpec.describe 'monitor/dashboard', :type => :view do
   it 'renders the index widgets' do
     render
 
-    expect(rendered).to render_template(:partial => 'shared/_user_reservation_list', locals: { title: 'Ready for checkout' })
-    expect(rendered).to render_template(:partial => 'shared/_user_reservation_list', locals: { title: 'Ready for checkin' })
+    expect(rendered).to render_template(:partial => 'shared/_user_reservation_list', locals: { title: 'Ready to check out' })
+    expect(rendered).to render_template(:partial => 'shared/_user_reservation_list', locals: { title: 'Ready to check in' })
   end
 end
