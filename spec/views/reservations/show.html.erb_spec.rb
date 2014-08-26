@@ -76,4 +76,26 @@ RSpec.describe 'reservations/show', :type => :view do
       assert_select 'a.btn.btn-large.btn-primary[href=?]', edit_reservation_path(@reservation), text: 'Edit', count: 0
     end
   end
+
+  describe 'when user is lab monitor' do
+    before do 
+      @test_user.stub(:monitor_access?).and_return true
+    end
+
+    it 'should show checkout button if reservation can be checked out' do
+      @reservation.stub(:approved?).and_return true
+
+      render
+
+      assert_select 'a.btn.btn-large.btn-primary[href=?]', checkout_reservation_path(@reservation), text: 'Check Out', count: 1
+    end
+
+    it 'should not show checkout button if reservation can not be checked out' do
+      @reservation.stub(:approved?).and_return false
+
+      render
+
+      assert_select 'a.btn.btn-large.btn-primary[href=?]', checkout_reservation_path(@reservation), text: 'Check Out', count: 0
+    end
+  end
 end
