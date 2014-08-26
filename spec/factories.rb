@@ -25,6 +25,11 @@ FactoryGirl.define do
     in_time 2.days.from_now
     status 'requested'
 
+    factory :approved_reservation do
+      status 'approved'
+      is_approved true
+    end
+
     factory :checkout do
       checked_out_time 1.days.ago
       check_out_comments 'Lookin good'

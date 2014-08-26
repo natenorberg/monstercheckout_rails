@@ -42,6 +42,8 @@ class Reservation < ActiveRecord::Base
   # Set the default order for reservations to be chronological
   default_scope {order('out_time ASC')}
 
+  scope :checked_out, -> {where('checked_out_time is not null AND checked_in_time is null')}
+
   def checked_out?
     checked_out_time != nil
   end

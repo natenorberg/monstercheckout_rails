@@ -1,0 +1,12 @@
+<% provide(:title, 'Monitor Dashboard') %>
+
+<h1 class="page-header">Monitor Dashboard</h1>
+
+<div class="row">
+	<div class="col-sm-6">
+		<%= render 'shared/user_reservation_list', reservations: @checkouts, title: 'Ready for checkout', show_approve_deny_buttons: false %>
+	</div>
+	<div class="col-sm-6">
+		<%= render 'shared/user_reservation_list', reservations: @checkins, title: 'Ready for checkin', show_approve_deny_buttons: false %>
+	</div>
+</div>

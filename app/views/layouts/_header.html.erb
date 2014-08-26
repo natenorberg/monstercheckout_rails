@@ -33,7 +33,7 @@
 
 					<% if current_user.monitor_access? %>
 					<li class="<%= 'active' if params[:controller] == 'monitor' %>">
-						<%= link_to '#' do %>
+						<%= link_to monitor_path do %>
 							<i class="fa fa-key"></i> Monitor
 						<% end %>		
 					</li>

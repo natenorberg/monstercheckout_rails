@@ -31,7 +31,7 @@
 	<% end %>
 	<% if current_user.monitor_access? %>
 		<div class="home-item col-sm-4 col-sm-offset-1 text-center">
-			<%= link_to '#', class: 'quick_link' do %>
+			<%= link_to monitor_dashboard_path, class: 'quick_link' do %>
 				<i class="fa fa-key fa-5x"></i>
 				<h2>Monitor</h2>
 				<p>Dashboard for lab monitors to check equipment in and out.</p>

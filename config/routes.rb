@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   get 'signout' => 'sessions#destroy'
   resources :sessions, only: [:create, :destroy]
 
+  get 'monitor/dashboard' => 'monitor#dashboard'
+  get 'monitor' => 'monitor#dashboard'
+
   resources :reservations do
     member do
       get 'approve'
@@ -18,6 +21,7 @@ Rails.application.routes.draw do
   resources :equipment
   resources :users
   resources :reservation_equipment
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
