@@ -1,1 +1,65 @@
-<h1 class="page-header">Check out</h1>
+<div class="top-padding"></div>
+
+<div class="row">
+	<div class="col-sm-7">
+		<div class="checklist-container">
+			<h3>Equipment</h3>
+			<h5>Please check that all the equipment is here to continue.</h5>
+			
+			<table class="table table-striped table-bordered">
+				<% @reservation.reservation_equipment.each do |item| %>
+					<tr>
+						<td>
+							<input type="checkbox" class="check">
+							<span class="checklist-label"><%= item.equipment.name %> <% if item.quantity > 1 %>(x<%= item.quantity %>)<% end %></span>
+						</td>
+					</tr>
+				<% end %>
+			</table>
+
+			<%= form_for @reservation, url: url_for(controller: 'reservations', action: 'checkout_update'), method: :post do |f| %>
+				<% if @reservation.errors.any? %>
+			      <div id="error_explanation">
+			        <h2><%= pluralize(@reservation.errors.count, 'error') %> prohibited this reservation from being saved:</h2>
+			  
+			        <ul>
+			        <% @reservation.errors.full_messages.each do |message| %>
+			          <li><%= message %></li>
+			        <% end %>
+			        </ul>
+			      </div>
+			    <% end %>
+
+			    <div class="field">
+			      <%= f.label :check_out_comments %><br>
+			      <%= f.text_area :check_out_comments, class: 'form-control' %>
+			    </div>
+
+			    <div class="actions">
+			      <%= f.submit 'Check Out', class: 'btn btn-large btn-primary', id: 'checkout_button', disabled: true %>
+			    </div>
+			<% end %>
+		</div>
+	</div>
+	<div class="col-sm-5">
+		<div class="checkout-side">
+			<%= gravatar_for(@reservation.user, size = 100, badge = true) %> 
+			<div class="checkout-side-info">
+				<h2 class="checkout-project"><%= @reservation.user.name %></h2>
+				<h3 class="checkout-username"><%= @reservation.project %></h3>
+			</div>
+			<h4 class="checkout-info"><strong>Reservation Time:</strong> <%= @reservation.out_time.strftime(ReservationsHelper::SHORT_DATETIME_FORMAT) %></h4>
+
+			<h4 class="checkout-info"><strong>Due:</strong> <%= @reservation.in_time.strftime(ReservationsHelper::SHORT_DATETIME_FORMAT) %></h4>
+		</div>
+	</div>
+</div>
+
+<script>
+$(".check").click(function() {
+    if (!$('input.check[type=checkbox]:not(:checked)').length)
+        document.getElementById("checkout_button").disabled=false;
+    else
+        document.getElementById("checkout_button").disabled=true;
+});
+</script>

@@ -1,5 +1,5 @@
 class ReservationsController < ApplicationController
-  before_action :set_reservation, only: [:show, :edit, :update, :destroy, :approve, :deny, :checkout]
+  before_action :set_reservation, only: [:show, :edit, :update, :destroy, :approve, :deny, :checkout, :checkout_update]
   before_filter :user_signed_in
   before_filter :current_user_or_admin, only: [:destroy]
   before_filter :user_is_admin, only: [:approve, :deny]
@@ -52,7 +52,7 @@ class ReservationsController < ApplicationController
   # PATCH/PUT /reservations/1
   # PATCH/PUT /reservations/1.json
   def update
-    format_time_input
+    format_time_input 
     params[:reservation][:equipment_ids] ||= []
     respond_to do |format|
       if @reservation.update(reservation_params)
@@ -62,6 +62,23 @@ class ReservationsController < ApplicationController
         format.json { render :show, status: :ok, location: @reservation }
       else
         format.html { render :edit }
+        format.json { render json: @reservation.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def checkout_update
+    params[:reservation][:checked_out_time] = Time.now
+    params[:reservation][:checked_out_by_id] = current_user
+
+    respond_to do |format|
+      if @reservation.update(reservation_params)
+        @reservation.status = :out
+        @reservation.save
+        format.html { redirect_to @reservation, flash: { success: 'Reservation is checked out' } }
+        format.json { render :show, status: :ok, location: @reservation }
+      else
+        format.html { render :checkout }
         format.json { render json: @reservation.errors, status: :unprocessable_entity }
       end
     end
@@ -151,6 +168,7 @@ class ReservationsController < ApplicationController
                                           :user_id,
                                           :in_time, :out_time,
                                           :checked_out_time, :checked_in_time,
+                                          :checked_out_by_id, :checked_in_by_id,
                                           :is_approved,
                                           :check_out_comments, :check_in_comments,
                                           equipment_ids: [])

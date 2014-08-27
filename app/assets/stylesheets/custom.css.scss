@@ -1,6 +1,11 @@
 @import "bootstrap";
 @import 'bootstrap-datetimepicker';
 
+.table-striped>tbody>tr:nth-child(odd)>td, 
+.table-striped>tbody>tr:nth-child(odd)>th {
+   background-color: #f1f4f7;
+ }
+
 /* mixins */
 @mixin box_sizing {
 	-mox-box-sizing: border-box;
@@ -35,6 +40,10 @@ textarea {
   margin-bottom: 10px;
 }
 
+h2.inline-header {
+  display: inline-block;
+}
+
 .no-padding {
   padding: 0;
 }
@@ -54,6 +63,10 @@ a {
 
 @media screen and (max-width:570px) {
     span.show-small { display:inline; }
+}
+
+.top-padding {
+  height: 30px;
 }
 
 /* Fonts */
@@ -121,6 +134,12 @@ a.quick_link {
 /* Gravatars */
 img.gravatar {
   border-radius: 100%;
+  display: inline-block;
+
+  &.gravatar-badge {
+    border: 1px solid #ddd;
+    padding: 3px;
+  }
 }
 
 /* Debug */

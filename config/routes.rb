@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       get 'approve'
       get 'deny'
       get 'checkout'
+      post 'checkout_update'
     end
   end
   resources :equipment

@@ -8,6 +8,10 @@ FactoryGirl.define do
     factory :admin do
       is_admin true
     end
+
+    factory :monitor do
+      is_monitor true
+    end
   end
 
   factory :equipment do

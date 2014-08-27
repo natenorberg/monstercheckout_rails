@@ -136,3 +136,33 @@ ul.equipment-show-list {
 .reservation-panel {
   margin: 0 15px 20px 15px;
 }
+
+.checklist-container {
+  padding: 0 15px;
+}
+
+span.checklist-label {
+  color: #46557a;
+  font-weight: 700;
+}
+
+.checkout-side {
+  .checkout-side-info {
+    display: inline-block;
+    margin-top: 20px;
+    margin-left: 5px;
+
+    h2.checkout-project {
+      margin-bottom: 5px;
+    }
+
+    h3.checkout-username {
+      font-weight: 200;
+    }
+  }
+
+  h4.checkout-info {
+    margin-top: 15px;
+    font-weight: 200;
+  }
+}
