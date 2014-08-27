@@ -1,0 +1,10 @@
+<div class="checkout-side">
+	<%= gravatar_for(@reservation.user, size = 100, badge = true) %> 
+	<div class="checkout-side-info">
+		<h2 class="checkout-username"><%= @reservation.user.name %></h2>
+		<h3 class="checkout-project"><%= @reservation.project %></h3>
+	</div>
+	<h4 class="checkout-info"><strong>Reservation Time:</strong> <%= @reservation.out_time.strftime(ReservationsHelper::SHORT_DATETIME_FORMAT) %></h4>
+
+	<h4 class="checkout-info"><strong>Due:</strong> <%= @reservation.in_time.strftime(ReservationsHelper::SHORT_DATETIME_FORMAT) %></h4>
+</div>
