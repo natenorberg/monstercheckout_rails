@@ -77,21 +77,6 @@ RSpec.describe Reservation, :type => :model do
     expect(@reservation).to_not be_valid
   end
 
-  it 'should be invalid if checking out without check_out_comments' do
-    @reservation.checked_out_time = Time.now
-    @reservation.check_out_comments = ''
-
-    expect(@reservation).to_not be_valid
-  end
-
-  it 'should be invalid if checking_in without check_in_comments' do
-    @reservation = FactoryGirl.create(:checkout)
-    @reservation.checked_in_time = Time.now
-    @reservation.check_in_comments = ''
-
-    expect(@reservation).to_not be_valid
-  end
-
   it 'should be invalid if changing checked_out_time' do
     @reservation = FactoryGirl.create(:checkout)
     @reservation.checked_out_time = Time.now

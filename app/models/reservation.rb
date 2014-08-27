@@ -31,8 +31,6 @@ class Reservation < ActiveRecord::Base
   validates :out_time, presence: true
   validates :in_time,  presence: true
   validate  :in_time_must_be_after_out_time
-  validates :check_out_comments, presence: true, if: '!checked_out_time.blank?'
-  validates :check_in_comments,  presence: true, if: '!checked_in_time.blank?'
   validate  :checked_out_time_should_not_change
   validate  :checked_in_time_should_not_change
   validates :checked_in_time, absence: true, if: '!checked_out?'
