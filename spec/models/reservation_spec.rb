@@ -39,8 +39,11 @@ RSpec.describe Reservation, :type => :model do
     expect(@reservation).to respond_to(:check_out_comments)
     expect(@reservation).to respond_to(:check_in_comments)
     expect(@reservation).to respond_to(:user_id)
+    expect(@reservation).to respond_to(:user)
     expect(@reservation).to respond_to(:checked_out_by_id)
     expect(@reservation).to respond_to(:checked_in_by_id)
+    expect(@reservation).to respond_to(:checked_out_by)
+    expect(@reservation).to respond_to(:checked_in_by)
     expect(@reservation).to respond_to(:equipment)
     expect(@reservation).to respond_to(:status)
   end

@@ -4,6 +4,17 @@
       <h3 class="panel-title">Timeline</h3>
     </div>
     <ul class="list-group timeline-list-group">
+      <% if @reservation.checked_out_time != nil %>
+      <li class="list-group-item">
+        <strong class="status-text-out"><i class="fa fa-sign-out"></i> Checked Out: </strong>
+        <%= auto_shrink_date(@reservation.checked_out_time).html_safe %>
+        <div class="timeline-monitor-info">
+          <%= gravatar_for(@reservation.checked_out_by, size=50) %>
+          <h4 class="timeline-monitor-name"><%= @reservation.checked_out_by.name %></h4>
+          <div class="well well-sm timeline-comments"><%= @reservation.check_out_comments %></div>
+        </div>
+      </li>
+      <% end %>
       <% if @reservation.is_approved? %>
       <li class="list-group-item">
         <strong class='status-text-approved'><i class="fa fa-thumbs-o-up"></i> Approved:</strong> 

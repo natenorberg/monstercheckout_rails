@@ -69,7 +69,7 @@ class ReservationsController < ApplicationController
 
   def checkout_update
     params[:reservation][:checked_out_time] = Time.now
-    params[:reservation][:checked_out_by_id] = current_user
+    params[:reservation][:checked_out_by_id] = current_user.id
 
     respond_to do |format|
       if @reservation.update(reservation_params)

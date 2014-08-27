@@ -25,6 +25,8 @@ class Reservation < ActiveRecord::Base
   has_many :reservation_equipment
   has_many :equipment, through: :reservation_equipment
   belongs_to :user
+  belongs_to :checked_out_by, class_name: 'User'
+  belongs_to :checked_in_by, class_name: 'User'
 
   validates :project,  presence: true
   validates :user_id, presence: true

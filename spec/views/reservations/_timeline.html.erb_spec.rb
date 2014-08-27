@@ -40,7 +40,7 @@ RSpec.describe 'reservations/_timeline', :type => :view do
   describe 'approved record' do
     before(:each) do
       @reservation.is_approved = true
-      @reservation.admin_response_time
+      @reservation.admin_response_time = Time.now
       view.stub(:auto_shrink_date).with(@reservation.admin_response_time).and_return 'Approved Date'
     end
 
@@ -50,12 +50,34 @@ RSpec.describe 'reservations/_timeline', :type => :view do
       assert_select 'li.list-group-item>strong.status-text-approved'
       assert_select 'li.list-group-item', text: /Approved Date/
     end
+
+    describe 'checked out record' do
+      before do 
+        @reservation.checked_out_time = Time.now
+        @monitor = FactoryGirl.create(:monitor)
+        @reservation.checked_out_by_id = @monitor.id
+        @reservation.check_out_comments = 'Checkout comments'
+        view.stub(:auto_shrink_date).with(@reservation.checked_out_time).and_return 'Checkout Date'
+      end
+
+      it 'renders checkout info' do
+        render partial: 'reservations/timeline'
+
+        assert_select 'li.list-group-item>strong.status-text-out'
+        assert_select 'li.list-group-item', text: /Checkout Date/
+        assert_select 'li.list-group-item>.timeline-monitor-info' do
+          
+          assert_select 'h4.timeline-monitor-name', :text => @monitor.name
+          assert_select '.timeline-comments', :text => /Checkout comments/
+        end
+      end
+    end
   end
 
   describe 'denied record' do
     before(:each) do
       @reservation.is_denied = true
-      @reservation.admin_response_time
+      @reservation.admin_response_time = Time.now
       view.stub(:auto_shrink_date).with(@reservation.admin_response_time).and_return 'Denied Date'
     end
 
