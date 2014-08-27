@@ -63,4 +63,42 @@ RSpec.describe 'shared/_user_reservation_list', :type => :view do
       end
     end
   end
+
+  describe 'checkout/checkin buttons' do
+    describe 'when user is monitor' do
+      before do
+
+        @test_user.stub(:monitor_access?).and_return true
+      end
+
+      it 'should render checkout button' do 
+        @reservations.each do |reservation|
+          reservation.stub(:approved?).and_return true
+        end
+        render partial: 'shared/user_reservation_list', locals: { reservations: @reservations, title: @title, show_approve_deny_buttons: true }
+
+        assert_select 'a.btn.btn-large.btn-primary', text: 'Check Out', count: 2
+      end
+
+      # it 'should render checkin button' do 
+      #   @reservations.each do |reservation|
+      #     reservation.stub(:out?).and_return true
+      #   end
+      #   render partial: 'shared/user_reservation_list', locals: { reservations: @reservations, title: @title, show_approve_deny_buttons: true }
+
+      #   assert_select 'a.btn.btn-large.btn-primary', text: 'Check In', count: 2
+      # end
+    end
+
+    describe 'when user is not monitor' do
+      before { @test_user.stub(:monitor_access?).and_return false }
+
+      it 'should not render checkout/checkin buttons' do
+        render partial: 'shared/user_reservation_list', locals: { reservations: @reservations, title: @title, show_approve_deny_buttons: true }
+
+        assert_select 'a.btn.btn-large.btn-primary', text: 'Check Out', count: 0
+        assert_select 'a.btn.btn-large.btn-primary', text: 'Check In', count: 0
+      end
+    end
+  end
 end
