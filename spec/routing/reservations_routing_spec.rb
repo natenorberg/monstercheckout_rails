@@ -46,5 +46,13 @@ RSpec.describe ReservationsController, :type => :routing do
     it 'routes to #checkout_update' do
       expect(:post => '/reservations/1/checkout_update').to route_to('reservations#checkout_update', :id => '1')
     end
+
+    it 'routes to #checkin' do
+      expect(:get => 'reservations/1/checkin').to route_to('reservations#checkin', :id => '1')
+    end
+
+    it 'routes to #checkin_update' do
+      expect(:post => 'reservations/1/checkin_update').to route_to('reservations#checkin_update', :id => '1')
+    end
   end
 end

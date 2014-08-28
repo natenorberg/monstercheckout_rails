@@ -60,16 +60,18 @@ RSpec.describe ReservationsController, :type => :controller do
     valid_session
     monitor = stub_model(User)
     monitor.stub(:monitor_access?).and_return true
+    @monitor_id = 77
+    monitor.stub(:id).and_return @monitor_id
     controller.stub(:current_user).and_return monitor 
-    controller.stub(:user_is_admin).and_return true
   end
 
   def non_monitor_session
     valid_session
     user = stub_model(User)
+    @non_monitor_id = 44
+    user.stub(:id).and_return @non_monitor_id
     user.stub(:monitor_access?).and_return false
     controller.stub(:current_user).and_return user 
-    controller.stub(:user_is_admin).and_return true
   end
 
   describe 'GET index' do
@@ -326,8 +328,17 @@ RSpec.describe ReservationsController, :type => :controller do
     describe 'when current_user is monitor' do
       it 'assigns the requested reservation as @reservation' do
         reservation = Reservation.create! valid_attributes
+        reservation.approved!
         get :checkout, {:id => reservation.to_param}, monitor_session
         expect(assigns(:reservation)).to eq(reservation)
+      end
+
+      describe 'when reservation is not approved' do
+        it 'redirects to root_path' do
+          reservation = Reservation.create! valid_attributes
+          get :checkout, {:id => reservation.to_param}, monitor_session
+          expect(response).to redirect_to(root_path)
+        end
       end
     end
 
@@ -335,6 +346,64 @@ RSpec.describe ReservationsController, :type => :controller do
       it 'redirects to root_path' do
         reservation = Reservation.create! valid_attributes
         get :checkout, {:id => reservation.to_param}, non_monitor_session
+        expect(response).to redirect_to(root_path)
+      end
+    end
+  end
+
+  describe 'POST checkout_update' do
+    describe 'when current_user is monitor' do
+      it 'updates the reservation with checkout information' do
+        reservation = Reservation.create! valid_attributes
+        reservation.approved!
+        put :checkout_update, {:id => reservation.to_param, :reservation => {:check_out_comments => 'checkout comments'}}, monitor_session
+        reservation.reload
+
+        expect(reservation.check_out_comments).to eq('checkout comments')
+        expect(reservation.checked_out_by_id).to eq(@monitor_id)
+        expect(reservation.checked_out_time).to_not eq(nil)
+      end
+
+      describe 'when reservation is not approved' do
+        it 'redirects to root_path' do
+          reservation = Reservation.create! valid_attributes
+          put :checkout_update, {:id => reservation.to_param, :reservation => {:check_out_comments => 'checkout comments'}}, monitor_session
+          expect(response).to redirect_to(root_path)
+        end
+      end
+
+      describe 'when current_user is not monitor' do
+        it 'redirects to root_path' do
+          reservation = Reservation.create! valid_attributes
+          put :checkout_update, {:id => reservation.to_param, :reservation => {:check_out_comments => 'checkout comments'}}, non_monitor_session
+          expect(response).to redirect_to(root_path)
+        end
+      end
+    end
+  end
+
+  describe 'GET checkin' do
+    describe 'when current_user is monitor' do
+      it 'assigns the requested reservation as @reservation' do
+        reservation = Reservation.create! valid_attributes
+        get :checkin, {:id => reservation.to_param}, monitor_session
+        expect(assigns(:reservation)).to eq(reservation)
+      end
+    end
+
+    describe 'when reservation can not be checked in' do
+      it 'redirects to root_path' do
+        reservation = Reservation.create! valid_attributes
+        reservation.stub(:can_checkin?).and_return false
+        get :checkin, {:id => reservation.to_param}, monitor_session
+        expect(response).to redirect_to(root_path)
+      end
+    end
+
+    describe 'when current_user is not monitor' do
+      it 'redirects to root_path' do
+        reservation = Reservation.create! valid_attributes
+        get :checkin, {:id => reservation.to_param}, non_monitor_session
         expect(response).to redirect_to(root_path)
       end
     end

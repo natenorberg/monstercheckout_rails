@@ -97,5 +97,21 @@ RSpec.describe 'reservations/show', :type => :view do
 
       assert_select 'a.btn.btn-large.btn-primary[href=?]', checkout_reservation_path(@reservation), text: 'Check Out', count: 0
     end
+
+    it 'should show checkin button if reservation can be checked out' do
+      @reservation.stub(:can_checkin?).and_return true
+
+      render
+
+      assert_select 'a.btn.btn-large.btn-primary[href=?]', checkin_reservation_path(@reservation), text: 'Check In', count: 1
+    end
+
+    it 'should not show checkin button if reservation can not be checked out' do
+      @reservation.stub(:can_checkin?).and_return false
+
+      render
+
+      assert_select 'a.btn.btn-large.btn-primary[href=?]', checkin_reservation_path(@reservation), text: 'Check In', count: 0
+    end
   end
 end

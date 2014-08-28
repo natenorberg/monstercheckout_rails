@@ -1,9 +1,11 @@
 class ReservationsController < ApplicationController
-  before_action :set_reservation, only: [:show, :edit, :update, :destroy, :approve, :deny, :checkout, :checkout_update]
+  before_action :set_reservation, only: [:show, :edit, :update, :destroy, :approve, :deny, :checkout, :checkout_update, :checkin]
   before_filter :user_signed_in
   before_filter :current_user_or_admin, only: [:destroy]
   before_filter :user_is_admin, only: [:approve, :deny]
-  before_filter :user_is_monitor, only: [:checkout]
+  before_filter :user_is_monitor, only: [:checkout, :checkout_update, :checkin, :checkin_update]
+  before_filter :reservation_can_be_checked_out, only: [:checkout, :checkout_update]
+  before_filter :reservation_can_be_checked_in, only: [:checkin]
 
   # GET /reservations
   # GET /reservations.json
@@ -131,7 +133,11 @@ class ReservationsController < ApplicationController
   # GET /reservations/1/checkout
   # GET /reservations/1/checkout.json
   def checkout
-    
+  end
+
+  # GET /reservations/1/checkin
+  # GET /reservations/1/checkin.json
+  def checkin
   end
 
   private
@@ -160,6 +166,14 @@ class ReservationsController < ApplicationController
       @reservation.is_denied = false
       @reservation.status = :requested
       @reservation.save
+    end
+
+    def reservation_can_be_checked_out
+      redirect_to root_path unless @reservation.approved?
+    end
+
+    def reservation_can_be_checked_in
+      redirect_to root_path unless @reservation.can_checkin?
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

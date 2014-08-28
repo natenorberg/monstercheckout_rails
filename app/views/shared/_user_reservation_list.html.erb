@@ -66,6 +66,11 @@
 				          <i class="fa fa-sign-out"></i> Check Out
 				        <% end %>
 					<% end %>
+					<% if reservation.can_checkin? %>
+						<%= link_to checkin_reservation_path(reservation), class: 'btn btn-large btn-primary' do %>
+				          <i class="fa fa-sign-in"></i> Check In
+				        <% end %>
+					<% end %>
 				<% end %>
 			</div>
 		</li>

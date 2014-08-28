@@ -80,14 +80,14 @@ RSpec.describe 'shared/_user_reservation_list', :type => :view do
         assert_select 'a.btn.btn-large.btn-primary', text: 'Check Out', count: 2
       end
 
-      # it 'should render checkin button' do 
-      #   @reservations.each do |reservation|
-      #     reservation.stub(:out?).and_return true
-      #   end
-      #   render partial: 'shared/user_reservation_list', locals: { reservations: @reservations, title: @title, show_approve_deny_buttons: true }
+      it 'should render checkin button' do 
+        @reservations.each do |reservation|
+          reservation.stub(:can_checkin?).and_return true
+        end
+        render partial: 'shared/user_reservation_list', locals: { reservations: @reservations, title: @title, show_approve_deny_buttons: true }
 
-      #   assert_select 'a.btn.btn-large.btn-primary', text: 'Check In', count: 2
-      # end
+        assert_select 'a.btn.btn-large.btn-primary', text: 'Check In', count: 2
+      end
     end
 
     describe 'when user is not monitor' do

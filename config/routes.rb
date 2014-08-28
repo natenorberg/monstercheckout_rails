@@ -18,6 +18,8 @@ Rails.application.routes.draw do
       get 'deny'
       get 'checkout'
       post 'checkout_update'
+      get 'checkin'
+      post 'checkin_update'
     end
   end
   resources :equipment
