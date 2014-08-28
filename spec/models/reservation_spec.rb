@@ -145,4 +145,22 @@ RSpec.describe Reservation, :type => :model do
     end
   end
 
+  describe 'can_checkin?' do
+    
+    it 'should return false if not checked out' do
+      @reservation = FactoryGirl.create(:reservation)
+      expect(@reservation.can_checkin?).to eq(false)
+    end
+
+    it 'should return false if already checked in' do
+      @reservation = FactoryGirl.create(:checkin)
+      expect(@reservation.can_checkin?).to eq(false)
+    end
+
+    it 'should return true otherwise' do
+      @reservation = FactoryGirl.create(:checkout)
+      expect(@reservation.can_checkin?).to eq(true)
+    end
+  end
+
 end

@@ -52,6 +52,10 @@ class Reservation < ActiveRecord::Base
     checked_in_time != nil
   end
 
+  def can_checkin?
+    checked_out? && !checked_in?
+  end
+
   def can_cancel?(current_user)
     current_user == user && !checked_out?
   end
