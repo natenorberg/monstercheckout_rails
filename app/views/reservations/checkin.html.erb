@@ -18,13 +18,13 @@
 			      </div>
 			    <% end %>
 
-			    <div class="field" id="check_in_comments_field">
+			    <div class="field" id="comments_field">
 			      <%= f.label :check_in_comments %><br>
 			      <%= f.text_area :check_in_comments, class: 'form-control' %>
 			    </div>
 
 			    <div class="actions">
-			      <%= f.submit 'Check In', class: 'btn btn-large btn-primary', id: 'checkin_button', disabled: true %>
+			      <%= f.submit 'Check In', class: 'btn btn-large btn-primary', id: 'submit_button', disabled: true %>
 			    </div>
 			<% end %>
 		</div>
