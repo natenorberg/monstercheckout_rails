@@ -1,0 +1,13 @@
+<h3>Equipment</h3>
+<h5>Please check that all the equipment is here to continue.</h5>
+
+<table class="table table-striped table-bordered">
+	<% @reservation.reservation_equipment.each do |item| %>
+		<tr>
+			<td>
+				<input type="checkbox" class="check">
+				<span class="checklist-label"><%= item.equipment.name %> <% if item.quantity > 1 %>(x<%= item.quantity %>)<% end %></span>
+			</td>
+		</tr>
+	<% end %>
+</table>

@@ -15,4 +15,5 @@ $(".check").click(function() {
 
 $( document ).ready(function() {
   $("#check_out_comments_field").hide();
+  $("#check_in_comments_field").hide();
 });

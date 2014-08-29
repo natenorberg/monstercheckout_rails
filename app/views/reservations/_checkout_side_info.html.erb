@@ -4,7 +4,19 @@
 		<h2 class="checkout-username"><%= @reservation.user.name %></h2>
 		<h3 class="checkout-project"><%= @reservation.project %></h3>
 	</div>
-	<h4 class="checkout-info"><strong>Reservation Time:</strong> <%= @reservation.out_time.strftime(ReservationsHelper::SHORT_DATETIME_FORMAT) %></h4>
+
+	<% if @reservation.checked_out? %>
+		<h4 class="checkout-info"><strong>Checked Out:</strong> <%= @reservation.checked_out_time.strftime(ReservationsHelper::SHORT_DATETIME_FORMAT) %></h4>
+	<% else %>
+		<h4 class="checkout-info"><strong>Reservation Time:</strong> <%= @reservation.out_time.strftime(ReservationsHelper::SHORT_DATETIME_FORMAT) %></h4>
+	<% end %>
 
 	<h4 class="checkout-info"><strong>Due:</strong> <%= @reservation.in_time.strftime(ReservationsHelper::SHORT_DATETIME_FORMAT) %></h4>
+
+	<% if @reservation.checked_out? %>
+		<h4 class="checkout-info"><strong>Checked out by:</strong> <%= @reservation.checked_out_by.name %></h4>
+
+		<h4 class="checkout-info"><strong>Comments:</strong> <%= @reservation.check_out_comments %></h4>
+	<% end %>
+
 </div>

@@ -1,1 +1,50 @@
-<h1>Check In</h1>
+<div class="top-padding"></div>
+
+<div class="row">
+	<div class="col-sm-7">
+		<div class="checklist-container">
+			<%= render 'checklist' %>
+
+			<%= form_for @reservation, url: checkin_update_reservation_path(@reservation), method: :post do |f| %>
+				<% if @reservation.errors.any? %>
+			      <div id="error_explanation">
+			        <h2><%= pluralize(@reservation.errors.count, 'error') %> prohibited this reservation from being saved:</h2>
+			  
+			        <ul>
+			        <% @reservation.errors.full_messages.each do |message| %>
+			          <li><%= message %></li>
+			        <% end %>
+			        </ul>
+			      </div>
+			    <% end %>
+
+			    <div class="field" id="check_in_comments_field">
+			      <%= f.label :check_in_comments %><br>
+			      <%= f.text_area :check_in_comments, class: 'form-control' %>
+			    </div>
+
+			    <div class="actions">
+			      <%= f.submit 'Check In', class: 'btn btn-large btn-primary', id: 'checkin_button', disabled: true %>
+			    </div>
+			<% end %>
+		</div>
+	</div>
+	<div class="col-sm-5">
+		<%= render 'checkout_side_info' %>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(".check").click(function() {
+    if (!$('input.check[type=checkbox]:not(:checked)').length) {
+        document.getElementById("checkin_button").disabled=false;
+	    $("#check_in_comments_field").show();
+	}
+    else
+        document.getElementById("checkin_button").disabled=true;
+});
+
+$( document ).ready(function() {
+  $("#check_in_comments_field").hide();
+});
+</script>

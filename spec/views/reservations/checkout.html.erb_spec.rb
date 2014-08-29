@@ -19,6 +19,8 @@ RSpec.describe 'reservations/checkout', :type => :view do
   it 'renders the checkout reservation form' do
     render
 
+    expect(rendered).to render_template(:partial => '_checklist')
+
     assert_select 'form[action=?][method=?]', checkout_update_reservation_path(@reservation), 'post' do
 
       assert_select 'textarea#reservation_check_out_comments[name=?]', 'reservation[check_out_comments]'
