@@ -408,5 +408,35 @@ RSpec.describe ReservationsController, :type => :controller do
       end
     end
   end
+
+  describe 'POST checkin_update' do
+    describe 'when current_user is monitor' do
+      it 'updates the reservation with checkin information' do
+        reservation = FactoryGirl.create(:checkout)
+        put :checkin_update, {:id => reservation.to_param, :reservation => {:check_in_comments => 'checkin comments'}}, monitor_session
+        reservation.reload
+
+        expect(reservation.check_in_comments).to eq('checkin comments')
+        expect(reservation.checked_in_by_id).to eq(@monitor_id)
+        expect(reservation.checked_in_time).to_not eq(nil)
+      end
+
+      describe 'when reservation is not checked out' do
+        it 'redirects to root_path' do
+          reservation = Reservation.create! valid_attributes
+          put :checkin_update, {:id => reservation.to_param, :reservation => {:check_in_comments => 'checkin comments'}}, monitor_session
+          expect(response).to redirect_to(root_path)
+        end
+      end
+
+      describe 'when current_user is not monitor' do
+        it 'redirects to root_path' do
+          reservation = Reservation.create! valid_attributes
+          put :checkin_update, {:id => reservation.to_param, :reservation => {:check_in_comments => 'checkin comments'}}, non_monitor_session
+          expect(response).to redirect_to(root_path)
+        end
+      end
+    end
+  end
 end
 

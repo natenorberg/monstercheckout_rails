@@ -33,18 +33,3 @@
 		<%= render 'checkout_side_info' %>
 	</div>
 </div>
-
-<script type="text/javascript">
-$(".check").click(function() {
-    if (!$('input.check[type=checkbox]:not(:checked)').length) {
-        document.getElementById("checkin_button").disabled=false;
-	    $("#check_in_comments_field").show();
-	}
-    else
-        document.getElementById("checkin_button").disabled=true;
-});
-
-$( document ).ready(function() {
-  $("#check_in_comments_field").hide();
-});
-</script>

@@ -1,11 +1,11 @@
 class ReservationsController < ApplicationController
-  before_action :set_reservation, only: [:show, :edit, :update, :destroy, :approve, :deny, :checkout, :checkout_update, :checkin]
+  before_action :set_reservation, only: [:show, :edit, :update, :destroy, :approve, :deny, :checkout, :checkout_update, :checkin, :checkin_update]
   before_filter :user_signed_in
   before_filter :current_user_or_admin, only: [:destroy]
   before_filter :user_is_admin, only: [:approve, :deny]
   before_filter :user_is_monitor, only: [:checkout, :checkout_update, :checkin, :checkin_update]
   before_filter :reservation_can_be_checked_out, only: [:checkout, :checkout_update]
-  before_filter :reservation_can_be_checked_in, only: [:checkin]
+  before_filter :reservation_can_be_checked_in, only: [:checkin, :checkin_update]
 
   # GET /reservations
   # GET /reservations.json
@@ -81,6 +81,21 @@ class ReservationsController < ApplicationController
         format.json { render :show, status: :ok, location: @reservation }
       else
         format.html { render :checkout }
+        format.json { render json: @reservation.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def checkin_update
+    params[:reservation][:checked_in_time] = Time.now
+    params[:reservation][:checked_in_by_id] = current_user.id
+
+    respond_to do |format|
+      if @reservation.update(reservation_params)
+        format.html { redirect_to @reservation, flash: { success: 'Reservation is checked in' } }
+        format.json { render :show, status: :ok, location: @reservation }
+      else
+        format.html { render :checkin }
         format.json { render json: @reservation.errors, status: :unprocessable_entity }
       end
     end
