@@ -71,6 +71,27 @@ RSpec.describe 'reservations/_timeline', :type => :view do
           assert_select '.timeline-comments', :text => /Checkout comments/
         end
       end
+
+      describe 'returned record' do
+        before do 
+          @reservation.checked_in_time = Time.now
+          @reservation.checked_in_by_id = @monitor.id
+          @reservation.check_in_comments = 'Checkin comments'
+          view.stub(:auto_shrink_date).with(@reservation.checked_in_time).and_return 'Checkin Date'
+        end
+
+        it 'renders checkin info' do
+          render partial: 'reservations/timeline'
+
+          assert_select 'li.list-group-item>strong.status-text-returned'
+          assert_select 'li.list-group-item', text: /Checkin Date/
+          assert_select 'li.list-group-item>.timeline-monitor-info' do
+            
+            assert_select 'h4.timeline-monitor-name', :text => @monitor.name
+            assert_select '.timeline-comments', :text => /Checkin comments/
+          end          
+        end
+      end
     end
   end
 
