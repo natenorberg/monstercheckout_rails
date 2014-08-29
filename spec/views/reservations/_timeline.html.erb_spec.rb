@@ -91,6 +91,20 @@ RSpec.describe 'reservations/_timeline', :type => :view do
             assert_select '.timeline-comments', :text => /Checkin comments/
           end          
         end
+
+        describe 'late' do
+          before do 
+            @reservation.stub(:returned_late?).and_return true
+          view.stub(:auto_shrink_date).with(@reservation.in_time).and_return 'Due Date'
+          end
+
+          it 'should render the due date' do
+            render partial: 'reservations/timeline'
+
+            assert_select 'li.list-group-item>strong.status-text-returned_late'
+            assert_select 'li.list-group-item', :text => /Due Date/
+          end
+        end
       end
     end
   end

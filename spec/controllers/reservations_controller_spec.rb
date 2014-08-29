@@ -411,14 +411,30 @@ RSpec.describe ReservationsController, :type => :controller do
 
   describe 'POST checkin_update' do
     describe 'when current_user is monitor' do
-      it 'updates the reservation with checkin information' do
-        reservation = FactoryGirl.create(:checkout)
-        put :checkin_update, {:id => reservation.to_param, :reservation => {:check_in_comments => 'checkin comments'}}, monitor_session
-        reservation.reload
+      describe 'when returned on time' do
+        it 'updates the reservation with checkin information' do
+          reservation = FactoryGirl.create(:checkout)
+          put :checkin_update, {:id => reservation.to_param, :reservation => {:check_in_comments => 'checkin comments'}}, monitor_session
+          reservation.reload
 
-        expect(reservation.check_in_comments).to eq('checkin comments')
-        expect(reservation.checked_in_by_id).to eq(@monitor_id)
-        expect(reservation.checked_in_time).to_not eq(nil)
+          expect(reservation.status).to eq('returned')
+          expect(reservation.check_in_comments).to eq('checkin comments')
+          expect(reservation.checked_in_by_id).to eq(@monitor_id)
+          expect(reservation.checked_in_time).to_not eq(nil)
+        end
+      end
+
+      describe 'when returned late' do
+        it 'marks the reservation as returned late' do
+          reservation = FactoryGirl.create(:checkout)
+          reservation.in_time = 1.hours.ago
+          reservation.save
+
+          put :checkin_update, {:id => reservation.to_param, :reservation => {:check_in_comments => 'checkin comments'}}, monitor_session
+          reservation.reload
+
+          expect(reservation.status).to eq('returned_late')
+        end
       end
 
       describe 'when reservation is not checked out' do

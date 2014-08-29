@@ -11,8 +11,20 @@
         <div class="timeline-monitor-info">
           <%= gravatar_for(@reservation.checked_in_by, size=50) %>
           <h4 class="timeline-monitor-name"><%= @reservation.checked_in_by.name %></h4>
-          <div class="well well-sm timeline-comments"><%= @reservation.check_in_comments %></div>
+          <div class="well well-sm timeline-comments">
+            <% if @reservation.check_in_comments != '' %>
+              <%= @reservation.check_in_comments %>
+            <% else %>
+              <em>No comments</em>
+            <% end %>
+          </div>
         </div>
+      </li>
+      <% end %>
+      <% if @reservation.returned_late? %>
+      <li class="list-group-item">
+        <strong class="status-text-returned_late"><i class="fa fa-meh-o"></i> Due:</strong>
+        <%= auto_shrink_date(@reservation.in_time).html_safe %>
       </li>
       <% end %>
       <% if @reservation.checked_out? %>
@@ -22,7 +34,13 @@
         <div class="timeline-monitor-info">
           <%= gravatar_for(@reservation.checked_out_by, size=50) %>
           <h4 class="timeline-monitor-name"><%= @reservation.checked_out_by.name %></h4>
-          <div class="well well-sm timeline-comments"><%= @reservation.check_out_comments %></div>
+          <div class="well well-sm timeline-comments">
+            <% if @reservation.check_out_comments != '' %>
+              <%= @reservation.check_out_comments %>
+            <% else %>
+              <em>No comments</em>
+            <% end %>
+          </div>
         </div>
       </li>
       <% end %>

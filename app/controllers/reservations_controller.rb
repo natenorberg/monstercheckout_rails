@@ -92,6 +92,12 @@ class ReservationsController < ApplicationController
 
     respond_to do |format|
       if @reservation.update(reservation_params)
+        if @reservation.checked_in_time > @reservation.in_time
+          @reservation.returned_late!
+        else
+          @reservation.returned!
+        end
+        
         format.html { redirect_to @reservation, flash: { success: 'Reservation is checked in' } }
         format.json { render :show, status: :ok, location: @reservation }
       else
