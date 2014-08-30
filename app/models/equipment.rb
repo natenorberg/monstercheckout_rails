@@ -15,6 +15,7 @@
 class Equipment < ActiveRecord::Base
   has_many :reservation_equipment
   has_many :reservations, through: :reservation_equipment
+  has_and_belongs_to_many :permissions
 
   validates :name, presence: true
   validates :quantity, numericality: { only_integer: true, greater_than: 0 }

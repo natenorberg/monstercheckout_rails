@@ -190,3 +190,16 @@ equipment:
       quantity: 1
       condition: Good
       description: Used for film sound.  Needs kit options
+
+permissions:
+  - name: Pre Music Tech
+    description: First year Music Technology students or those who haven't passed the gate
+
+  - name: Music Tech
+    description: Current Music Technology students who have passed the gate
+
+  - name: Music Ed
+    description: Music Education majors
+
+  - name: Staff
+    description: People who work for the MSU music department

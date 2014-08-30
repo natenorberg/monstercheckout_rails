@@ -29,6 +29,7 @@ describe 'User' do
     expect(@user).to respond_to(:reservations)
     expect(@user).to respond_to(:monitor_checkouts)
     expect(@user).to respond_to(:monitor_checkins)
+    expect(@user).to respond_to(:permissions)
   end
 
   it 'should have a valid factory' do

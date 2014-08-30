@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140825204107) do
+ActiveRecord::Schema.define(version: 20140830152137) do
 
   create_table "equipment", force: true do |t|
     t.string   "name"
@@ -22,6 +22,27 @@ ActiveRecord::Schema.define(version: 20140825204107) do
     t.datetime "updated_at"
     t.string   "description"
   end
+
+  create_table "equipment_permissions", id: false, force: true do |t|
+    t.integer "equipment_id"
+    t.integer "permission_id"
+  end
+
+  add_index "equipment_permissions", ["equipment_id", "permission_id"], name: "index_equipment_permissions_on_equipment_id_and_permission_id"
+
+  create_table "permissions", force: true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "permissions_users", id: false, force: true do |t|
+    t.integer "permission_id"
+    t.integer "user_id"
+  end
+
+  add_index "permissions_users", ["permission_id", "user_id"], name: "index_permissions_users_on_permission_id_and_user_id"
 
   create_table "reservation_equipment", force: true do |t|
     t.integer "reservation_id"
