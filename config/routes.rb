@@ -14,6 +14,9 @@ Rails.application.routes.draw do
   get 'monitor/dashboard' => 'monitor#dashboard'
   get 'monitor' => 'monitor#dashboard'
 
+  get 'admin/dashboard' => 'admin#dashboard'
+  get 'admin' => 'admin#dashboard'
+
   resources :reservations do
     member do
       get 'approve'

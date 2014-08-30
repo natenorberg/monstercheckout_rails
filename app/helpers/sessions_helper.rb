@@ -37,7 +37,7 @@ module SessionsHelper
 
   # Filter for requests that require user be an admin
   def user_is_admin
-    redirect_to root_path unless current_user && current_user.is_admin
+    redirect_to root_path unless current_user && current_user.is_admin?
   end
   
   def current_user_or_admin
