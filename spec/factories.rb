@@ -52,4 +52,9 @@ FactoryGirl.define do
     equipment
     quantity 2
   end
+
+  factory :permission do
+    sequence(:name) { |n| "Project #{n}"}
+    description 'A permission used for testing'
+  end
 end
