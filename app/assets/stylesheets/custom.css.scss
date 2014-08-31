@@ -6,6 +6,10 @@
    background-color: #f1f4f7;
  }
 
+.panel {
+  margin: 0 15px 20px 15px;
+}
+
 /* mixins */
 @mixin box_sizing {
 	-mox-box-sizing: border-box;
