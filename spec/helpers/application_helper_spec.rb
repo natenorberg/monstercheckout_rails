@@ -43,4 +43,16 @@ RSpec.describe ApplicationHelper, :type => :helper do
       expect(helper.is_monitor_action?('reservations', 'checkin')).to eq(true)
     end
   end
+
+  describe 'is_admin_action?' do
+    
+    it 'should be true if controller is admin' do
+      expect(helper.is_admin_action?('admin', 'anything')).to eq(true)
+    end
+
+    it 'should be true if controller is users' do
+      expect(helper.is_admin_action?('users', 'anything')).to eq(true)
+    end
+
+  end
 end

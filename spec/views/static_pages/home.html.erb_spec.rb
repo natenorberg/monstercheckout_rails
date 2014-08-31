@@ -20,7 +20,7 @@ RSpec.describe 'static_pages/home.html.erb', :type => :view do
 
     render
 
-    assert_select '.home-item>a.quick_link>h2', 'Monitor'
+    assert_select '.home-item>a.quick_link>h2', 'Monitor Dashboard'
   end
 
   it 'should show users quick link to admin' do
@@ -30,8 +30,8 @@ RSpec.describe 'static_pages/home.html.erb', :type => :view do
 
     render
 
-    assert_select '.home-item>a.quick_link>h2', 'Users'
-    assert_select '.home-item>a.quick_link>h2', 'Monitor'
+    assert_select '.home-item>a.quick_link>h2', 'Admin Dashboard'
+    assert_select '.home-item>a.quick_link>h2', 'Monitor Dashboard'
   end
 
 end

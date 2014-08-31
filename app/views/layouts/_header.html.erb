@@ -24,9 +24,9 @@
 						<% end %>		
 					</li>
 					<% if current_user.is_admin? %>
-						<li class="<%= 'active' if params[:controller] == 'users' %>">
-							<%= link_to users_path do %>
-								<i class="fa fa-users"></i> Users
+						<li class="<%= 'active' if is_admin_action?(params[:controller], params[:action]) %>">
+							<%= link_to admin_path do %>
+								<i class="fa fa-rocket"></i> Admin
 							<% end %>		
 						</li>
 					<% end %>

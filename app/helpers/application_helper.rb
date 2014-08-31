@@ -31,6 +31,10 @@ module ApplicationHelper
     end
   end
 
+  def is_admin_action?(controller, action)
+    controller == 'admin' || controller == 'users'
+  end
+
   def version_number
     '1.0.0 Development'
   end
