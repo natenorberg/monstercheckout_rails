@@ -21,6 +21,8 @@ RSpec.describe 'users/edit', :type => :view do
       assert_select 'input#user_name[name=?]', 'user[name]'
 
       assert_select 'input#user_email[name=?]', 'user[email]'
+
+      assert_select 'input[name=?]', 'user[permission_ids][]'
     end
   end
 end

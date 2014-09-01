@@ -28,6 +28,15 @@
 	</div>
 
 	<h3>Permissions</h3>
+	<div class="form-divider"></div>
+
+	<ul class="permissions-list">
+		<%= f.collection_check_boxes :permission_ids, Permission.all, :id, :name do |ff| %>
+		<li><%= ff.check_box %> <%= ff.label %></li>
+		<% end %>
+	</ul>
+
+	<div class="form-divider"></div>
 
 	<ul class="permissions-list">
 	  <li><%= f.check_box :is_monitor %> <%= f.label :is_admin, 'Lab Monitor access' %></li>

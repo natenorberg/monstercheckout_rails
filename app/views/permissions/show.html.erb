@@ -10,5 +10,19 @@
   <%= @permission.description %>
 </p>
 
+<h4>Users</h4>
+<ul class="permissions-list">
+	<% @permission.users.each do |user| %>
+	<li><%= user.name %></li>
+	<% end %>
+</ul>
+
+<h4>Equipment</h4>
+<ul class="permissions-list">
+	<% @permission.equipment.each do |item| %>
+	<li><%= item.name %></li>
+	<% end %>
+</ul>
+
 <%= link_to 'Edit', edit_permission_path(@permission) %> |
 <%= link_to 'Back', permissions_path %>

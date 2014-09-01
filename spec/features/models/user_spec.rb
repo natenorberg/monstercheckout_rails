@@ -14,7 +14,7 @@ require 'rails_helper'
 
 describe 'User' do
   
-  before { @user = FactoryGirl.create(:user) }
+  before { @user = FactoryGirl.build(:user) }
 
   subject { @user }
 
@@ -66,6 +66,7 @@ describe 'User' do
   end
 
   it 'is invalid when email has already been taken' do
+    @user.save
     other_user = @user.dup
     other_user.email = @user.email.upcase
 

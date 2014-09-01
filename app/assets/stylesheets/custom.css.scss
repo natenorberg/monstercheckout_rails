@@ -44,7 +44,7 @@ textarea {
   margin-bottom: 10px;
 }
 
-h2.inline-header, h3.inline-header {
+h2.inline-header, h3.inline-header, h4.inline-header {
   display: inline-block;
 }
 
@@ -133,6 +133,11 @@ a.quick_link {
 
 .error_explanation {
   color: #f00;
+}
+
+.form-divider {
+  margin-bottom: 7px;
+  border-bottom: 1px solid #ddd;
 }
 
 /* Gravatars */
