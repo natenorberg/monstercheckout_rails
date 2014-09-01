@@ -54,7 +54,7 @@ FactoryGirl.define do
   end
 
   factory :permission do
-    sequence(:name) { |n| "Project #{n}"}
+    sequence(:name) { |n| "Permission #{n}"}
     description 'A permission used for testing'
   end
 end

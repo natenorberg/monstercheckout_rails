@@ -1,6 +1,6 @@
 <% provide(:title, @equipment.name) %>
 
-<p id="notice"><%= notice %></p>
+<div class="top-padding"></div>
 
 <div class="row">
 	<div class="col-sm-5">
@@ -14,15 +14,22 @@
 			<p><%= @equipment.description %></p>
 
 
-			<!-- TODO: Add permission information once that's been implemented -->
+			<h4>Permissions</h4>
+			<ul class="permissions-list">
+				<% @equipment.permissions.each do |permission| %>
+				<li><%= permission.name %></li>
+				<% end %>
+			</ul>
 			
 			<% if current_user.is_admin? %>
-				<%= link_to edit_equipment_path(@equipment), class: 'btn btn-large btn-primary' do %>
-					<i class="fa fa-edit"></i> Edit
-				<% end %>
-				<%= link_to @equipment, method: :delete, class: 'btn btn-large btn-danger', data: { confirm: 'Are you sure?' } do %>
-					<i class="fa fa-trash-o"></i> Delete
-				<% end %> 
+				<div class="buttons">
+					<%= link_to edit_equipment_path(@equipment), class: 'btn btn-large btn-primary' do %>
+						<i class="fa fa-edit"></i> Edit
+					<% end %>
+					<%= link_to @equipment, method: :delete, class: 'btn btn-large btn-danger', data: { confirm: 'Are you sure?' } do %>
+						<i class="fa fa-trash-o"></i> Delete
+					<% end %> 
+				</div>
 			<% end %>
 		</div>
 	</div>

@@ -5,12 +5,14 @@ RSpec.describe 'equipment/show', :type => :view do
     mock_user = stub_model(User)
     mock_user.stub(:is_admin?).and_return(true)
     view.stub(:current_user).and_return(mock_user)
+    @permission = FactoryGirl.create(:permission)
     @equipment = assign(:equipment, Equipment.create!(
       :name => 'Name',
       :brand => 'Brand',
       :quantity => 1,
       :condition => 'Condition_',
-      :description => 'Description_'
+      :description => 'Description_',
+      :permissions => [@permission]
     ))
   end
 
@@ -21,6 +23,8 @@ RSpec.describe 'equipment/show', :type => :view do
     expect(rendered).to match(/1/)
     expect(rendered).to match(/Condition_/)
     expect(rendered).to match(/Description_/)
+    expect(rendered).to match /Permissions/
+    expect(rendered).to have_selector 'ul.permissions-list>li', :text => @permission.name
     expect(rendered).to render_template(:partial => 'shared/_user_reservation_list')
   end
 end

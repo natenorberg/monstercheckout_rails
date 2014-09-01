@@ -1,27 +1,44 @@
 <div class="row">
-  <div class="col-sm-8 col-sm-offset-2">
-    <%= form_for(@equipment) do |f| %>
+  <%= form_for(@equipment) do |f| %>
+    <div class="col-sm-6 col-sm-offset-1">
 
-      <%= render 'shared/error_messages', object: f.object %>
+        <%= render 'shared/error_messages', object: f.object %>
 
-      <%= f.label :name %>
-      <%= f.text_field :name, class: 'form-control' %>
-    
-      <%= f.label :brand %>
-      <%= f.text_field :brand, class: 'form-control' %>
-    
-      <%= f.label :quantity %>
-      <%= f.number_field :quantity, min: 1, step: 1, class: 'form-control' %> 
-      <!-- TODO: Check to see if this lets you save a non-integer -->
-    
-      <%= f.label :condition %>
-      <%= f.text_field :condition, class: 'form-control' %>
-    
-      <%= f.label :description %>
-      <%= f.text_area :description, class: 'form-control' %>
-    
-      <%= f.submit "Submit", class: 'btn btn-large btn-primary' %>
+        <div class="field">
+          <%= f.label :name %>
+          <%= f.text_field :name, class: 'form-control' %>
+        </div>
+
+        <div class="field">
+          <%= f.label :brand %>
+          <%= f.text_field :brand, class: 'form-control' %>
+        </div>
       
-    <% end %>
-  </div>
+        <div class="field">
+          <%= f.label :quantity %>
+          <%= f.number_field :quantity, min: 1, step: 1, class: 'form-control' %>
+        </div>
+
+        <div class="field">
+          <%= f.label :condition %>
+          <%= f.text_field :condition, class: 'form-control' %>
+        </div>
+
+        <div class="field">
+          <%= f.label :description %>
+          <%= f.text_area :description, class: 'form-control' %>
+        </div>
+        
+        <%= f.submit "Submit", class: 'btn btn-large btn-primary' %>
+        
+    </div>
+    <div class="col-sm-4">
+      <h4>Permissions</h4>
+      <ul class="permissions-list">
+        <%= f.collection_check_boxes :permission_ids, Permission.all, :id, :name do |ff| %>
+        <li><%= ff.check_box %> <%= ff.label %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
 </div>
