@@ -20,4 +20,10 @@ RSpec.describe 'users/new', :type => :view do
       assert_select 'input[name=?]', 'user[permission_ids][]'
     end
   end
+
+  it 'should render breadcrumbs' do
+    render
+
+    verify_breadcrumbs ['Admin', 'Users', 'New']
+  end
 end

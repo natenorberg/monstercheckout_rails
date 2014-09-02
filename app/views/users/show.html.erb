@@ -3,6 +3,13 @@
 <% else %> 
 	<% provide(:title, @user.name) %>
 <% end %>
+
+<ol class="breadcrumb">
+	<li><%= link_to 'Admin', admin_path %></li>
+	<li><%= link_to 'Users', users_path %></li>
+	<li class="active"><%= @user.name %></li>
+</ol>
+
 <div class="top-padding"></div>
 
 <div class="row">

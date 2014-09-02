@@ -26,4 +26,10 @@ RSpec.describe 'users/index', :type => :view do
     assert_select 'tr>td>div>h5', :text => 'email@example.com'.to_s, :count => 1
     assert_select 'tr>td>div>h5', :text => 'email2@example.com'.to_s, :count => 1
   end
+
+  it 'renders breadcrumbs' do
+    render
+
+    verify_breadcrumbs ['Admin', 'Users']
+  end
 end

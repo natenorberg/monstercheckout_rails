@@ -23,4 +23,10 @@ RSpec.describe 'users/show', :type => :view do
     expect(rendered).to have_selector 'ul.permissions-list>li', :text => @permission.name
     expect(rendered).to render_template(:partial => 'shared/_icon_reservation_list')
   end
+
+  it 'renders breadcrumbs' do
+    render
+
+    verify_breadcrumbs ['Admin', 'Users', @user.name]
+  end
 end

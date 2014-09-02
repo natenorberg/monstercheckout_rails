@@ -3,7 +3,13 @@
 <% else %> 
 	<% provide(:title, @user.name) %>
 <% end %>
-<p id="notice"><%= notice %></p>
+
+<ol class="breadcrumb">
+	<li><%= link_to 'Admin', admin_path %></li>
+	<li><%= link_to 'Users', users_path %></li>
+	<li><%= link_to @user.name, @user %></li>
+	<li class="active">Edit</li>
+</ol>
 
 <!-- ng-candidate -->
 <div class="row">

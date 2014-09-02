@@ -25,4 +25,10 @@ RSpec.describe 'users/edit', :type => :view do
       assert_select 'input[name=?]', 'user[permission_ids][]'
     end
   end
+
+  it 'renders breadcrumbs' do
+    render
+
+    verify_breadcrumbs ['Admin', 'Users', @user.name, 'Edit']
+  end
 end
