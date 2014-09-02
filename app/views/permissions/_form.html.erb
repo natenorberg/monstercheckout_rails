@@ -31,8 +31,11 @@
         <h3 class="panel-title">Users</h3>
       </div>
       <ul class="list-group">
+        <li class="list-group-item select-all-row">
+          <input type="checkbox" id="select_all_users"> Select all
+        </li>
         <%= f.collection_check_boxes :user_ids, User.all, :id, :name do |ff| %>
-          <li class="list-group-item"><%= ff.check_box %> <%= gravatar_for User.find(ff.value), size=30 %> <%= ff.label %></li>
+          <li class="list-group-item"><%= ff.check_box class: 'user-select' %> <%= gravatar_for User.find(ff.value), size=30 %> <%= ff.label %></li>
         <% end %>
       </ul>
     </div>
@@ -46,8 +49,11 @@
         <h3 class="panel-title">Equipment</h3>
       </div>
       <ul class="list-group">
+        <li class="list-group-item select-all-row">
+          <input type="checkbox" id="select_all_equipment"> Select all
+        </li>
         <%=f.collection_check_boxes :equipment_ids, Equipment.all, :id, :name do |ff| %>
-          <li class="list-group-item"><%= ff.check_box%> <%= ff.label %></li>
+          <li class="list-group-item"><%= ff.check_box class: 'equipment_select'%> <%= ff.label %></li>
         <% end %>
       </ul>
     </div>

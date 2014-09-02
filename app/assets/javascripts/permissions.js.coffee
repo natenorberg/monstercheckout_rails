@@ -1,3 +1,5 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://coffeescript.org/
+$('#select_all_equipment').click ->
+	$('.equipment_select').prop('checked', $('#select_all_equipment').is(':checked'));
+
+$('#select_all_users').click ->
+	$('.user-select').prop('checked', $('#select_all_users').is(':checked'));
