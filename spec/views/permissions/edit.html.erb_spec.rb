@@ -22,4 +22,10 @@ RSpec.describe 'permissions/edit', :type => :view do
       assert_select 'input[name=?]', 'permission[equipment_ids][]'
     end
   end
+
+  it 'renders breadcrumbs' do
+    render
+
+    verify_breadcrumbs ['Permissions', @permission.name, 'Edit']
+  end
 end

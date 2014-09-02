@@ -1,5 +1,9 @@
-<h1 class="page-header"><%= @permission.name %></h1>
+<ol class="breadcrumb">
+	<li><%= link_to 'Permissions', admin_path %></li>
+	<li class="active"><%= @permission.name %></li>
+</ol>
 
+<h1 class="page-header"><%= @permission.name %></h1>
 
 <h4 class="permission-subheader"> <%= @permission.description %> </h4>
 

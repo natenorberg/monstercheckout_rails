@@ -1,5 +1,11 @@
 <% provide(:title, @permission.name) %>
 
+<ol class="breadcrumb">
+	<li><%= link_to 'Permissions', admin_path %></li>
+	<li><%= link_to @permission.name, @permission %></li>
+	<li class="active">Edit</li>
+</ol>
+
 <h1 class="page-header">Editing <%= @permission.name %></h1>
 
 <%= render 'form' %>
