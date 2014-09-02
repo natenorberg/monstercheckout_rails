@@ -32,7 +32,7 @@ module ApplicationHelper
   end
 
   def is_admin_action?(controller, action)
-    controller == 'admin' || controller == 'users'
+    controller == 'admin' || controller == 'users' || controller == 'permissions'
   end
 
   def version_number

@@ -1,28 +1,48 @@
-<p id="notice"><%= notice %></p>
+<h1 class="page-header"><%= @permission.name %></h1>
 
-<p>
-  <strong>Name:</strong>
-  <%= @permission.name %>
-</p>
 
-<p>
-  <strong>Description:</strong>
-  <%= @permission.description %>
-</p>
+<h4 class="permission-subheader"> <%= @permission.description %> </h4>
 
-<h4>Users</h4>
-<ul class="permissions-list">
-	<% @permission.users.each do |user| %>
-	<li><%= user.name %></li>
-	<% end %>
-</ul>
+<div class="row">
+	<div class="col-sm-5">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Users</h3>
+			</div>
+			<% if @permission.users.any? %>
+			<ul class="list-group">
+				<% @permission.users.each do |user| %>
+				<li class="list-group-item"><%= gravatar_for user, size=30 %> <%= user.name %></li>
+				<% end %>
+			</ul>
+			<% else %>
+			<div class="panel-body"><em>No users have this permission</em></div>
+			<% end %>
+		</div>
+	</div>
+	<div class="col-sm-2">
+		<h5 class="permission-middle">can check out</h5>
+	</div>
+	<div class="col-sm-5">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Equipment</h3>
+			</div>
+			<% if @permission.equipment.any? %>
+			<ul class="list-group">
+				<% @permission.equipment.each do |item| %>
+				<li class="list-group-item"><%= item.name %></li>
+				<% end %>
+			</ul>
+			<% else %>
+			<div class="panel-body">
+				<em>No equipment is in this permission group</em>
+			</div>
+			<% end %>
+		</div>
+	</div>
+</div>
 
-<h4>Equipment</h4>
-<ul class="permissions-list">
-	<% @permission.equipment.each do |item| %>
-	<li><%= item.name %></li>
-	<% end %>
-</ul>
-
-<%= link_to 'Edit', edit_permission_path(@permission) %> |
-<%= link_to 'Back', permissions_path %>
+<%= link_to edit_permission_path(@permission), class: 'btn btn-large btn-primary permission_button' do %>
+	<i class="fa fa-pencil"></i> Edit
+<% end %>

@@ -11,15 +11,51 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
+  <div class="row">
+    <div class="col-sm-10 col-sm-offset-1">
+      <div class="field">
+        <%= f.label :name %><br>
+        <%= f.text_field :name, class: 'form-control' %>
+      </div>
+      <div class="field">
+        <%= f.label :description %><br>
+        <%= f.text_area :description, class: 'form-control' %>
+      </div>
+    </div>
   </div>
-  <div class="field">
-    <%= f.label :description %><br>
-    <%= f.text_area :description %>
+
+<div class="row">
+  <div class="col-sm-5">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Users</h3>
+      </div>
+      <ul class="list-group">
+        <%= f.collection_check_boxes :user_ids, User.all, :id, :name do |ff| %>
+          <li class="list-group-item"><%= ff.check_box %> <%= gravatar_for User.find(ff.value), size=30 %> <%= ff.label %></li>
+        <% end %>
+      </ul>
+    </div>
   </div>
+  <div class="col-sm-2">
+    <h5 class="permission-middle">can check out</h5>
+  </div>
+  <div class="col-sm-5">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Equipment</h3>
+      </div>
+      <ul class="list-group">
+        <%=f.collection_check_boxes :equipment_ids, Equipment.all, :id, :name do |ff| %>
+          <li class="list-group-item"><%= ff.check_box%> <%= ff.label %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>
+  
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit class: 'btn btn-large btn-primary permission_button' %>
+    <%= link_to "Cancel", @permission, class: 'btn btn-large btn-default' %>
   </div>
 <% end %>

@@ -54,5 +54,9 @@ RSpec.describe ApplicationHelper, :type => :helper do
       expect(helper.is_admin_action?('users', 'anything')).to eq(true)
     end
 
+    it 'should be true if controller is permissions' do
+      expect(helper.is_admin_action?('permissions', 'anything')).to eq(true)
+    end
+
   end
 end

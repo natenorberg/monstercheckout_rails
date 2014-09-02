@@ -1,3 +1,19 @@
-// Place all the styles related to the Permissions controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.permission-subheader {
+	text-align: center;
+	font-weight: 200;
+	margin-bottom: 25px;
+}
+
+.permission-middle {
+	text-align: center;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+.permission_button {
+	margin-left: 16px;
+}
+
+#permission_description {
+	margin-bottom: 30px;
+}
