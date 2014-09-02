@@ -56,7 +56,7 @@ class PermissionsController < ApplicationController
   def destroy
     @permission.destroy
     respond_to do |format|
-      format.html { redirect_to permissions_url, notice: 'Permission was successfully destroyed.' }
+      format.html { redirect_to admin_url, notice: 'Permission was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

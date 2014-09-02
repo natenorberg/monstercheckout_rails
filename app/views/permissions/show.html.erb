@@ -46,3 +46,6 @@
 <%= link_to edit_permission_path(@permission), class: 'btn btn-large btn-primary permission_button' do %>
 	<i class="fa fa-pencil"></i> Edit
 <% end %>
+<%= link_to @permission, method: :delete, class: 'btn btn-large btn-danger permission_button', data: { confirm: 'Are you sure?' } do %>
+	<i class="fa fa-trash-o"></i> Delete
+<% end %> 
