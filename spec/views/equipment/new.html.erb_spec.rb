@@ -29,4 +29,10 @@ RSpec.describe 'equipment/new', :type => :view do
       assert_select 'textarea#equipment_description[name=?]', 'equipment[description]'
     end
   end
+
+  it 'renders breadcrumbs' do
+    render
+
+    verify_breadcrumbs ['Equipment', 'New']
+  end
 end

@@ -1,5 +1,11 @@
 <% provide(:title, "Editing #{@equipment.name}") %>
 
+<ol class="breadcrumb">
+	<li><%= link_to 'Equipment', equipment_index_path %></li>
+	<li><%= link_to @equipment.name, @equipment %></li>
+	<li class="active">Edit</li>
+</ol>
+
 <!-- ng-candidate: Live update header text, possibly do something with subitems -->
 <h1 class="page-header"><%= @equipment.name %></h1>
 

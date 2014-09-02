@@ -1,5 +1,10 @@
 <% provide(:title, 'New Equipment') %>
 
+<ol class="breadcrumb">
+	<li><%= link_to 'Equipment', equipment_index_path %></li>
+	<li class="active">New</li>
+</ol>
+
 <h1 class="page-header">New equipment</h1>
 
 <%= render 'form' %>

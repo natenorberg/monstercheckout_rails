@@ -1,5 +1,10 @@
 <% provide(:title, @equipment.name) %>
 
+<ol class="breadcrumb">
+	<li><%= link_to 'Equipment', equipment_index_path %></li>
+	<li class="active"><%= @equipment.name %></li>
+</ol>
+
 <div class="top-padding"></div>
 
 <div class="row">
@@ -36,7 +41,8 @@
 	<div class="col-sm-7">
 		<div class="related-reservations">
 			<%= render 'shared/user_reservation_list', reservations: @equipment.reservations, 
-			title: 'Recent Reservations', empty_text: 'This equipment has not been reserved' %>
+			title: 'Recent Reservations', empty_text: 'This equipment has not been reserved',
+			show_approve_deny_buttons: false %>
 		</div>
 	</div>
 </div>

@@ -27,4 +27,10 @@ RSpec.describe 'equipment/show', :type => :view do
     expect(rendered).to have_selector 'ul.permissions-list>li', :text => @permission.name
     expect(rendered).to render_template(:partial => 'shared/_user_reservation_list')
   end
+
+  it 'renders breadcrumbs' do
+    render
+
+    verify_breadcrumbs ['Equipment', @equipment.name]
+  end
 end
