@@ -48,7 +48,7 @@
     
         <ul class="equipment-list">
           <!-- TODO: Filter this to only equipment that's allowed -->
-          <% Equipment.all.each do |equipment| %>
+          <% @equipment.each do |equipment| %>
               <li>
                 <%= check_box_tag 'reservation[equipment_ids][]', equipment.id, @reservation.equipment.include?(equipment) %>
                 <span class="equipment-choice-label" title='<%= equipment.description %>'><%= equipment.name %></span>

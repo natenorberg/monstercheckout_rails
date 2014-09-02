@@ -36,6 +36,17 @@ class User < ActiveRecord::Base
     is_admin? || is_monitor?
   end
 
+  def allowed_equipment
+    ids = Set.new
+    permissions.each do |p|
+      p.equipment.each do |item|
+        ids.add(item.id)
+      end
+    end
+
+    Equipment.where(id: ids.to_a)
+  end
+
   private
 
     def create_remember_token

@@ -1,5 +1,6 @@
 class ReservationsController < ApplicationController
   before_action :set_reservation, only: [:show, :edit, :update, :destroy, :approve, :deny, :checkout, :checkout_update, :checkin, :checkin_update]
+  before_action :set_equipment, only: [:new, :edit]
   before_filter :user_signed_in
   before_filter :current_user_or_admin, only: [:destroy]
   before_filter :user_is_admin, only: [:approve, :deny]
@@ -165,6 +166,10 @@ class ReservationsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_reservation
       @reservation = Reservation.find(params[:id])
+    end
+
+    def set_equipment
+      @equipment = current_user.allowed_equipment
     end
 
     def format_time_input

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'reservations/new', :type => :view do
   before(:each) do
-    @equipment = FactoryGirl.create(:equipment)
+    @equipment = [FactoryGirl.create(:equipment), FactoryGirl.create(:equipment)]
     @out_time = 1.days.ago
     @in_time = 1.days.from_now
     @user = FactoryGirl.create(:user)
@@ -14,6 +14,7 @@ RSpec.describe 'reservations/new', :type => :view do
       :in_time => @in_time,
       :is_approved => false,
     ))
+    assign(:equipment, @equipment)
   end
 
   it 'renders new reservation form' do
@@ -29,9 +30,9 @@ RSpec.describe 'reservations/new', :type => :view do
 
       assert_select 'ul.equipment-list' do
         
-        assert_select 'li>span.equipment-choice-label', @equipment.name
+        assert_select 'li>span.equipment-choice-label', @equipment.first.name
 
-        assert_select 'li>input[name=?][value=?]', 'reservation[equipment_ids][]', @equipment.id
+        assert_select 'li>input[name=?][value=?]', 'reservation[equipment_ids][]', @equipment.first.id
       end
 
       assert_select 'input[name=commit][value=Create Reservation]'

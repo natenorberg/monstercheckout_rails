@@ -146,4 +146,18 @@ describe 'User' do
       expect(@user.monitor_access?).to eq(false)
     end
   end
+
+  # Allowed equipment tests
+  describe 'allowed_equipment' do
+    before do 
+      @permission = FactoryGirl.create(:permission)
+      @equipment = FactoryGirl.create(:equipment)
+      @permission.stub(:equipment).and_return [@equipment]
+      @user.stub(:permissions).and_return [@permission]
+    end
+
+    it 'should return a list of equipment the user can use' do
+      expect(@user.allowed_equipment).to eq([@equipment])
+    end
+  end
 end

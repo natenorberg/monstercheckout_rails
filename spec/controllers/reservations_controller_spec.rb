@@ -39,46 +39,42 @@ RSpec.describe ReservationsController, :type => :controller do
   # ReservationsController. Be sure to keep this updated too.
   def valid_session
     controller.stub(:user_signed_in).and_return(true)
+    @user = stub_model(User)
+    @allowed_equipment = [FactoryGirl.create(:equipment), FactoryGirl.create(:equipment)]
+    @user.stub(:allowed_equipment).and_return @allowed_equipment
+    controller.stub(:current_user).and_return @user
   end
 
   def non_admin_session
     valid_session
-    user = stub_model(User)
-    user.stub(:is_admin?).and_return false
-    controller.stub(:current_user).and_return(user)
+    @user.stub(:is_admin?).and_return false
   end
 
   def admin_session
     valid_session
-    admin = stub_model(User)
-    admin.stub(:is_admin?).and_return true
-    controller.stub(:current_user).and_return admin 
+    @user.stub(:is_admin?).and_return true
     controller.stub(:user_is_admin).and_return true
   end
 
   def monitor_session
     valid_session
-    monitor = stub_model(User)
-    monitor.stub(:monitor_access?).and_return true
+    @user.stub(:monitor_access?).and_return true
     @monitor_id = 77
-    monitor.stub(:id).and_return @monitor_id
-    controller.stub(:current_user).and_return monitor 
+    @user.stub(:id).and_return @monitor_id
   end
 
   def non_monitor_session
     valid_session
-    user = stub_model(User)
     @non_monitor_id = 44
-    user.stub(:id).and_return @non_monitor_id
-    user.stub(:monitor_access?).and_return false
-    controller.stub(:current_user).and_return user 
+    @user.stub(:id).and_return @non_monitor_id
+    @user.stub(:monitor_access?).and_return false
   end
 
   describe 'GET index' do
     it 'assigns user reservations as @user_reservations' do
       reservation = Reservation.create! valid_attributes
       controller.stub(:current_user).and_return reservation.user
-      get :index, {}, valid_session
+      get :index, {}
       expect(assigns(:user_reservations)).to eq([reservation])
     end
   end
@@ -95,6 +91,7 @@ RSpec.describe ReservationsController, :type => :controller do
     it 'assigns a new reservation as @reservation' do
       get :new, {}, valid_session
       expect(assigns(:reservation)).to be_a_new(Reservation)
+      expect(assigns(:equipment)).to eq(@allowed_equipment)
     end
   end
 
@@ -103,6 +100,7 @@ RSpec.describe ReservationsController, :type => :controller do
       reservation = Reservation.create! valid_attributes
       get :edit, {:id => reservation.to_param}, valid_session
       expect(assigns(:reservation)).to eq(reservation)
+      expect(assigns(:equipment)).to eq(@allowed_equipment)
     end
   end
 
