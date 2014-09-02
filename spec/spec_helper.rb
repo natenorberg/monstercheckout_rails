@@ -79,4 +79,13 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 =end
+
+  # Since beadcrumbs are used for navigation they should be tested
+  # This helper takes an array of elements in the breadcrumbs and checks that they're all there
+  def verify_breadcrumbs(crumbs)
+    crumbs.each do |crumb|
+      assert_select 'ol.breadcrumb>li', :text => crumb
+    end
+  end
+
 end

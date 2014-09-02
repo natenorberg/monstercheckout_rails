@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'reservations/checkout', :type => :view do
+RSpec.describe 'reservations/checkin', :type => :view do
   before(:each) do
     @equipment = FactoryGirl.create(:equipment)
     @out_time = 1.days.ago
@@ -21,9 +21,9 @@ RSpec.describe 'reservations/checkout', :type => :view do
 
     expect(rendered).to render_template(:partial => '_checklist')
 
-    assert_select 'form[action=?][method=?]', checkout_update_reservation_path(@reservation), 'post' do
+    assert_select 'form[action=?][method=?]', checkin_update_reservation_path(@reservation), 'post' do
 
-      assert_select 'textarea#reservation_check_out_comments[name=?]', 'reservation[check_out_comments]'
+      assert_select 'textarea#reservation_check_in_comments[name=?]', 'reservation[check_in_comments]'
 
       expect(rendered).to render_template(:partial => '_checkout_side_info')
     end
@@ -32,6 +32,6 @@ RSpec.describe 'reservations/checkout', :type => :view do
   it 'renders breadcrumbs' do
     render
 
-    verify_breadcrumbs ['Monitor', 'Project', 'Check Out']
+    verify_breadcrumbs ['Monitor', 'Project', 'Check In']
   end
 end

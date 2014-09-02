@@ -73,6 +73,18 @@ a {
   height: 30px;
 }
 
+/* Breadcrumbs */
+ol.breadcrumb {
+  height: 36px;
+  padding: 8px 15px;
+  margin: 10px 10px;
+  font-size: 14px;
+
+  a {
+    color: #4c89ca;
+  }
+}
+
 /* Fonts */
 h1, h2, h3, h4, h5, h6{
 	line-height: 1;

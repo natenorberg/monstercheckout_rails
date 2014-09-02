@@ -38,4 +38,10 @@ RSpec.describe 'reservations/new', :type => :view do
       assert_select 'input[name=commit][value=Create Reservation]'
     end
   end
+
+  it 'renders breadcrumbs' do
+    render
+
+    verify_breadcrumbs ['Reservations', 'New']
+  end
 end

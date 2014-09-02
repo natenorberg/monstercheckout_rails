@@ -1,6 +1,9 @@
 <% provide(:title, @reservation.project) %>
 
-<p id="notice"><%= notice %></p>
+<ol class="breadcrumb">
+  <li><%= link_to 'Reservations', reservations_path %></li>
+  <li class="active"><%= @reservation.project %></li>
+</ol>
 
 <div class="row">
   <div class="col-sm-5">
