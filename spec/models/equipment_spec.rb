@@ -57,4 +57,36 @@ RSpec.describe Equipment, :type => :model do
     expect(@mic).to_not be_valid
   end
 
+  describe 'can_be_checked_out_by' do
+    before do 
+      @user = stub_model(User)
+    end
+
+    describe 'when user has permission' do
+      before do 
+        permission = FactoryGirl.create(:permission)
+        @mic.permissions = [permission]
+        @user.stub(:permissions).and_return [permission]
+      end
+
+      it 'should return true' do
+        expect(@mic.can_be_checked_out_by(@user)).to eq(true)
+      end
+    end
+
+    describe 'when user does not have permission' do
+      before do 
+        permission = FactoryGirl.create(:permission)
+        other_permission = FactoryGirl.create(:permission)
+
+        @mic.permissions = [permission]
+        @user.stub(:permissions).and_return [other_permission]
+      end
+
+      it 'should return false' do
+        expect(@mic.can_be_checked_out_by(@user)).to eq(false)
+      end
+    end
+  end
+
 end

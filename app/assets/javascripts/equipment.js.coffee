@@ -1,3 +1,7 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://coffeescript.org/
+# This works but breaks the zebra-striping
+# Pushing to next release to use angular.js
+# $('#hide_not_allowed').click ->
+# 	if $('#hide_not_allowed').is(':checked')
+# 		$('.equipment-denied-row').hide()
+# 	else
+# 		$('.equipment-denied-row').show()

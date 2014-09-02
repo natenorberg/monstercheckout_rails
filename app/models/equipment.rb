@@ -21,4 +21,16 @@ class Equipment < ActiveRecord::Base
   validates :quantity, numericality: { only_integer: true, greater_than: 0 }
   validates :condition, presence: true
   validates :description, presence: true
+
+  def can_be_checked_out_by(user)
+    permissions.each do |permission|
+      user.permissions.each do |user_permission|
+        if permission == user_permission
+          return true
+        end
+      end
+    end
+
+    false
+  end
 end

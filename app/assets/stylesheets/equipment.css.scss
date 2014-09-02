@@ -12,3 +12,12 @@
     margin-bottom: 15px;
   }
 }
+
+tr.equipment-denied-row {
+  color: #888;
+  font-style: italic;
+
+  a {
+  	color: #888;
+  }
+}
