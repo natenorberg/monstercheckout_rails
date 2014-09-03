@@ -1,6 +1,6 @@
 class ReservationsController < ApplicationController
   before_action :set_reservation, only: [:show, :edit, :update, :destroy, :approve, :deny, :checkout, :checkout_update, :checkin, :checkin_update]
-  before_action :set_equipment, only: [:new, :create, :edit]
+  before_action :set_equipment, only: [:new, :create, :edit, :update]
   before_filter :user_signed_in
   before_filter :current_user_or_admin, only: [:destroy]
   before_filter :user_is_admin, only: [:approve, :deny]
@@ -62,8 +62,13 @@ class ReservationsController < ApplicationController
   def update
     format_time_input 
     params[:reservation][:equipment_ids] ||= []
+    @conflicts = conflicts
     respond_to do |format|
-      if @reservation.update(reservation_params)
+      if @conflicts.any?
+        @reservation.errors.add(:base, 'There are conflicts')
+        format.html { render :edit }
+        format.json { render json: @reservation.errors, status: :unprocessable_entity }
+      elsif @reservation.update(reservation_params)
         update_quantities
         reset_approval_status
         format.html { redirect_to @reservation, flash: { success: 'Reservation was successfully updated.' } }
@@ -207,6 +212,8 @@ class ReservationsController < ApplicationController
       redirect_to root_path unless @reservation.can_checkin?
     end
 
+    # TODO: Move this into its own class
+    # TODO: Get tests around this
     def conflicts
       # Get the other reservations to check agains
       # TODO: Be more selective here
