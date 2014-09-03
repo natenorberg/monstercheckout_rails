@@ -22,7 +22,7 @@
 <div class="row">
 	<% if current_user.is_admin? %>
 		<div class="home-item col-sm-4 col-sm-offset-1 text-center">
-			<%= link_to users_path, class: 'quick_link' do %>
+			<%= link_to admin_path, class: 'quick_link' do %>
 				<i class="fa fa-rocket fa-5x"></i>
 				<h2>Admin Dashboard</h2>
 				<p>Dashboard for administrators to configure settings for the site.</p>
