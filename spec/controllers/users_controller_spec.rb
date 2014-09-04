@@ -32,7 +32,11 @@ RSpec.describe UsersController, :type => :controller do
   }
 
   let(:invalid_attributes) {
-    {name: '', email: '', password: 'pass', password_confirmation: 'different'}
+    {name: '', email: ''}
+  }
+
+  let(:invalid_password_attributes) { 
+    { password: 'pass', password_confirmation: 'different' } 
   }
 
   # This should return the minimal set of values that should be in the session
@@ -71,6 +75,14 @@ RSpec.describe UsersController, :type => :controller do
     it 'assigns the requested user as @user' do
       user = User.create! valid_attributes
       get :edit, {:id => user.to_param}, valid_session
+      expect(assigns(:user)).to eq(user)
+    end
+  end
+
+  describe 'GET password' do
+    it 'assigns the requested user as @user' do
+      user = User.create! valid_attributes
+      get :password, {:id => user.to_param}, valid_session
       expect(assigns(:user)).to eq(user)
     end
   end
@@ -150,6 +162,20 @@ RSpec.describe UsersController, :type => :controller do
         user = User.create! valid_attributes
         put :update, {:id => user.to_param, :user => invalid_attributes}, valid_session
         expect(response).to render_template('edit')
+      end
+    end
+
+    describe 'with invalid password params' do
+      it 'assigns the user as @user' do
+        user = User.create! valid_attributes
+        put :update, {:id => user.to_param, :user => invalid_password_attributes}, valid_session
+        expect(assigns(:user)).to eq(user)
+      end
+
+      it "re-renders the 'edit' template" do
+        user = User.create! valid_attributes
+        put :update, {:id => user.to_param, :user => invalid_password_attributes}, valid_session
+        expect(response).to render_template('password')
       end
     end
   end

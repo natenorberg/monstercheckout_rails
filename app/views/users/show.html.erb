@@ -4,11 +4,13 @@
 	<% provide(:title, @user.name) %>
 <% end %>
 
+<% if @user != current_user %>
 <ol class="breadcrumb">
 	<li><%= link_to 'Admin', admin_path %></li>
 	<li><%= link_to 'Users', users_path %></li>
 	<li class="active"><%= @user.name %></li>
 </ol>
+<% end %>
 
 <div class="top-padding"></div>
 
@@ -43,6 +45,9 @@
 			<div class="buttons">
 				<%= link_to edit_user_path(@user), class: 'btn btn-large btn-primary' do %>
 					<i class="fa fa-edit"></i> Edit
+				<% end %>
+				<%= link_to password_user_path(@user), class: 'btn btn-large btn-primary' do %>
+					<i class="fa fa-lock"></i> Reset Password
 				<% end %>
 				<% if current_user.is_admin? && current_user != @user %>
 					<%= link_to @user, method: :delete, class: 'btn btn-large btn-danger', data: { confirm: 'Are you sure?' } do %>

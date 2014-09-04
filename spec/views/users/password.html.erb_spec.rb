@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'users/edit', :type => :view do
+RSpec.describe 'users/password', :type => :view do
   before(:each) do
     mock_user = stub_model(User)
     mock_user.stub(:is_admin?).and_return(true)
@@ -13,16 +13,14 @@ RSpec.describe 'users/edit', :type => :view do
     ))
   end
 
-  it 'renders the edit user form' do
+  it 'renders the edit password user form' do
     render
 
     assert_select 'form[action=?][method=?]', user_path(@user), 'post' do
 
-      assert_select 'input#user_name[name=?]', 'user[name]'
+      assert_select 'input#user_password[type="password"][name=?]', 'user[password]'
 
-      assert_select 'input#user_email[name=?]', 'user[email]'
-
-      assert_select 'input[name=?]', 'user[permission_ids][]'
+      assert_select 'input#user_password_confirmation[type="password"][name=?]', 'user[password_confirmation]'
     end
   end
 
@@ -42,7 +40,7 @@ RSpec.describe 'users/edit', :type => :view do
     it 'renders breadcrumbs' do
       render
 
-      verify_breadcrumbs ['Admin', 'Users', @user.name, 'Edit']
+      verify_breadcrumbs ['Admin', 'Users', @user.name, 'Edit Password']
     end
   end
 end

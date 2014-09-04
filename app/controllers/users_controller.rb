@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :password, :update, :destroy]
   before_filter :user_signed_in
   before_filter :user_is_admin, only: [:index, :new, :create, :destroy]
   before_filter :current_user_or_admin, only: [:show, :edit, :update]
@@ -22,6 +22,10 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+  end
+
+  # GET /users/1/password
+  def password
   end
 
   # POST /users
@@ -48,6 +52,9 @@ class UsersController < ApplicationController
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
+        if params[:user][:password]
+          format.html { render :password }
+        end
         format.html { render :edit }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
