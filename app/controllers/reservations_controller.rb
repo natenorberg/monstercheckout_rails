@@ -43,7 +43,7 @@ class ReservationsController < ApplicationController
     @reservation.status = :requested
     respond_to do |format|
       if @conflicts.any?
-        @reservation.errors.add(:base, 'There are conflicts')
+        add_conflict_errors
         format.html { render :new }
         format.json { render json: @reservation.errors, status: :unprocessable_entity }
       elsif @reservation.save
@@ -65,7 +65,7 @@ class ReservationsController < ApplicationController
     @conflicts = conflicts
     respond_to do |format|
       if @conflicts.any?
-        @reservation.errors.add(:base, 'There are conflicts')
+        add_conflict_errors
         format.html { render :edit }
         format.json { render json: @reservation.errors, status: :unprocessable_entity }
       elsif @reservation.update(reservation_params)
@@ -272,7 +272,7 @@ class ReservationsController < ApplicationController
               total_quantities[item.id] -= other_item.quantity
 
               if total_quantities[item.id] < 0
-                conflicts[item.id] = reservation
+                conflicts[item.name] = reservation
               end
             end
 
@@ -281,6 +281,14 @@ class ReservationsController < ApplicationController
       end
 
       conflicts
+    end
+
+    def add_conflict_errors
+      @conflicts.each do |item, reservation|
+        @reservation.errors.add(:base, 
+          "#{item} is already reserved from #{reservation.out_time.strftime(ReservationsHelper::SHORT_DATETIME_FORMAT)} 
+          to #{reservation.in_time.strftime(ReservationsHelper::SHORT_DATETIME_FORMAT)}")
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
