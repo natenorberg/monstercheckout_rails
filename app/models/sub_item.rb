@@ -14,4 +14,8 @@
 
 class SubItem < ActiveRecord::Base
   belongs_to :kit, class_name: 'Equipment'
+
+  validates :name, presence: true, uniqueness: true
+  validates :description, presence: true
+  validates :kit_id, presence: true
 end
