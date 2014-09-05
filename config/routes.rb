@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :sub_items
+
   resources :permissions
 
   root 'static_pages#home'

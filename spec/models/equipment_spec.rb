@@ -10,51 +10,54 @@
 #  created_at  :datetime
 #  updated_at  :datetime
 #  description :string(255)
+#  is_kit      :boolean
 #
 
 require 'rails_helper'
 
 RSpec.describe Equipment, :type => :model do
   
-  before { @mic = FactoryGirl.create(:equipment) }
+  before { @equipment = FactoryGirl.create(:equipment) }
 
   it 'should respond to attributes' do
-    expect(@mic).to respond_to(:name)
-    expect(@mic).to respond_to(:brand)
-    expect(@mic).to respond_to(:quantity)
-    expect(@mic).to respond_to(:condition)
-    expect(@mic).to respond_to(:description)
-    expect(@mic).to respond_to(:reservations)
-    expect(@mic).to respond_to(:permissions)
+    expect(@equipment).to respond_to(:name)
+    expect(@equipment).to respond_to(:brand)
+    expect(@equipment).to respond_to(:quantity)
+    expect(@equipment).to respond_to(:condition)
+    expect(@equipment).to respond_to(:description)
+    expect(@equipment).to respond_to(:reservations)
+    expect(@equipment).to respond_to(:permissions)
+    expect(@equipment).to respond_to(:is_kit?)
+    expect(@equipment).to respond_to(:sub_items)
   end
 
   it 'should have a valid factory' do
-    expect(@mic).to be_valid
+    expect(@equipment).to be_valid
   end
 
   it 'is invalid without a name' do
-    @mic.name = ''
-    expect(@mic).to_not be_valid
+    @equipment.name = ''
+    expect(@equipment).to_not be_valid
   end
 
   it 'is invalid with quantity of zero' do
-    @mic.quantity = 0
-    expect(@mic).to_not be_valid
+    @equipment.quantity = 0
+    expect(@equipment).to_not be_valid
   end
 
   it 'is invalid with non-integer length' do
-    @mic.quantity = 1.5
-    expect(@mic).to_not be_valid
+    @equipment.quantity = 1.5
+    expect(@equipment).to_not be_valid
   end
 
   it 'is invalid without a condition' do
-    @mic.condition = ''
-    expect(@mic).to_not be_valid
+    @equipment.condition = ''
+    expect(@equipment).to_not be_valid
   end
 
   it 'is invalid without a description' do
-    @mic.description = ''
-    expect(@mic).to_not be_valid
+    @equipment.description = ''
+    expect(@equipment).to_not be_valid
   end
 
   describe 'can_be_checked_out_by' do
@@ -65,12 +68,12 @@ RSpec.describe Equipment, :type => :model do
     describe 'when user has permission' do
       before do 
         permission = FactoryGirl.create(:permission)
-        @mic.permissions = [permission]
+        @equipment.permissions = [permission]
         @user.stub(:permissions).and_return [permission]
       end
 
       it 'should return true' do
-        expect(@mic.can_be_checked_out_by(@user)).to eq(true)
+        expect(@equipment.can_be_checked_out_by(@user)).to eq(true)
       end
     end
 
@@ -79,12 +82,12 @@ RSpec.describe Equipment, :type => :model do
         permission = FactoryGirl.create(:permission)
         other_permission = FactoryGirl.create(:permission)
 
-        @mic.permissions = [permission]
+        @equipment.permissions = [permission]
         @user.stub(:permissions).and_return [other_permission]
       end
 
       it 'should return false' do
-        expect(@mic.can_be_checked_out_by(@user)).to eq(false)
+        expect(@equipment.can_be_checked_out_by(@user)).to eq(false)
       end
     end
   end

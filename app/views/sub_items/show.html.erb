@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @sub_item.name %>
+</p>
+
+<p>
+  <strong>Brand:</strong>
+  <%= @sub_item.brand %>
+</p>
+
+<p>
+  <strong>Kit:</strong>
+  <%= @sub_item.kit %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @sub_item.description %>
+</p>
+
+<p>
+  <strong>Is optional:</strong>
+  <%= @sub_item.is_optional %>
+</p>
+
+<%= link_to 'Edit', edit_sub_item_path(@sub_item) %> |
+<%= link_to 'Back', sub_items_path %>

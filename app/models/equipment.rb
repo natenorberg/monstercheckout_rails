@@ -10,11 +10,13 @@
 #  created_at  :datetime
 #  updated_at  :datetime
 #  description :string(255)
+#  is_kit      :boolean
 #
 
 class Equipment < ActiveRecord::Base
   has_many :reservation_equipment
   has_many :reservations, through: :reservation_equipment
+  has_many :sub_items
   has_and_belongs_to_many :permissions
 
   validates :name, presence: true

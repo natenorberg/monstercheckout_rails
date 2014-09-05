@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140830152137) do
+ActiveRecord::Schema.define(version: 20140905143034) do
 
   create_table "equipment", force: true do |t|
     t.string   "name"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20140830152137) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "description"
+    t.boolean  "is_kit"
   end
 
   create_table "equipment_permissions", id: false, force: true do |t|
@@ -74,6 +75,18 @@ ActiveRecord::Schema.define(version: 20140830152137) do
   end
 
   add_index "reservations", ["user_id"], name: "index_reservations_on_user_id"
+
+  create_table "sub_items", force: true do |t|
+    t.string   "name"
+    t.string   "brand"
+    t.integer  "kit_id"
+    t.text     "description"
+    t.boolean  "is_optional"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sub_items", ["kit_id"], name: "index_sub_items_on_kit_id"
 
   create_table "users", force: true do |t|
     t.string   "name"
