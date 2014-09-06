@@ -1,3 +1,4 @@
+<!-- ng-candidate: Have all equipment and sub-item forms in the same angular app -->
 <div class="row">
   <%= form_for(@equipment) do |f| %>
     <div class="col-sm-6 col-sm-offset-1">
@@ -39,6 +40,13 @@
         <li><%= ff.check_box %> <%= ff.label %></li>
         <% end %>
       </ul>
+
+      <div id="kit_info">
+        <div class="form-divider"></div>
+        
+        <h4> <i class="fa fa-suitcase"></i> Recording kit</h4>
+          <%= f.check_box :is_kit %> <span>This item has several items that need to be checked out together.</span>
+      </div>
     </div>
   <% end %>
 </div>

@@ -27,6 +27,8 @@ RSpec.describe 'equipment/new', :type => :view do
       assert_select 'input[name=?]', 'equipment[permission_ids][]'
 
       assert_select 'textarea#equipment_description[name=?]', 'equipment[description]'
+    
+      assert_select 'input#equipment_is_kit[name=?]', 'equipment[is_kit]'
     end
   end
 
