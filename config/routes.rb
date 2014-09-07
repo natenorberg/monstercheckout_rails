@@ -29,7 +29,9 @@ Rails.application.routes.draw do
       post 'checkin_update'
     end
   end
-  resources :equipment
+  resources :equipment do
+    resources :sub_items
+  end
   resources :users do
     member do
       get 'password'

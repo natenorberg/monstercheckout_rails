@@ -30,7 +30,13 @@ class EquipmentController < ApplicationController
 
     respond_to do |format|
       if @equipment.save
-        format.html { redirect_to @equipment, notice: 'Equipment was successfully created.' }
+        format.html { 
+          if @equipment.is_kit?
+            redirect_to equipment_sub_items_path(@equipment), notice: 'Please enter the items that make up this kit'
+          else
+            redirect_to @equipment, notice: 'Equipment was successfully created.' 
+          end
+        }
         format.json { render :show, status: :created, location: @equipment }
       else
         format.html { render :new }

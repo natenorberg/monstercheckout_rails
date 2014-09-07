@@ -27,6 +27,10 @@ RSpec.describe EquipmentController, :type => :controller do
     {name: 'Test Microphone', brand: 'Shure', quantity: 1, condition: 'Unknown', description: 'Description'}
   }
 
+  let(:kit_attributes) { 
+    {name: 'Test Kit', brand: 'Test', quantity: 1, condition: 'Greate', description: 'Lots of stuff', is_kit: 1}
+  }
+
   let(:invalid_attributes) {
     {name: '', brand: '', quantity: 0, condition: '', description: ''}
   }
@@ -95,6 +99,13 @@ RSpec.describe EquipmentController, :type => :controller do
       it 'redirects to the created equipment' do
         post :create, {:equipment => valid_attributes}, admin_session
         expect(response).to redirect_to(Equipment.last)
+      end
+
+      describe 'when creating a kit' do
+        it 'redirects to the create subitem page' do
+          post :create, {:equipment => kit_attributes}, admin_session
+          expect(response).to redirect_to(equipment_sub_items_path(Equipment.last))
+        end
       end
     end
 
