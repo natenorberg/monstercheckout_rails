@@ -32,7 +32,7 @@ class EquipmentController < ApplicationController
       if @equipment.save
         format.html { 
           if @equipment.is_kit?
-            redirect_to equipment_sub_items_path(@equipment), notice: 'Please enter the items that make up this kit'
+            redirect_to new_equipment_sub_item_path(@equipment), notice: 'Please enter the items that make up this kit'
           else
             redirect_to @equipment, notice: 'Equipment was successfully created.' 
           end

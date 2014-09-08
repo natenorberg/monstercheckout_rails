@@ -1,4 +1,5 @@
 class SubItemsController < ApplicationController
+  before_action :set_kit
   before_action :set_sub_item, only: [:show, :edit, :update, :destroy]
 
   # GET /sub_items
@@ -14,7 +15,7 @@ class SubItemsController < ApplicationController
 
   # GET /sub_items/new
   def new
-    @sub_item = SubItem.new
+    @sub_item = @kit.sub_items.build
   end
 
   # GET /sub_items/1/edit
@@ -25,10 +26,10 @@ class SubItemsController < ApplicationController
   # POST /sub_items.json
   def create
     @sub_item = SubItem.new(sub_item_params)
-
+    @sub_item.kit = @kit
     respond_to do |format|
       if @sub_item.save
-        format.html { redirect_to @sub_item, notice: 'Sub item was successfully created.' }
+        format.html { redirect_to @kit, notice: 'Sub item was successfully created.' }
         format.json { render :show, status: :created, location: @sub_item }
       else
         format.html { render :new }
@@ -56,13 +57,17 @@ class SubItemsController < ApplicationController
   def destroy
     @sub_item.destroy
     respond_to do |format|
-      format.html { redirect_to sub_items_url, notice: 'Sub item was successfully destroyed.' }
+      format.html { redirect_to @kit, notice: 'Sub item was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def set_kit
+      @kit = Equipment.find(params[:equipment_id])
+    end
+
     def set_sub_item
       @sub_item = SubItem.find(params[:id])
     end

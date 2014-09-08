@@ -25,6 +25,15 @@
 				<li><%= permission.name %></li>
 				<% end %>
 			</ul>
+
+			<% if @equipment.is_kit? %>
+			<h4>Contents</h4>
+			<ul class="contents-list">
+				<% @equipment.sub_items.each do |item| %>
+				<li><%= item.name %> <%= '(Optional)' if item.is_optional? %></li>
+				<% end %>
+			</ul>
+			<% end %>
 			
 			<% if current_user.is_admin? %>
 				<div class="buttons">

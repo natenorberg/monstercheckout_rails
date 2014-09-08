@@ -104,7 +104,7 @@ RSpec.describe EquipmentController, :type => :controller do
       describe 'when creating a kit' do
         it 'redirects to the create subitem page' do
           post :create, {:equipment => kit_attributes}, admin_session
-          expect(response).to redirect_to(equipment_sub_items_path(Equipment.last))
+          expect(response).to redirect_to(new_equipment_sub_item_path(Equipment.last))
         end
       end
     end

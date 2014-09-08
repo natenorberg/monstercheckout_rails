@@ -35,13 +35,6 @@ RSpec.describe SubItem, :type => :model do
     expect(@item).to_not be_valid
   end
 
-  it 'should be invalid with a non-unique name' do
-    @item.save
-    other_item = @item.dup
-
-    expect(other_item).to_not be_valid
-  end
-
   it 'should be invalid without a description' do
     @item.description = ''
     expect(@item).to_not be_valid
