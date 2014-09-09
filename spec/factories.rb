@@ -22,14 +22,6 @@ FactoryGirl.define do
     description 'A sample mic used for testing MONSTER Checkout'
   end
 
-  factory :kit do
-    name 'Recording Kit'
-    brand 'Test Brand'
-    quantity 1
-    condition 'Good'
-    description 'A bunch of recording stuff'
-  end
-
   factory 'sub_item' do
     sequence(:name) { |n| "Item #{n}" }
     brand 'Test Brand'

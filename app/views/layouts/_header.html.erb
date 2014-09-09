@@ -18,7 +18,7 @@
 							<i class="fa fa-calendar"></i> Reservations
 						<% end %>
 					</li>
-					<li class="<%= 'active' if params[:controller] == 'equipment' %>">
+					<li class="<%= 'active' if params[:controller] == 'equipment' || params[:controller] == 'sub_items' %>">
 						<%= link_to equipment_index_path do %>
 							<i class="fa fa-microphone"></i> Equipment
 						<% end %>		

@@ -43,7 +43,7 @@ class SubItemsController < ApplicationController
   def update
     respond_to do |format|
       if @sub_item.update(sub_item_params)
-        format.html { redirect_to @sub_item, notice: 'Sub item was successfully updated.' }
+        format.html { redirect_to @kit, notice: 'Sub item was successfully updated.' }
         format.json { render :show, status: :ok, location: @sub_item }
       else
         format.html { render :edit }

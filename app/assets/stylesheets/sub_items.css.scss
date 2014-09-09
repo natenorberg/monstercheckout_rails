@@ -1,3 +1,20 @@
-// Place all the styles related to the SubItems controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.kit-side-info {
+  margin: 0px 20px;
+}
+
+.kit-side-description {
+	font-weight: 200;
+	margin-bottom: 20px;
+	font-size: 18px;
+}
+
+.kit-side-permissions-list {
+  padding: 0;
+  list-style-type: none;
+
+	li {
+		font-weight: 200;
+		margin-bottom: 20px;
+		font-size: 18px;
+	}
+}

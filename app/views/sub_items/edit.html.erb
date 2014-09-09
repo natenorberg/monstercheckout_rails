@@ -1,6 +1,35 @@
-<h1>Editing sub_item</h1>
+<% provide(:title, "Editing #{@sub_item.name}") %>
 
-<%= render 'form' %>
+<ol class="breadcrumb">
+	<li><%= link_to 'Equipment', equipment_index_path %></li>
+	<li><%= link_to @kit.name, @kit %></li>
+	<li><%= link_to @sub_item.name, equipment_sub_item_path(@kit, @sub_item) %></li>
+	<li class="active">Edit</li>
+</ol>
 
-<%= link_to 'Show', @sub_item %> |
-<%= link_to 'Back', sub_items_path %>
+<div class="top-padding"></div>
+
+<div class="row">
+	<div class="col-sm-6 col-sm-offset-1">
+		<h1>Editing <%= @sub_item.name %></h1>
+		<%= render 'form' %>
+	</div>
+	<div class="col-sm-4">
+		<div class="kit-side-info">
+			<h2><%= @kit.name %></h2>
+			
+			<h4 class="kit-side-description"><%= @kit.description %></h4>
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Contents</h3>
+			</div>
+			<ul class="kit-side-permissions-list list-group">
+				<% @kit.sub_items.each do |item| %>
+				<li class="list-group-item"><%= link_to item.name, edit_equipment_sub_item_path(@kit, item) %></li>
+				<% end %>
+			</ul>
+		</div>
+	</div>
+</div>

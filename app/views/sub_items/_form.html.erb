@@ -1,33 +1,25 @@
 <%= form_for([@kit, @sub_item]) do |f| %>
   <% if @sub_item.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@sub_item.errors.count, "error") %> prohibited this sub_item from being saved:</h2>
-
-      <ul>
-      <% @sub_item.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
+    <%= render 'shared/error_messages', object: f.object %>
   <% end %>
 
   <div class="field">
     <%= f.label :name %><br>
-    <%= f.text_field :name %>
+    <%= f.text_field :name, class: 'form-control' %>
   </div>
   <div class="field">
     <%= f.label :brand %><br>
-    <%= f.text_field :brand %>
+    <%= f.text_field :brand, class: 'form-control' %>
   </div>
   <div class="field">
     <%= f.label :description %><br>
-    <%= f.text_area :description %>
+    <%= f.text_area :description, class: 'form-control' %>
   </div>
   <div class="field">
-    <%= f.label :is_optional %><br>
     <%= f.check_box :is_optional %>
+    <%= f.label :is_optional %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit 'Save', class: 'btn btn-large btn-primary' %>
   </div>
 <% end %>

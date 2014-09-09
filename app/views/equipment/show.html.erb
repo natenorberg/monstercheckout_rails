@@ -30,7 +30,7 @@
 			<h4>Contents</h4>
 			<ul class="contents-list">
 				<% @equipment.sub_items.each do |item| %>
-				<li><%= item.name %> <%= '(Optional)' if item.is_optional? %></li>
+				<li title="<%= item.description %>"><%= item.name %> <%= '(Optional)' if item.is_optional? %></li>
 				<% end %>
 			</ul>
 			<% end %>

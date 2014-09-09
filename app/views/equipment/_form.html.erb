@@ -46,6 +46,18 @@
         
         <h4> <i class="fa fa-suitcase"></i> Recording kit</h4>
           <%= f.check_box :is_kit %> <span>This item has several items that need to be checked out together.</span>
+
+          <% if @equipment.is_kit? %>
+          <h4>Contents</h4>
+          <ul class="contents-list">
+            <% @equipment.sub_items.each do |item| %>
+            <li><%= link_to item.name, edit_equipment_sub_item_path(@equipment, item) %></li>
+            <% end %>
+          </ul>
+          <%= link_to new_equipment_sub_item_path(@equipment), class: 'btn btn-sm btn-success' do %>
+            <i class="fa fa-plus"></i> Add Another
+          <% end %>
+          <% end %>
       </div>
     </div>
   <% end %>
