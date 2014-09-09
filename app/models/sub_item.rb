@@ -14,6 +14,7 @@
 
 class SubItem < ActiveRecord::Base
   belongs_to :kit, class_name: 'Equipment'
+  has_and_belongs_to_many :reservations
 
   validates :name, presence: true
   validates :description, presence: true

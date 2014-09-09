@@ -24,6 +24,7 @@ RSpec.describe SubItem, :type => :model do
   	expect(@item).to respond_to(:description)
   	expect(@item).to respond_to(:is_optional?)
   	expect(@item).to respond_to(:kit)
+    expect(@item).to respond_to(:reservations)
   end
 
   it 'should have a valid factory' do

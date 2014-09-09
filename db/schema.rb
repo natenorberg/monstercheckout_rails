@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140905143034) do
+ActiveRecord::Schema.define(version: 20140909051459) do
 
   create_table "equipment", force: true do |t|
     t.string   "name"
@@ -75,6 +75,13 @@ ActiveRecord::Schema.define(version: 20140905143034) do
   end
 
   add_index "reservations", ["user_id"], name: "index_reservations_on_user_id"
+
+  create_table "reservations_sub_items", id: false, force: true do |t|
+    t.integer "reservation_id"
+    t.integer "sub_item_id"
+  end
+
+  add_index "reservations_sub_items", ["reservation_id", "sub_item_id"], name: "index_reservations_sub_items_on_reservation_id_and_sub_item_id"
 
   create_table "sub_items", force: true do |t|
     t.string   "name"

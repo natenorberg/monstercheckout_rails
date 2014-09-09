@@ -24,6 +24,7 @@
 class Reservation < ActiveRecord::Base
   has_many :reservation_equipment
   has_many :equipment, through: :reservation_equipment
+  has_and_belongs_to_many :sub_items
   belongs_to :user
   belongs_to :checked_out_by, class_name: 'User'
   belongs_to :checked_in_by, class_name: 'User'

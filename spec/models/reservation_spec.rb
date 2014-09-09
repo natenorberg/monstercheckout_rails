@@ -45,6 +45,7 @@ RSpec.describe Reservation, :type => :model do
     expect(@reservation).to respond_to(:checked_out_by)
     expect(@reservation).to respond_to(:checked_in_by)
     expect(@reservation).to respond_to(:equipment)
+    expect(@reservation).to respond_to(:sub_items)
     expect(@reservation).to respond_to(:status)
   end
 
