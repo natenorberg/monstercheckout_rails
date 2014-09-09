@@ -21,5 +21,10 @@
   </div>
   <div class="actions">
     <%= f.submit 'Save', class: 'btn btn-large btn-primary' %>
+    <% if params[:action] == 'edit' %>
+      <%= link_to equipment_sub_item_path(@kit, @sub_item), method: :delete, class: 'btn btn-large btn-danger', data: { confirm: 'Are you sure?' } do %>
+        <i class="fa fa-trash-o"></i> Delete
+      <% end %> 
+    <% end %>
   </div>
 <% end %>
