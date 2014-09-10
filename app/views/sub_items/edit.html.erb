@@ -25,7 +25,7 @@
 			<div class="panel-heading">
 				<h3 class="panel-title">Contents</h3>
 			</div>
-			<ul class="kit-side-permissions-list list-group">
+			<ul class="list-group">
 				<% @kit.sub_items.each do |item| %>
 				<li class="list-group-item"><%= link_to item.name, edit_equipment_sub_item_path(@kit, item) %></li>
 				<% end %>
