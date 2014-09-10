@@ -3,11 +3,39 @@
 
 <table class="table table-striped table-bordered">
 	<% @reservation.reservation_equipment.each do |item| %>
+		<% if !item.equipment.is_kit? %>
 		<tr>
 			<td>
 				<input type="checkbox" class="check">
 				<span class="checklist-label"><%= item.equipment.name %> <% if item.quantity > 1 %>(x<%= item.quantity %>)<% end %></span>
 			</td>
 		</tr>
+		<% end %>
 	<% end %>
 </table>
+
+<% @reservation.equipment.each do |item| %>
+	<% if item.is_kit? %>
+		<h4><%= item.name %></h4>
+		<table class="table table-striped table-bordered">
+			<% item.sub_items.each do |sub_item| %>
+				<% if !sub_item.is_optional? %>
+				<tr>
+					<td>
+						<input type="checkbox" class="check">
+						<span class="checklist-label"><%= sub_item.name %></span>
+					</td>
+				</tr>
+				<% end %>
+			<% end %>
+			<% @reservation.sub_items.each do |sub_item| %>
+				<tr>
+					<td>
+						<input type="checkbox" class="check">
+						<span class="checklist-label"><%= sub_item.name %></span>
+					</td>
+				</tr>
+			<% end %>
+		</table>
+	<% end %>
+<% end %>
