@@ -1,3 +1,200 @@
 // Place all the styles related to the Reservations controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+/* Reservation items */
+.reservation-icon, .reservation-info {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.status-msu > .reservation-icon{
+  color: #32a76f;
+}
+
+.status-checked-out > .reservation-icon{
+  color: #b99c5f;
+}
+
+.reservation-info {
+  padding-left: 15px;
+
+  > .reservation-header {
+    font-family: "Helvetica Neue", arial, sans-serif;
+    font-weight: 700;
+    font-size: 25px;
+    line-height: 30px;
+  }
+
+  > .reservation-subheader {
+    font-family: "Helvetica Neue", arial, sans-serif;
+    font-weight: 200;
+    font-size: 17px;
+  }
+}
+
+.reservation-details {
+  padding: 15px;
+}
+
+.reservation-header-info {
+  display: inline-block;
+  margin-left: 15px;
+
+  > h2 {
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 28px;
+  }
+
+  > h4 {
+    font-weight: 200;
+  }
+}
+
+@media screen and (max-width:570px) {
+    .reservation-icon { display:none }
+}
+
+.status-text-requested, .status-text-out, .status-text-updated {
+  color: #326fa7;
+}
+
+.status-text-approved, .status-text-returned {
+  color: #32a76f;
+}
+
+.status-text-overdue, .status-text-returned_late , .status-text-denied {
+  color: #d73f32;
+}
+
+.status-text-forgotten {
+  color: #88a;
+}
+
+ul.equipment-list {
+  list-style: none;
+  padding-left: 0;
+  border-top: 1px solid #c5c5c5;
+
+  li {
+    border-bottom: 1px solid #c5c5c5;
+    border-left: 1px solid #c5c5c5;
+    border-right: 1px solid #c5c5c5;
+
+    padding: 2px 5px;
+    height: 30px;
+
+    span.equipment-choice-label {
+      color: #46557a;
+      font-weight: 700;
+      margin-left: 2px;
+      line-height: 27px;
+    }
+
+    .quantity-box {
+      width: 50px;
+      height: 25px;
+      display: inline-block;
+      padding: 3px 5px;
+    }
+  }
+  
+  li:nth-child(odd)  { background-color:#f1f4f7; }
+  li:nth-child(even) { background-color:#fff; }
+}
+
+ul.equipment-show-list {
+  list-style: none;
+  padding-left: 10px;
+
+  li {
+    font-size: 15px;
+    line-height: 20px;
+  }
+}
+
+.timeline {
+  padding: 0 15px;
+}
+
+.timeline-event {
+  font-size: 16px;
+  text-align: right;
+}
+
+.timeline-timestamp {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.timeline-list-group {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.timeline-monitor-info {
+  margin-top: 15px;
+  margin-left: 5px;
+}
+
+.timeline-monitor-name {
+  display: inline-block;
+  font-size: 20px;
+  vertical-align: top;
+  padding-top: 3px;
+  margin-left: 5px;
+}
+
+.timeline-comments {
+  margin-top: -20px;
+  margin-left: 57px;
+}
+
+.reservation-panel {
+  margin: 0 15px 20px 15px;
+}
+
+.checklist-container {
+  padding: 0 15px;
+}
+
+span.checklist-label {
+  color: #46557a;
+  font-weight: 700;
+}
+
+.checkout-side {
+  .checkout-side-info {
+    display: inline-block;
+    margin-top: 20px;
+    margin-left: 5px;
+
+    h2.checkout-username {
+      margin-bottom: 5px;
+    }
+
+    h3.checkout-project {
+      font-weight: 200;
+    }
+  }
+
+  h4.checkout-info {
+    margin-top: 15px;
+    font-weight: 200;
+  }
+
+  p.checkout-side-info-comments {
+    font-size: 17px;
+    font-weight: 200;
+    margin-left: 20px;
+  }
+}
+
+#reservation_form_list_container {
+  margin: 0;
+}
+
+#equipment_list {
+  padding: 0;
+}

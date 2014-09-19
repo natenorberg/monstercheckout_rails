@@ -1,4 +1,14 @@
 @import "bootstrap";
+@import 'bootstrap-datetimepicker';
+
+.table-striped>tbody>tr:nth-child(odd)>td, 
+.table-striped>tbody>tr:nth-child(odd)>th {
+   background-color: #f1f4f7;
+ }
+
+.panel-default {
+  margin: 0 15px 20px 15px;
+}
 
 /* mixins */
 @mixin box_sizing {
@@ -34,6 +44,47 @@ textarea {
   margin-bottom: 10px;
 }
 
+h2.inline-header, h3.inline-header, h4.inline-header {
+  display: inline-block;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+a {
+  color: #326fa7;
+}
+
+@media screen and (max-width:570px) {
+    i.hide-small { display:none; }
+    .hide-small { display:none; }
+}
+
+.show-small {
+  display: none;
+}
+
+@media screen and (max-width:570px) {
+    span.show-small { display:inline; }
+}
+
+.top-padding {
+  height: 30px;
+}
+
+/* Breadcrumbs */
+ol.breadcrumb {
+  height: 36px;
+  padding: 8px 15px;
+  margin: 10px 10px;
+  font-size: 14px;
+
+  a {
+    color: #4c89ca;
+  }
+}
+
 /* Fonts */
 h1, h2, h3, h4, h5, h6{
 	line-height: 1;
@@ -51,124 +102,10 @@ p {
   line-height: 1.7em;
 }
 
-/* header */
-.navbar-default .navbar-nav > li > a {
-    font-size: 15px;
-    & > .glyphicon {
-      margin-right: 3px;
-    }
+.page-header {
+  margin-top: 30px;
+  border: 0;
 }
-
-$bgDefault      : #326fa7;
-$bgHighlight    : #225383;
-$colDefault     : #ecf0f1;
-$colHover       : #ffffff;
-$colHighlight   : #ffffff;
-.navbar-default {
-  border-radius: 0px;
-  background-color: $bgDefault;
-  border-color: $bgHighlight;
-  margin-bottom: 0px;
-  .navbar-brand {
-    color: $colDefault;
-    &:hover, &:focus { 
-      color: $colHighlight; 
-    }
-  }
-  .navbar-text {
-    color: $colDefault; 
-  }
-  .navbar-nav {
-    > li {
-      > a {
-        color: $colDefault;
-        &:hover,  &:focus {
-          color: $colHighlight; 
-        }
-      }
-    }
-    > .active {
-      > a, > a:hover, > a:focus {
-        color: $colHighlight;
-        background-color: $bgHighlight; 
-      }
-    }
-    > .open {
-      > a, > a:hover, > a:focus {
-        color: $colHighlight;
-        background-color: $bgHighlight; 
-      }
-    }
-  }
-  .navbar-toggle {
-    border-color: $bgHighlight;
-    &:hover, &:focus {
-      background-color: $bgHighlight; 
-    }
-    .icon-bar {
-      background-color: $colDefault; 
-    }
-  }
-  .navbar-collapse,
-  .navbar-form {
-    border-color: $colDefault; 
-  }
-  .navbar-link {
-    color: $colDefault;
-    &:hover {
-      color: $colHighlight; }
-    }
-  }
-@media (max-width: 767px) {
-  .navbar-default .navbar-nav .open .dropdown-menu {
-    > li > a {
-      color: $colDefault;
-      &:hover, &:focus {
-        color: $colHighlight; 
-      }
-    }
-    > .active {
-      > a, > a:hover, > a:focus, {
-        color: $colHighlight;
-        background-color: $bgHighlight; 
-      }
-    }
-  }
-}
-
-/* footer */
-
-footer {
-  margin-top: 45px;
-  padding-top: 5px;
-  border-top: 1px solid $grayMediumLight;
-  color: #999;
-
-    a {
-      color: $gray;
-    }
-
-    a :hover {
-      color: $grayDarker;
-  }
-
-  small {
-      float: left;
-      margin-left: 15px;
-  }
-
-  ul {
-      float: right;
-      list-style: none;
-      margin-right: 15px;
-
-    li {
-        float: left;
-        margin-left: 10px;
-    }
-  }
-}
-
 
 a.quick_link {
   color: #333;
@@ -189,96 +126,49 @@ a.quick_link {
   }
 }
 
-h1.welcome-header {
-  font-weight: 200;
-  font-size: 4em;
-  margin-top: 30px;
-  margin-bottom: 20px;
-  font-family: "Open Sans", "Helvetica Neue", arial, sans-serif;
-}
 
-.welcome-subheader {
-  font-family: "Open Sans", "Helvetica Neue", arial, sans-serif;
-  font-weight: 200;
-  margin-bottom: 30px;
-}
-
-.home-item {
-  margin-bottom: 40px;
-}
-
-.home-panel {
-  background-image: url(image-path("presonus.jpg"));
-  background-size: cover;
-  background-position: center bottom;
-  background-repeat: no-repeat;
-
-  > h1 {
-    color: #fff;
-    font-weight: 200;
-    margin-top: 200px;
-    margin-bottom: 50px;
-    font-family: "Open Sans", "Helvetica Neue", arial, sans-serif;
-  }
-}
-
-.welcome-panel {
-  color: #fafafa;
-  background-image: url(image-path("presonus.jpg"));
-  background-size: cover;
-  background-position: center bottom;
-  background-repeat: no-repeat;
-  padding-top: 150px;
-  padding-bottom: 50px;
-  border-radius: 0px;
-  border: 0px;
-
-  > .content {
-
+/* Forms */
+.input-group, .field_with_errors {
+  > input, textarea {
+    margin-bottom: 10px;
   }
 
-  > a {
-    color: #fafafa;
-    font-weight: 200;
-    font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.field_with_errors {
+  @extend .control-group;
+  @extend .has-error;
+
+  background-color: inherit;
+}
+
+.error_explanation {
+  color: #f00;
+}
+
+.form-divider {
+  margin-bottom: 7px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Gravatars */
+img.gravatar {
+  border-radius: 100%;
+  display: inline-block;
+
+  &.gravatar-badge {
+    border: 1px solid #ddd;
+    padding: 3px;
   }
 }
 
-.about-panel {
-  > h1 {
-    font-family: "Open Sans", "Helvetica Neue", arial, sans-serif;
-    font-weight: 200;
-  }
-}
-
-.welcome-item {
-  color: #354958;
-  margin-bottom: 40px;
-
-  > p, h2 {
-    font-family: "Open Sans", "Helvetica Neue", arial, sans-serif;
-  }
-
-  > h2 {
-    font-weight: 400;
-  }
-
-  & > p {
-    font-size: 20px;
-    font-weight: 200;
-    line-height: 27px;
-  }
-}
-
-.about-container {
-  > p {
-    font-size: 20px;
-    line-height: 28px;
-    font-weight: 200;
-    margin-bottom: 30px;
-
-    > a {
-      color: #3362a3;
-    }
-  }
+/* Debug */
+.debug_dump {
+  clear: both;
+  float: left;
+  width: 100%;
+  border-radius: 0;
+  margin-bottom: 0;
+  @include box_sizing;
 }

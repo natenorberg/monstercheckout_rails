@@ -3,9 +3,90 @@
 <% else %> 
 	<% provide(:title, @user.name) %>
 <% end %>
-<h1>Editing user</h1>
 
-<%= render 'form' %>
+<% if @user != current_user %>
+<ol class="breadcrumb">
+	<li><%= link_to 'Admin', admin_path %></li>
+	<li><%= link_to 'Users', users_path %></li>
+	<li><%= link_to @user.name, @user %></li>
+	<li class="active">Edit</li>
+</ol>
+<% end %>
 
-<%= link_to 'Show', @user %> |
-<%= link_to 'Back', users_path %>
+<div class="top-padding"></div>
+
+<!-- ng-candidate -->
+<div class="row">
+	<div class="col-sm-3 col-sm-offset-2">
+		<div class="profile-pic">
+			<%= gravatar_for(@user, 200) %>
+			<p><em>Tip: If you don't like your monster picture, go to <a href="http://gravatar.com">gravatar.com</a> and add a different picture to an account with the same email address.</em></p>
+		</div>
+	</div>
+	<div class="col-sm-6">
+		<div class="user-info">
+			<div class="row">
+				<div class="profile-info">
+				<h1>
+					<% if @user == current_user %> 
+						Settings
+					<% else %> 
+						<%= @user.name %>
+					<% end %>
+				</h1>
+					<%= form_for(@user) do |f| %>
+					<% if @user.errors.any? %>
+					    <div id="error_explanation">
+					      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+					      <ul>
+					      <% @user.errors.full_messages.each do |message| %>
+					        <li><%= message %></li>
+					      <% end %>
+					      </ul>
+					    </div>
+					  <% end %>
+						<%= f.label :name %>
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-user"></i></span>
+							<%= f.text_field :name, class: "form-control" %>
+						</div>
+
+						<%= f.label :email %>
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+							<%= f.text_field :email, class: "form-control" %>
+						</div>
+
+						<% if current_user.is_admin? %>
+							<h3>Permissions</h3>
+							<div class="form-divider"></div>
+
+							<ul class="permissions-list">
+								<%= f.collection_check_boxes :permission_ids, Permission.all, :id, :name do |ff| %>
+								<li><%= ff.check_box %> <%= ff.label %></li>
+								<% end %>
+							</ul>
+
+							<% if current_user.is_admin? && @user != current_user %>
+								<div class="form-divider"></div>
+								<h4>Site Permissions</h4>
+								<ul class="permissions-list">
+									<li><%= f.check_box :is_monitor %> <%= f.label :is_admin, 'Lab Monitor access' %></li>
+									
+									<!-- Don't give admins the option to un-admin themselves -->
+									<% if @user != current_user %>
+										<li><%= f.check_box :is_admin %> <%= f.label :is_admin, 'Administrator access' %></li>
+									<% end %>
+								</ul>
+							<% end %>
+						<% end %>
+
+					
+						<%= f.submit "Submit" , class: "btn btn-large btn-primary" %>
+					<% end %>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,33 +1,64 @@
-<%= form_for(@equipment) do |f| %>
-  <% if @equipment.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@equipment.errors.count, "error") %> prohibited this equipment from being saved:</h2>
+<!-- ng-candidate: Have all equipment and sub-item forms in the same angular app -->
+<div class="row">
+  <%= form_for(@equipment) do |f| %>
+    <div class="col-sm-6 col-sm-offset-1">
 
-      <ul>
-      <% @equipment.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+        <%= render 'shared/error_messages', object: f.object %>
+
+        <div class="field">
+          <%= f.label :name %>
+          <%= f.text_field :name, class: 'form-control' %>
+        </div>
+
+        <div class="field">
+          <%= f.label :brand %>
+          <%= f.text_field :brand, class: 'form-control' %>
+        </div>
+      
+        <div class="field">
+          <%= f.label :quantity %>
+          <%= f.number_field :quantity, min: 1, step: 1, class: 'form-control' %>
+        </div>
+
+        <div class="field">
+          <%= f.label :condition %>
+          <%= f.text_field :condition, class: 'form-control' %>
+        </div>
+
+        <div class="field">
+          <%= f.label :description %>
+          <%= f.text_area :description, class: 'form-control' %>
+        </div>
+        
+        <%= f.submit "Save Equipment", class: 'btn btn-large btn-success' %>
+        
+    </div>
+    <div class="col-sm-4">
+      <h4>Permissions</h4>
+      <ul class="permissions-list">
+        <%= f.collection_check_boxes :permission_ids, Permission.all, :id, :name do |ff| %>
+        <li><%= ff.check_box %> <%= ff.label %></li>
+        <% end %>
       </ul>
+
+      <div id="kit_info">
+        <div class="form-divider"></div>
+        
+        <h4> <i class="fa fa-suitcase"></i> Recording kit</h4>
+          <%= f.check_box :is_kit %> <span>This item has several items that need to be checked out together.</span>
+
+          <% if @equipment.is_kit? %>
+          <h4>Contents</h4>
+          <ul class="contents-list">
+            <% @equipment.sub_items.each do |item| %>
+            <li><%= link_to item.name, edit_equipment_sub_item_path(@equipment, item) %></li>
+            <% end %>
+          </ul>
+          <%= link_to new_equipment_sub_item_path(@equipment), class: 'btn btn-sm btn-success' do %>
+            <i class="fa fa-plus"></i> Add Another
+          <% end %>
+          <% end %>
+      </div>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :brand %><br>
-    <%= f.text_field :brand %>
-  </div>
-  <div class="field">
-    <%= f.label :quantity %><br>
-    <%= f.number_field :quantity %>
-  </div>
-  <div class="field">
-    <%= f.label :condition %><br>
-    <%= f.text_field :condition %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+</div>

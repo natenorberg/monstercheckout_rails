@@ -1,33 +1,60 @@
-<h1>New user</h1>
+<ol class="breadcrumb">
+	<li><%= link_to 'Admin', admin_path %></li>
+	<li><%= link_to 'Users', users_path %></li>
+	<li class="active">New</li>
+</ol>
 
-<%= form_for(@user) do |f| %>
-	<!-- TODO: Add error messages -->
+<h1 class="page-header">New user</h1>
 
-	<%= f.label :name %>
-	<div class="input-group">
-		<span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-		<%= f.text_field :name, class: "form-control" %>
-	</div>
-
-	<%= f.label :email %>
-	<div class="input-group">
-		<span class="input-group-addon">@</span>
-		<%= f.text_field :email, class: "form-control" %>
-	</div>
-
-	<%= f.label :password %>
-	<div class="input-group">
-		<span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-		<%= f.password_field :password, class: "form-control" %>
-	</div>
-
-	<%= f.label :password_confirmation %>
-	<div class="input-group">
-		<span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-		<%= f.password_field :password_confirmation, class: "form-control" %>
-	</div>
-
-	<%= f.submit "Create account", class: "btn btn-large btn-primary" %>
-<% end %>
-
-<%= link_to 'Back', users_path %>
+<div class="row">
+	<%= form_for(@user) do |f| %>
+		<div class="col-sm-6 col-sm-offset-1">
+			<%= render 'shared/error_messages', object: f.object %>
+			
+			<%= f.label :name %>
+			<div class="input-group">
+				<span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+				<%= f.text_field :name, class: "form-control" %>
+			</div>
+			
+			<%= f.label :email %>
+			<div class="input-group">
+				<span class="input-group-addon">@</span>
+				<%= f.text_field :email, class: "form-control" %>
+			</div>
+			
+			<%= f.label :password %>
+			<div class="input-group">
+				<span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+				<%= f.password_field :password, class: "form-control" %>
+			</div>
+			
+			<%= f.label :password_confirmation %>
+			<div class="input-group">
+				<span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+				<%= f.password_field :password_confirmation, class: "form-control" %>
+			</div>
+	
+			<%= f.submit "Create account", class: "btn btn-large btn-primary" %>
+		</div>
+	
+		<div class="col-sm-4">
+			<h3>Permissions</h3>
+			<div class="form-divider"></div>
+			
+			<ul class="permissions-list">
+				<%= f.collection_check_boxes :permission_ids, Permission.all, :id, :name do |ff| %>
+				<li><%= ff.check_box %> <%= ff.label %></li>
+				<% end %>
+			</ul>
+			
+			<div class="form-divider"></div>
+			
+			<ul class="permissions-list">
+			  <li><%= f.check_box :is_monitor %> <%= f.label :is_admin, 'Lab Monitor access' %></li>
+			  
+			  <li><%= f.check_box :is_admin %> <%= f.label :is_admin, 'Administrator access' %></li>
+			</ul>
+		</div>
+	<% end %>
+</div>

@@ -1,0 +1,71 @@
+<div class="timeline">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Timeline</h3>
+    </div>
+    <ul class="list-group timeline-list-group">
+      <% if @reservation.checked_in? %>
+      <li class="list-group-item">
+        <strong class="status-text-returned"><i class="fa fa-check-circle"></i> Returned: </strong>
+        <%= auto_shrink_date(@reservation.checked_in_time).html_safe %>
+        <div class="timeline-monitor-info">
+          <%= gravatar_for(@reservation.checked_in_by, size=50) %>
+          <h4 class="timeline-monitor-name"><%= @reservation.checked_in_by.name %></h4>
+          <div class="well well-sm timeline-comments">
+            <% if @reservation.check_in_comments != '' %>
+              <%= @reservation.check_in_comments %>
+            <% else %>
+              <em>No comments</em>
+            <% end %>
+          </div>
+        </div>
+      </li>
+      <% end %>
+      <% if @reservation.returned_late? %>
+      <li class="list-group-item">
+        <strong class="status-text-returned_late"><i class="fa fa-meh-o"></i> Due:</strong>
+        <%= auto_shrink_date(@reservation.in_time).html_safe %>
+      </li>
+      <% end %>
+      <% if @reservation.checked_out? %>
+      <li class="list-group-item">
+        <strong class="status-text-out"><i class="fa fa-sign-out"></i> Checked Out: </strong>
+        <%= auto_shrink_date(@reservation.checked_out_time).html_safe %>
+        <div class="timeline-monitor-info">
+          <%= gravatar_for(@reservation.checked_out_by, size=50) %>
+          <h4 class="timeline-monitor-name"><%= @reservation.checked_out_by.name %></h4>
+          <div class="well well-sm timeline-comments">
+            <% if @reservation.check_out_comments != '' %>
+              <%= @reservation.check_out_comments %>
+            <% else %>
+              <em>No comments</em>
+            <% end %>
+          </div>
+        </div>
+      </li>
+      <% end %>
+      <% if @reservation.is_approved? %>
+      <li class="list-group-item">
+        <strong class='status-text-approved'><i class="fa fa-thumbs-o-up"></i> Approved:</strong> 
+        <%= auto_shrink_date(@reservation.admin_response_time).html_safe %>
+      </li>
+      <% end %>
+      <% if @reservation.is_denied? %>
+      <li class="list-group-item">
+        <strong class='status-text-denied'><i class="fa fa-thumbs-o-down"></i> Denied:</strong> 
+        <%= auto_shrink_date(@reservation.admin_response_time).html_safe %>
+      </li>
+      <% end %>
+      <% if @reservation.updated_at > @reservation.created_at && @reservation.requested? %>
+      <li class="list-group-item">
+        <strong class='status-text-updated'><i class="fa fa-history"></i> Last Updated:</strong> 
+        <%= auto_shrink_date(@reservation.updated_at).html_safe %>
+      </li>
+      <% end %>
+      <li class="list-group-item">
+        <strong class='status-text-requested'><i class="fa fa-inbox"></i> Submitted:</strong> 
+        <%= auto_shrink_date(@reservation.created_at).html_safe %>
+      </li>
+    </ul>
+  </div>
+</div>

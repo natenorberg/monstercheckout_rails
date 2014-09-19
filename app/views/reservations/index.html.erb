@@ -1,39 +1,35 @@
-<h1>Listing reservations</h1>
+<h1 class="page-header">Your reservations</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Project</th>
-      <th>In time</th>
-      <th>Out time</th>
-      <th>Checked out time</th>
-      <th>Checked in time</th>
-      <th>Is approved</th>
-      <th>Check out comments</th>
-      <th>Check in comments</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<div class="row">
+  <div class="col-sm-10 col-sm-offset-1">
+    <table class="table table-striped">
+    
+      <tbody>
+        <% @user_reservations.each do |reservation| %>
+          <tr>
+            <td>
+              <%= render 'shared/icon_reservation', reservation: reservation %>
+            </td>
+            <td>
+              <%= link_to edit_reservation_path(reservation), class: 'btn btn-large' do %>
+                <i class="fa fa-pencil"></i> Edit
+              <% end %>
+              <% if reservation.can_cancel?(current_user) %>
+                <%= link_to reservation, class: 'btn btn-large', method: :delete, data: { confirm: 'Are you sure?' } do %>
+                  <i class="fa fa-times"></i> Cancel
+                <% end %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
 
-  <tbody>
-    <% @reservations.each do |reservation| %>
-      <tr>
-        <td><%= reservation.project %></td>
-        <td><%= reservation.in_time %></td>
-        <td><%= reservation.out_time %></td>
-        <td><%= reservation.checked_out_time %></td>
-        <td><%= reservation.checked_in_time %></td>
-        <td><%= reservation.is_approved %></td>
-        <td><%= reservation.check_out_comments %></td>
-        <td><%= reservation.check_in_comments %></td>
-        <td><%= link_to 'Show', reservation %></td>
-        <td><%= link_to 'Edit', edit_reservation_path(reservation) %></td>
-        <td><%= link_to 'Destroy', reservation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+    <%= link_to new_reservation_path, class: 'btn btn-large btn-primary' do %>
+      <i class="fa fa-plus"></i> New Reservation
     <% end %>
-  </tbody>
-</table>
+  </div>
+</div>
 
 <br>
 
-<%= link_to 'New Reservation', new_reservation_path %>

@@ -1,6 +1,9 @@
-<h1>Editing reservation</h1>
+<ol class="breadcrumb">
+	<li><%= link_to 'Reservations', reservations_path %></li>
+	<li><%= link_to @reservation.project, @reservation %></li>
+	<li class="active">Edit</li>
+</ol>
+
+<h1 class="page-header">Editing reservation</h1>
 
 <%= render 'form' %>
-
-<%= link_to 'Show', @reservation %> |
-<%= link_to 'Back', reservations_path %>

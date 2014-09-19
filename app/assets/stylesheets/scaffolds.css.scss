@@ -1,6 +1,5 @@
 body {
   background-color: #fff;
-  color: #333;
   font-family: "Helvetica Neue", "Open Sans", arial, helvetica, sans-serif;
   font-size: 13px;
   line-height: 18px;
@@ -30,12 +29,6 @@ div {
 
 #notice {
   color: green;
-}
-
-.field_with_errors {
-  padding: 2px;
-  background-color: red;
-  display: table;
 }
 
 #error_explanation {

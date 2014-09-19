@@ -15,6 +15,10 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
+
+  config.mock_with :rspec do |c|
+    c.syntax = [:should, :expect]
+  end
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
 =begin
@@ -75,4 +79,13 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 =end
+
+  # Since beadcrumbs are used for navigation they should be tested
+  # This helper takes an array of elements in the breadcrumbs and checks that they're all there
+  def verify_breadcrumbs(crumbs)
+    crumbs.each do |crumb|
+      assert_select 'ol.breadcrumb>li', :text => crumb
+    end
+  end
+
 end

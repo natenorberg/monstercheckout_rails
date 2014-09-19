@@ -1,0 +1,84 @@
+<div class="panel panel-default reservation-panel">
+<div class='panel-heading'>
+	<h3 class="panel-title"><%= title %></h3>
+</div>
+<% if reservations.any? %>
+<ul class="list-group">
+	<% reservations.each do |reservation| %>
+		<li class="list-group-item">
+			<%= render 'shared/user_reservation', reservation: reservation %>
+			<div class="buttons">
+				<% if show_approve_deny_buttons && current_user.is_admin? && reservation.requested? %>
+					<%= link_to approve_reservation_path(reservation), class: 'btn btn-large btn-success', id:"approve_button_#{reservation.id}" do %>
+						          <i class="fa fa-check"></i> Approve
+						        <% end %>
+						        <%= link_to deny_reservation_path(reservation), class: 'btn btn-large btn-danger', id: "deny_button_#{reservation.id}" do %>
+						          <i class="fa fa-times"></i> Deny
+						        <% end %>
+						        <script type="text/javascript">
+						        //<![CDATA[
+						        $('#approve_button_<%= reservation.id %>').click(function (event) {
+						        	event.preventDefault();
+						        	$.ajax({
+						        		url: "<%= approve_reservation_path(reservation, format: :json) %>",
+						        		data: {id: '<%= reservation.id %>'},
+						        		type: 'GET',
+						        		dataType: 'json',
+						        		success: function (response) {
+						        			$('.status_text_<%= reservation.id %>').html('<span class=\"status-text-approved\"><i class=\"fa fa-thumbs-o-up\"></i> Approved</span>');
+						        			$('#approve_button_<%= reservation.id %>').hide();
+						        			$('#deny_button_<%= reservation.id %>').hide();
+						        		},
+						        		error: function (error) {
+						        			alert('Something went horribly wrong!');
+						        		}
+						        	});
+						        });
+				
+						        $('#deny_button_<%= reservation.id %>').click(function (event) {
+						        	event.preventDefault();
+						        	$.ajax({
+						        		url: "<%= deny_reservation_path(reservation, format: :json) %>",
+						        		data: {id: '<%= reservation.id %>'},
+						        		type: 'GET',
+						        		dataType: 'json',
+						        		success: function (response) {
+						        			$('.status_text_<%= reservation.id %>').html("<span class='status-text-denied'><i class='fa fa-thumbs-o-down'></i> Denied</span>");
+						        			$('#approve_button_<%= reservation.id %>').hide();
+						        			$('#deny_button_<%= reservation.id %>').hide();
+						        		},
+						        		error: function (error) {
+						        			alert('Something went horribly wrong!');
+						        		}
+						        	});
+						        });
+				
+						        $('#deny_button').click(function (event) {
+						        	event.preventDefault();
+						        	alert('Deny button clicked');
+						        })
+						        //]]>
+						        </script>
+				<% end %>
+				<% if current_user.monitor_access? %>
+					<% if reservation.approved? %>
+						<%= link_to checkout_reservation_path(reservation), class: 'btn btn-large btn-primary' do %>
+				          <i class="fa fa-sign-out"></i> Check Out
+				        <% end %>
+					<% end %>
+					<% if reservation.can_checkin? %>
+						<%= link_to checkin_reservation_path(reservation), class: 'btn btn-large btn-primary' do %>
+				          <i class="fa fa-sign-in"></i> Check In
+				        <% end %>
+					<% end %>
+				<% end %>
+			</div>
+		</li>
+	<% end %>
+</ul>
+<% else %>
+	<div class="panel-body">
+		<em><%= empty_text ||= 'No reservations' %></em>
+	</div>
+<% end %>
+</div>

@@ -22,6 +22,7 @@ module SessionsHelper
   end
 
   # Getter for current session's user
+  # TODO: Refactor this logic into User model
   def current_user
     @current_user ||= User.find_by_remember_token(cookies[:remember_token])
   end
@@ -36,7 +37,15 @@ module SessionsHelper
 
   # Filter for requests that require user be an admin
   def user_is_admin
-    redirect_to root_path unless current_user && current_user.is_admin
+    redirect_to root_path unless current_user && current_user.is_admin?
+  end
+  
+  def current_user_or_admin
+    redirect_to root_path unless current_user.is_admin? || current_user == @user
+  end
+
+  def user_is_monitor
+    redirect_to root_path unless current_user.monitor_access?
   end
 
   # Friendly forwarding

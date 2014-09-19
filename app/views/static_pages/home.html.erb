@@ -22,18 +22,21 @@
 <div class="row">
 	<% if current_user.is_admin? %>
 		<div class="home-item col-sm-4 col-sm-offset-1 text-center">
-			<%= link_to users_path, class: 'quick_link' do %>
-				<i class="fa fa-users fa-5x"></i>
-				<h2>Users</h2>
-				<p>Administrator view of all the users in the system</p>
+			<%= link_to admin_path, class: 'quick_link' do %>
+				<i class="fa fa-rocket fa-5x"></i>
+				<h2>Admin Dashboard</h2>
+				<p>Dashboard for administrators to configure settings for the site.</p>
 			<% end %>
 		</div>
 	<% end %>
-	<div class="home-item col-sm-4 col-sm-offset-1 text-center">
-		<%= link_to '#', class: 'quick_link' do %>
-			<i class="fa fa-key fa-5x"></i>
-			<h2>Monitor</h2>
-			<p>Dashboard for lab monitors to check equipment in and out.</p>
-		<% end %>
-	</div>
+	<% if current_user.monitor_access? %>
+		<div class="home-item col-sm-4 col-sm-offset-1 text-center">
+			<%= link_to monitor_dashboard_path, class: 'quick_link' do %>
+				<i class="fa fa-key fa-5x"></i>
+				<h2>Monitor Dashboard</h2>
+				<p>Dashboard for lab monitors to check equipment in and out.</p>
+			<% end %>
+		</div>
+	<% end %>
+	<!-- TODO: Find some other stuff to put here if there aren't 4 options -->
 </div>

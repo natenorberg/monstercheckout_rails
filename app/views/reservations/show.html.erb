@@ -1,44 +1,72 @@
-<p id="notice"><%= notice %></p>
+<% provide(:title, @reservation.project) %>
 
-<p>
-  <strong>Project:</strong>
-  <%= @reservation.project %>
-</p>
+<ol class="breadcrumb">
+  <li><%= link_to 'Reservations', reservations_path %></li>
+  <li class="active"><%= @reservation.project %></li>
+</ol>
 
-<p>
-  <strong>In time:</strong>
-  <%= @reservation.in_time %>
-</p>
+<div class="row">
+  <div class="col-sm-5">
+    <div class="reservation-details">
+      <div class="reservation-icon">
+        <h2><i class="fa fa-calendar fa-2x"></i></h2>
+      </div>
+      <div class="reservation-header-info">
+        <h2><%= @reservation.project %></h2>
+        
+        <h4><%= @reservation.user.name %></h4>
+      </div>
 
-<p>
-  <strong>Out time:</strong>
-  <%= @reservation.out_time %>
-</p>
+      <p><strong>Reserved from:</strong> <%= @reservation.out_time.strftime(ReservationsHelper::LONG_DATETIME_FORMAT) %> <br><strong>to:</strong> <%= @reservation.in_time.strftime(ReservationsHelper::LONG_DATETIME_FORMAT) %></p>
 
-<p>
-  <strong>Checked out time:</strong>
-  <%= @reservation.checked_out_time %>
-</p>
+      <h4><strong>Status: </strong><%= status_text(@reservation).html_safe %></h4>
 
-<p>
-  <strong>Checked in time:</strong>
-  <%= @reservation.checked_in_time %>
-</p>
+      <h4>Equipment</h4>
 
-<p>
-  <strong>Is approved:</strong>
-  <%= @reservation.is_approved %>
-</p>
+      <ul class="equipment-show-list">
+        <% @reservation.reservation_equipment.each do |item| %>
+          <li><%= item.equipment.name %> <% if item.quantity > 1 %>(x<%= item.quantity %>)<% end %></li>
+        <% end %>
+      </ul>
+  
+      <% if @reservation.can_edit?(current_user) %>
+        <%= link_to edit_reservation_path(@reservation), class: 'btn btn-large btn-primary', id: 'edit_reservation_button' do %>
+          <i class="fa fa-pencil"></i> Edit
+        <% end %>
+      <% end %>
+      <% if @reservation.is_approved %>
+        <script type="text/javascript">
+          $("#edit_reservation_button").click(function(event) {
+              event.preventDefault();
+              var r = confirm('Are you sure you want to edit this reservation?\nThe administrator will need to approve your checkout again.');
+              if (r == true) {
+                window.location = "<%= edit_reservation_path(@reservation) %>";
+              };
+          });
+        </script>
+      <% end %>
+      <% if current_user.monitor_access? && @reservation.approved? %>
+        <%= link_to checkout_reservation_path(@reservation), class: 'btn btn-large btn-primary' do %>
+          <i class="fa fa-sign-out"></i> Check Out
+        <% end %>
+      <% end %>
+      <% if current_user.monitor_access? && @reservation.can_checkin? %>
+        <%= link_to checkin_reservation_path(@reservation), class: 'btn btn-large btn-primary' do %>
+          <i class="fa fa-sign-in"></i> Check In
+        <% end %>
+      <% end %>
+      <% if current_user.is_admin? && @reservation.requested? %>
+        <%= link_to approve_reservation_path(@reservation), class: 'btn btn-large btn-success' do %>
+          <i class="fa fa-check"></i> Approve
+        <% end %>
+        <%= link_to deny_reservation_path(@reservation), class: 'btn btn-large btn-danger' do %>
+          <i class="fa fa-times"></i> Deny
+        <% end %>
+      <% end %>
 
-<p>
-  <strong>Check out comments:</strong>
-  <%= @reservation.check_out_comments %>
-</p>
-
-<p>
-  <strong>Check in comments:</strong>
-  <%= @reservation.check_in_comments %>
-</p>
-
-<%= link_to 'Edit', edit_reservation_path(@reservation) %> |
-<%= link_to 'Back', reservations_path %>
+    </div>
+  </div>
+  <div class="col-sm-7">
+    <%= render 'timeline' %>
+  </div>
+</div>

@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :permissions
+
   root 'static_pages#home'
   get 'home'    => 'static_pages#home'
   get 'welcome' => 'static_pages#welcome'
@@ -9,9 +11,32 @@ Rails.application.routes.draw do
   get 'signout' => 'sessions#destroy'
   resources :sessions, only: [:create, :destroy]
 
-  resources :reservations
-  resources :equipment
-  resources :users
+  get 'monitor/dashboard' => 'monitor#dashboard'
+  get 'monitor' => 'monitor#dashboard'
+
+  get 'admin/dashboard' => 'admin#dashboard'
+  get 'admin' => 'admin#dashboard'
+
+  resources :reservations do
+    member do
+      get 'approve'
+      get 'deny'
+      get 'checkout'
+      post 'checkout_update'
+      get 'checkin'
+      post 'checkin_update'
+    end
+  end
+  resources :equipment do
+    resources :sub_items
+  end
+  resources :users do
+    member do
+      get 'password'
+    end
+  end
+  resources :reservation_equipment
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

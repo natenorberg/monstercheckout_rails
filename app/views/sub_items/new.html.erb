@@ -1,0 +1,36 @@
+<% provide(:title, 'New Sub-Item') %>
+
+<ol class="breadcrumb">
+	<li><%= link_to 'Equipment', equipment_index_path %></li>
+	<li><%= link_to @kit.name, @kit %></li>
+	<li class="active">New</li>
+</ol>
+
+<div class="top-padding"></div>
+
+<div class="row">
+	<div class="col-sm-6 col-sm-offset-1">
+		<h1>New Sub-item</h1>
+		<%= render 'form' %>
+	</div>
+	<div class="col-sm-4">
+		<div class="kit-side-info">
+			<h2><%= @kit.name %></h2>
+			
+			<h4 class="kit-side-description"><%= @kit.description %></h4>
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Contents</h3>
+			</div>
+			<ul class="kit-side-permissions-list list-group">
+				<% @kit.sub_items.each do |item| %>
+					<% if item.id %>
+					<li class="list-group-item"><%= link_to item.name, edit_equipment_sub_item_path(@kit, item) %></li>
+					<% end %>
+				<% end %>
+			</ul>
+		</div>
+	</div>
+</div>

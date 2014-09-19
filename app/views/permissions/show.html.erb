@@ -1,0 +1,55 @@
+<ol class="breadcrumb">
+	<li><%= link_to 'Permissions', admin_path %></li>
+	<li class="active"><%= @permission.name %></li>
+</ol>
+
+<h1 class="page-header"><%= @permission.name %></h1>
+
+<h4 class="permission-subheader"> <%= @permission.description %> </h4>
+
+<div class="row">
+	<div class="col-sm-5">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Users</h3>
+			</div>
+			<% if @permission.users.any? %>
+			<ul class="list-group">
+				<% @permission.users.each do |user| %>
+				<li class="list-group-item"><%= gravatar_for user, size=30 %> <%= user.name %></li>
+				<% end %>
+			</ul>
+			<% else %>
+			<div class="panel-body"><em>No users have this permission</em></div>
+			<% end %>
+		</div>
+	</div>
+	<div class="col-sm-2">
+		<h5 class="permission-middle">can check out</h5>
+	</div>
+	<div class="col-sm-5">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Equipment</h3>
+			</div>
+			<% if @permission.equipment.any? %>
+			<ul class="list-group">
+				<% @permission.equipment.each do |item| %>
+				<li class="list-group-item"><%= item.name %></li>
+				<% end %>
+			</ul>
+			<% else %>
+			<div class="panel-body">
+				<em>No equipment is in this permission group</em>
+			</div>
+			<% end %>
+		</div>
+	</div>
+</div>
+
+<%= link_to edit_permission_path(@permission), class: 'btn btn-large btn-primary permission_button' do %>
+	<i class="fa fa-pencil"></i> Edit
+<% end %>
+<%= link_to @permission, method: :delete, class: 'btn btn-large btn-danger permission_button', data: { confirm: 'Are you sure?' } do %>
+	<i class="fa fa-trash-o"></i> Delete
+<% end %> 

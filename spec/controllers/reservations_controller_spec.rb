@@ -24,11 +24,14 @@ RSpec.describe ReservationsController, :type => :controller do
   # Reservation. As you add validations to Reservation, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    { user_id: FactoryGirl.create(:user).id,
+      project: 'Make phat beats',
+      out_time: 1.days.ago,
+      in_time: 2.days.from_now} 
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    { project: '', out_time: Time.now, in_time: 1.days.ago }
   }
 
   # This should return the minimal set of values that should be in the session
@@ -36,100 +39,170 @@ RSpec.describe ReservationsController, :type => :controller do
   # ReservationsController. Be sure to keep this updated too.
   def valid_session
     controller.stub(:user_signed_in).and_return(true)
+    @user = stub_model(User)
+    @allowed_equipment = [FactoryGirl.create(:equipment), FactoryGirl.create(:equipment)]
+    @user.stub(:allowed_equipment).and_return @allowed_equipment
+    controller.stub(:current_user).and_return @user
   end
 
-  describe "GET index" do
-    it "assigns all reservations as @reservations" do
+  def non_admin_session
+    valid_session
+    @user.stub(:is_admin?).and_return false
+  end
+
+  def admin_session
+    valid_session
+    @user.stub(:is_admin?).and_return true
+    controller.stub(:user_is_admin).and_return true
+  end
+
+  def monitor_session
+    valid_session
+    @user.stub(:monitor_access?).and_return true
+    @monitor_id = 77
+    @user.stub(:id).and_return @monitor_id
+  end
+
+  def non_monitor_session
+    valid_session
+    @non_monitor_id = 44
+    @user.stub(:id).and_return @non_monitor_id
+    @user.stub(:monitor_access?).and_return false
+  end
+
+  describe 'GET index' do
+    it 'assigns user reservations as @user_reservations' do
       reservation = Reservation.create! valid_attributes
-      get :index, {}, valid_session
-      expect(assigns(:reservations)).to eq([reservation])
+      controller.stub(:current_user).and_return reservation.user
+      get :index, {}
+      expect(assigns(:user_reservations)).to eq([reservation])
     end
   end
 
-  describe "GET show" do
-    it "assigns the requested reservation as @reservation" do
+  describe 'GET show' do
+    it 'assigns the requested reservation as @reservation' do
       reservation = Reservation.create! valid_attributes
       get :show, {:id => reservation.to_param}, valid_session
       expect(assigns(:reservation)).to eq(reservation)
     end
   end
 
-  describe "GET new" do
-    it "assigns a new reservation as @reservation" do
+  describe 'GET new' do
+    it 'assigns a new reservation as @reservation' do
       get :new, {}, valid_session
       expect(assigns(:reservation)).to be_a_new(Reservation)
+      expect(assigns(:equipment)).to eq(@allowed_equipment)
     end
   end
 
-  describe "GET edit" do
-    it "assigns the requested reservation as @reservation" do
+  describe 'GET edit' do
+    it 'assigns the requested reservation as @reservation' do
       reservation = Reservation.create! valid_attributes
       get :edit, {:id => reservation.to_param}, valid_session
       expect(assigns(:reservation)).to eq(reservation)
+      expect(assigns(:equipment)).to eq(@allowed_equipment)
     end
   end
 
-  describe "POST create" do
-    describe "with valid params" do
-      it "creates a new Reservation" do
+  describe 'POST create' do
+    describe 'with valid params' do
+      it 'creates a new Reservation' do
         expect {
           post :create, {:reservation => valid_attributes}, valid_session
         }.to change(Reservation, :count).by(1)
       end
 
-      it "assigns a newly created reservation as @reservation" do
+      it 'assigns a newly created reservation as @reservation' do
         post :create, {:reservation => valid_attributes}, valid_session
         expect(assigns(:reservation)).to be_a(Reservation)
         expect(assigns(:reservation)).to be_persisted
       end
 
-      it "redirects to the created reservation" do
+      it 'has a status of requested' do
+        post :create, {:reservation => valid_attributes}, valid_session
+        expect(assigns(:reservation).status).to eq('requested')
+      end
+
+      it 'redirects to the created reservation' do
         post :create, {:reservation => valid_attributes}, valid_session
         expect(response).to redirect_to(Reservation.last)
       end
     end
 
-    describe "with invalid params" do
-      it "assigns a newly created but unsaved reservation as @reservation" do
+    describe 'with invalid params' do
+      it 'assigns a newly created but unsaved reservation as @reservation' do
         post :create, {:reservation => invalid_attributes}, valid_session
         expect(assigns(:reservation)).to be_a_new(Reservation)
       end
 
       it "re-renders the 'new' template" do
         post :create, {:reservation => invalid_attributes}, valid_session
-        expect(response).to render_template("new")
+        expect(response).to render_template('new')
       end
     end
   end
 
-  describe "PUT update" do
-    describe "with valid params" do
+  describe 'PUT update' do
+    describe 'with valid params' do
+      # If we use from_now in tests we need to define a constant
+      let(:new_out_time) { 1.days.from_now.change(:usec => 0) }
+      let(:new_in_time) { 2.days.from_now.change(:usec => 0) }
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        { project: 'Make more phat beats', out_time: new_out_time, in_time: new_in_time }
       }
 
-      it "updates the requested reservation" do
+      it 'updates the requested reservation' do
         reservation = Reservation.create! valid_attributes
         put :update, {:id => reservation.to_param, :reservation => new_attributes}, valid_session
         reservation.reload
-        skip("Add assertions for updated state")
+        expect(reservation.project).to eq('Make more phat beats')
+        expect(reservation.out_time).to eq(new_out_time)
+        expect(reservation.in_time).to eq(new_in_time)
       end
 
-      it "assigns the requested reservation as @reservation" do
+      it 'assigns the requested reservation as @reservation' do
         reservation = Reservation.create! valid_attributes
         put :update, {:id => reservation.to_param, :reservation => valid_attributes}, valid_session
         expect(assigns(:reservation)).to eq(reservation)
       end
 
-      it "redirects to the reservation" do
+      it 'redirects to the reservation' do
         reservation = Reservation.create! valid_attributes
         put :update, {:id => reservation.to_param, :reservation => valid_attributes}, valid_session
         expect(response).to redirect_to(reservation)
       end
+
+      describe 'with approved reservation' do
+        it 'unapproves the reservation' do
+          reservation = Reservation.create! valid_attributes
+          reservation.is_approved = true
+          reservation.status = :approved
+          reservation.save
+
+          put :update, {:id => reservation.to_param, :reservation => valid_attributes}, valid_session
+          reservation.reload
+          expect(reservation.is_approved).to eq(false)
+          expect(reservation.status).to eq('requested')
+        end
+      end
+
+      describe 'with denied reservation' do
+        it 'unapproves the reservation' do
+          reservation = Reservation.create! valid_attributes
+          reservation.is_denied = true
+          reservation.status = :denied
+          reservation.save
+
+          put :update, {:id => reservation.to_param, :reservation => valid_attributes}, valid_session
+          reservation.reload
+          expect(reservation.is_denied).to eq(false)
+          expect(reservation.status).to eq('requested')
+        end
+      end
     end
 
-    describe "with invalid params" do
-      it "assigns the reservation as @reservation" do
+    describe 'with invalid params' do
+      it 'assigns the reservation as @reservation' do
         reservation = Reservation.create! valid_attributes
         put :update, {:id => reservation.to_param, :reservation => invalid_attributes}, valid_session
         expect(assigns(:reservation)).to eq(reservation)
@@ -143,19 +216,241 @@ RSpec.describe ReservationsController, :type => :controller do
     end
   end
 
-  describe "DELETE destroy" do
-    it "destroys the requested reservation" do
-      reservation = Reservation.create! valid_attributes
-      expect {
-        delete :destroy, {:id => reservation.to_param}, valid_session
-      }.to change(Reservation, :count).by(-1)
+  describe 'DELETE destroy' do
+    describe 'when current_user is admin' do
+      it 'destroys the requested reservation' do
+        reservation = Reservation.create! valid_attributes
+        expect {
+          delete :destroy, {:id => reservation.to_param}, admin_session
+        }.to change(Reservation, :count).by(-1)
+      end
+
+      it 'redirects to the reservations list' do
+        reservation = Reservation.create! valid_attributes
+        delete :destroy, {:id => reservation.to_param}, admin_session
+        expect(response).to redirect_to(reservations_url)
+      end
     end
 
-    it "redirects to the reservations list" do
-      reservation = Reservation.create! valid_attributes
-      delete :destroy, {:id => reservation.to_param}, valid_session
-      expect(response).to redirect_to(reservations_url)
+    describe 'when current_user is not admin' do
+      it 'does not destroy the requested reservation' do
+        reservation = Reservation.create! valid_attributes
+        expect {
+          delete :destroy, {:id => reservation.to_param}, non_admin_session
+        }.to_not change(Reservation, :count)
+      end
+
+      it 'redirects to the reservations list' do
+        reservation = Reservation.create! valid_attributes
+        delete :destroy, {:id => reservation.to_param}, non_admin_session
+        expect(response).to redirect_to(root_path)
+      end
     end
   end
 
+  describe 'GET approve' do
+    describe 'when current_user is admin' do
+      it 'changes the approved status of the reservation' do
+        reservation = FactoryGirl.create(:reservation)
+        get :approve, {:id => reservation.to_param}, admin_session
+        reservation.reload
+        expect(reservation.is_approved?).to eq(true)
+        expect(reservation.status).to eq('approved')
+        expect(reservation.admin_response_time).to_not eq(nil)
+      end
+
+      it 'redirects to show page' do
+        reservation = FactoryGirl.create(:reservation)
+        get :approve, {:id => reservation.to_param}, admin_session
+
+        expect(response).to redirect_to(reservation)
+      end
+    end
+
+    describe 'when current_user is not admin' do
+      it 'does not change the approved status of the reservation' do
+        reservation = FactoryGirl.create(:reservation)
+        get :approve, {:id => reservation.to_param}, non_admin_session
+        reservation.reload
+        expect(reservation.is_approved?).to eq(false)
+        expect(reservation.status).to eq('requested')
+      end
+
+      it 'redirects to show page' do
+        reservation = FactoryGirl.create(:reservation)
+        get :approve, {:id => reservation.to_param}, non_admin_session
+
+        expect(response).to redirect_to(root_path)
+      end
+    end
+  end
+
+  describe 'GET deny' do
+    describe 'when current_user is admin' do
+      it 'changes the denied status of the reservation' do
+        reservation = FactoryGirl.create(:reservation)
+        get :deny, {:id => reservation.to_param}, admin_session
+        reservation.reload
+        expect(reservation.is_denied?).to eq(true)
+        expect(reservation.status).to eq('denied')
+        expect(reservation.admin_response_time).to_not eq(nil)
+      end
+
+      it 'redirects to show page' do
+        reservation = FactoryGirl.create(:reservation)
+        get :deny, {:id => reservation.to_param}, admin_session
+
+        expect(response).to redirect_to(reservation)
+      end
+    end
+
+    describe 'when current_user is not admin' do
+      it 'does not change the denied status of the reservation' do
+        reservation = FactoryGirl.create(:reservation)
+        get :deny, {:id => reservation.to_param}, non_admin_session
+        reservation.reload
+        expect(reservation.is_denied?).to eq(false)
+        expect(reservation.status).to eq('requested')
+      end
+
+      it 'redirects to show page' do
+        reservation = FactoryGirl.create(:reservation)
+        get :deny, {:id => reservation.to_param}, non_admin_session
+
+        expect(response).to redirect_to(root_path)
+      end
+    end
+  end
+
+  describe 'GET checkout' do
+    describe 'when current_user is monitor' do
+      it 'assigns the requested reservation as @reservation' do
+        reservation = Reservation.create! valid_attributes
+        reservation.approved!
+        get :checkout, {:id => reservation.to_param}, monitor_session
+        expect(assigns(:reservation)).to eq(reservation)
+      end
+
+      describe 'when reservation is not approved' do
+        it 'redirects to root_path' do
+          reservation = Reservation.create! valid_attributes
+          get :checkout, {:id => reservation.to_param}, monitor_session
+          expect(response).to redirect_to(root_path)
+        end
+      end
+    end
+
+    describe 'when current_user is not monitor' do
+      it 'redirects to root_path' do
+        reservation = Reservation.create! valid_attributes
+        get :checkout, {:id => reservation.to_param}, non_monitor_session
+        expect(response).to redirect_to(root_path)
+      end
+    end
+  end
+
+  describe 'POST checkout_update' do
+    describe 'when current_user is monitor' do
+      it 'updates the reservation with checkout information' do
+        reservation = Reservation.create! valid_attributes
+        reservation.approved!
+        put :checkout_update, {:id => reservation.to_param, :reservation => {:check_out_comments => 'checkout comments'}}, monitor_session
+        reservation.reload
+
+        expect(reservation.check_out_comments).to eq('checkout comments')
+        expect(reservation.checked_out_by_id).to eq(@monitor_id)
+        expect(reservation.checked_out_time).to_not eq(nil)
+      end
+
+      describe 'when reservation is not approved' do
+        it 'redirects to root_path' do
+          reservation = Reservation.create! valid_attributes
+          put :checkout_update, {:id => reservation.to_param, :reservation => {:check_out_comments => 'checkout comments'}}, monitor_session
+          expect(response).to redirect_to(root_path)
+        end
+      end
+
+      describe 'when current_user is not monitor' do
+        it 'redirects to root_path' do
+          reservation = Reservation.create! valid_attributes
+          put :checkout_update, {:id => reservation.to_param, :reservation => {:check_out_comments => 'checkout comments'}}, non_monitor_session
+          expect(response).to redirect_to(root_path)
+        end
+      end
+    end
+  end
+
+  describe 'GET checkin' do
+    describe 'when current_user is monitor' do
+      it 'assigns the requested reservation as @reservation' do
+        reservation = Reservation.create! valid_attributes
+        get :checkin, {:id => reservation.to_param}, monitor_session
+        expect(assigns(:reservation)).to eq(reservation)
+      end
+    end
+
+    describe 'when reservation can not be checked in' do
+      it 'redirects to root_path' do
+        reservation = Reservation.create! valid_attributes
+        reservation.stub(:can_checkin?).and_return false
+        get :checkin, {:id => reservation.to_param}, monitor_session
+        expect(response).to redirect_to(root_path)
+      end
+    end
+
+    describe 'when current_user is not monitor' do
+      it 'redirects to root_path' do
+        reservation = Reservation.create! valid_attributes
+        get :checkin, {:id => reservation.to_param}, non_monitor_session
+        expect(response).to redirect_to(root_path)
+      end
+    end
+  end
+
+  describe 'POST checkin_update' do
+    describe 'when current_user is monitor' do
+      describe 'when returned on time' do
+        it 'updates the reservation with checkin information' do
+          reservation = FactoryGirl.create(:checkout)
+          put :checkin_update, {:id => reservation.to_param, :reservation => {:check_in_comments => 'checkin comments'}}, monitor_session
+          reservation.reload
+
+          expect(reservation.status).to eq('returned')
+          expect(reservation.check_in_comments).to eq('checkin comments')
+          expect(reservation.checked_in_by_id).to eq(@monitor_id)
+          expect(reservation.checked_in_time).to_not eq(nil)
+        end
+      end
+
+      describe 'when returned late' do
+        it 'marks the reservation as returned late' do
+          reservation = FactoryGirl.create(:checkout)
+          reservation.in_time = 1.hours.ago
+          reservation.save
+
+          put :checkin_update, {:id => reservation.to_param, :reservation => {:check_in_comments => 'checkin comments'}}, monitor_session
+          reservation.reload
+
+          expect(reservation.status).to eq('returned_late')
+        end
+      end
+
+      describe 'when reservation is not checked out' do
+        it 'redirects to root_path' do
+          reservation = Reservation.create! valid_attributes
+          put :checkin_update, {:id => reservation.to_param, :reservation => {:check_in_comments => 'checkin comments'}}, monitor_session
+          expect(response).to redirect_to(root_path)
+        end
+      end
+
+      describe 'when current_user is not monitor' do
+        it 'redirects to root_path' do
+          reservation = Reservation.create! valid_attributes
+          put :checkin_update, {:id => reservation.to_param, :reservation => {:check_in_comments => 'checkin comments'}}, non_monitor_session
+          expect(response).to redirect_to(root_path)
+        end
+      end
+    end
+  end
 end
+

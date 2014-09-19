@@ -1,42 +1,43 @@
-<header class="navbar navbar-default" role="navigation">
+<nav class="navbar navbar-default" role="navigation">
 	<div class="container-fluid">
 		<div class="navbar-header">
-			<button class="navbar-toggle">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-id">
 				<span class="sr-only">Toggle Navigation</span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<%= link_to "MONSTER Checkout" , root_path, id: "logo", class: "navbar-brand" %>
+			<%= link_to 'MONSTER Checkout', root_path, id: 'logo', class: 'navbar-brand' %>
 		</div>
 
-		<div class="collapse navbar-collapse">
+		<div id="navbar-id" class="collapse navbar-collapse">
 			<ul class="nav navbar-nav navbar-right">
 				<% if signed_in? %>
-					<li class="<%= 'active' if params[:controller] == 'reservations' %>">
+					<li class="<%= 'active' if params[:controller] == 'reservations' && !is_monitor_action?(params[:controller], params[:action]) %>">
 						<%= link_to reservations_path do %>
 							<i class="fa fa-calendar"></i> Reservations
 						<% end %>
 					</li>
-					<li class="<%= 'active' if params[:controller] == 'equipment' %>">
+					<li class="<%= 'active' if params[:controller] == 'equipment' || params[:controller] == 'sub_items' %>">
 						<%= link_to equipment_index_path do %>
 							<i class="fa fa-microphone"></i> Equipment
 						<% end %>		
 					</li>
 					<% if current_user.is_admin? %>
-						<li class="<%= 'active' if params[:controller] == 'users' %>">
-							<%= link_to users_path do %>
-								<i class="fa fa-users"></i> Users
+						<li class="<%= 'active' if is_admin_action?(params[:controller], params[:action]) %>">
+							<%= link_to admin_path do %>
+								<i class="fa fa-rocket"></i> Admin
 							<% end %>		
 						</li>
 					<% end %>
 
-					<!-- TODO: Check monitor permissions to show this tab -->
-					<li class="<%= 'active' if params[:controller] == 'monitor' %>">
-						<%= link_to '#' do %>
+					<% if current_user.monitor_access? %>
+					<li class="<%= 'active' if is_monitor_action?(params[:controller], params[:action]) %>">
+						<%= link_to monitor_path do %>
 							<i class="fa fa-key"></i> Monitor
 						<% end %>		
 					</li>
+					<% end %>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 							<i class="fa fa-user"></i> <%= current_user.name %> <span class="caret"></span>
@@ -70,4 +71,4 @@
 			</ul>
 		</div>
 	</div>
-</header>
+</nav>

@@ -30,7 +30,13 @@ class EquipmentController < ApplicationController
 
     respond_to do |format|
       if @equipment.save
-        format.html { redirect_to @equipment, notice: 'Equipment was successfully created.' }
+        format.html { 
+          if @equipment.is_kit?
+            redirect_to new_equipment_sub_item_path(@equipment), notice: 'Please enter the items that make up this kit'
+          else
+            redirect_to @equipment, notice: 'Equipment was successfully created.' 
+          end
+        }
         format.json { render :show, status: :created, location: @equipment }
       else
         format.html { render :new }
@@ -71,6 +77,6 @@ class EquipmentController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def equipment_params
-      params.require(:equipment).permit(:name, :brand, :quantity, :condition)
+      params.require(:equipment).permit(:name, :brand, :quantity, :condition, :description, :is_kit, permission_ids: [])
     end
 end

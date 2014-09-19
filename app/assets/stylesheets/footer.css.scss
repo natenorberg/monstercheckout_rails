@@ -1,0 +1,37 @@
+@import "bootstrap";
+/* footer */
+
+$grayMediumLight: #eaeaea;
+$grayDarker: #dddddd;
+$grayLighter: #aaaaaa;
+
+footer {
+  margin-top: 45px;
+  padding-top: 5px;
+  border-top: 1px solid $grayMediumLight;
+  color: #999;
+
+    a {
+      color: $gray;
+    }
+
+    a :hover {
+      color: $grayDarker;
+  }
+
+  small {
+      float: left;
+      margin-left: 15px;
+  }
+
+  ul {
+      float: right;
+      list-style: none;
+      margin-right: 15px;
+
+    li {
+        float: left;
+        margin-left: 10px;
+    }
+  }
+}
