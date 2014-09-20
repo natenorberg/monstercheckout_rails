@@ -8,7 +8,7 @@ module ApplicationHelper
     else
       "#{base_title} | #{page_title}"
     end
-  end  
+  end
 
   def bootstrap_class_for(flash_type)
     case flash_type
@@ -36,7 +36,7 @@ module ApplicationHelper
   end
 
   def version_number
-    '1.0.0 Development'
+    '1.1 Development'
   end
-  
+
 end
