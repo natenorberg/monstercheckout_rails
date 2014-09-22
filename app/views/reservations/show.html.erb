@@ -13,7 +13,7 @@
       </div>
       <div class="reservation-header-info">
         <h2><%= @reservation.project %></h2>
-        
+
         <h4><%= @reservation.user.name %></h4>
       </div>
 
@@ -28,7 +28,7 @@
           <li><%= item.equipment.name %> <% if item.quantity > 1 %>(x<%= item.quantity %>)<% end %></li>
         <% end %>
       </ul>
-  
+
       <% if @reservation.can_edit?(current_user) %>
         <%= link_to edit_reservation_path(@reservation), class: 'btn btn-large btn-primary', id: 'edit_reservation_button' do %>
           <i class="fa fa-pencil"></i> Edit
