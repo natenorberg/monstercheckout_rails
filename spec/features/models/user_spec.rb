@@ -13,7 +13,7 @@
 require 'rails_helper'
 
 describe 'User' do
-  
+
   before { @user = FactoryGirl.build(:user) }
 
   subject { @user }
@@ -30,6 +30,7 @@ describe 'User' do
     expect(@user).to respond_to(:monitor_checkouts)
     expect(@user).to respond_to(:monitor_checkins)
     expect(@user).to respond_to(:permissions)
+    expect(@user).to respond_to(:notify_on_approval_needed?)
   end
 
   it 'should have a valid factory' do
@@ -81,8 +82,8 @@ describe 'User' do
         @user.save
 
         expect(@user.reload.email).to eq(mixed_case_email.downcase)
-    end 
-  end 
+    end
+  end
 
   # Password/confirmation tests
   it 'should be invalid when password is blank' do
@@ -124,7 +125,7 @@ describe 'User' do
   end
 
   describe 'monitor_access?' do
-    
+
     it 'should be true if user is monitor' do
       @user.is_monitor = true
       @user.is_admin = false
@@ -149,7 +150,7 @@ describe 'User' do
 
   # Allowed equipment tests
   describe 'allowed_equipment' do
-    before do 
+    before do
       @permission = FactoryGirl.create(:permission)
       @equipment = FactoryGirl.create(:equipment)
       @permission.stub(:equipment).and_return [@equipment]
