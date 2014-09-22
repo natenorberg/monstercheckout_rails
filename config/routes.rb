@@ -34,6 +34,11 @@ Rails.application.routes.draw do
     member do
       get 'password'
     end
+
+    collection do
+      get 'monitors'
+      get 'admins'
+    end
   end
   resources :reservation_equipment
 

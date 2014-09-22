@@ -10,6 +10,18 @@ class UsersController < ApplicationController
     @users = User.all
   end
 
+  # GET /users/monitors
+  def monitors
+    @users = User.where(is_monitor: true)
+    render :index
+  end
+
+  # GET /users/admins
+  def admins
+    @users = User.where(is_admin: true)
+    render :index
+  end
+
   # GET /users/1
   # GET /users/1.json
   def show
