@@ -52,6 +52,9 @@ class ReservationsController < ApplicationController
         UserMailer.need_approval_email(User.first, @reservation).deliver
         format.html { redirect_to @reservation, flash: { success: 'Reservation was successfully updated.' }}
         format.json { render json: @reservation.errors, status: :unprocessable_entity }
+      else
+        format.html { render :new }
+        format.json { render json: @reservation.errors, status: :unprocessable_entity }
       end
     end
   end
