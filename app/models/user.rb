@@ -33,6 +33,9 @@ class User < ActiveRecord::Base
   validates :password, presence: true, length: { minimum: 6 }, on: :create
   validates :password_confirmation, presence: true, on: :create
 
+  # Mailing lists
+  scope :approval_needed_mailing_list, -> { where(is_admin: true, notify_on_approval_needed: true) }
+
   def monitor_access?
     is_admin? || is_monitor?
   end

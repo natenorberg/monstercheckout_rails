@@ -48,8 +48,7 @@ class ReservationsController < ApplicationController
         format.json { render json: @reservation.errors, status: :unprocessable_entity }
       elsif @reservation.save
         update_quantities
-        # TODO: Send this to the appropriate person
-        UserMailer.need_approval_email(User.first, @reservation).deliver
+        UserMailer.need_approval_email(@reservation).deliver
         format.html { redirect_to @reservation, flash: { success: 'Reservation was successfully updated.' }}
         format.json { render json: @reservation.errors, status: :unprocessable_entity }
       else
@@ -73,6 +72,7 @@ class ReservationsController < ApplicationController
       elsif @reservation.update(reservation_params)
         update_quantities
         reset_approval_status
+        UserMailer.need_approval_email(@reservation).deliver
         format.html { redirect_to @reservation, flash: { success: 'Reservation was successfully updated.' } }
         format.json { render :show, status: :ok, location: @reservation }
       else
