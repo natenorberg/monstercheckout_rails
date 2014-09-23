@@ -12,3 +12,11 @@ The [initial version](https://github.com/natenorberg/monstercheckout) of the pro
 ##Technology Used
 
 The original app was created in Python with the [Django](https://www.djangoproject.com) framework. In order to make it easier to test and deploy, and to incorporate more things we've learned since we started, this site was built with [Ruby on Rails](http://rubyonrails.org), plus some other goodies like [Bootstrap](http://getbootstrap.com), [FontAwesome](http://fontawesome.io), and [AngularJS](https://angularjs.org).
+
+##Release information
+
+###1.0
+The original release will be when the rails version of the product reaches feature parity with the Django app
+
+###1.1
+After the original release, the product will be enhanced by replacing a few of the static pages (such as the lab monitor views) with AngularJS apps. Files that are candidates to be replaced with AngularJS implementations will be tagged with `ng-candidate` in a comment in the html.erb files.

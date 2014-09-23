@@ -1,57 +1,57 @@
 <% provide(:title, @equipment.name) %>
 
 <ol class="breadcrumb">
-	<li><%= link_to 'Equipment', equipment_index_path %></li>
-	<li class="active"><%= @equipment.name %></li>
+  <li><%= link_to 'Equipment', equipment_index_path %></li>
+  <li class="active"><%= @equipment.name %></li>
 </ol>
 
 <div class="top-padding"></div>
 
 <div class="row">
-	<div class="col-sm-5">
-		<div class="info">
-			<h1><%= @equipment.brand %> <%= @equipment.name %></h1>
+  <div class="col-sm-5">
+    <div class="info">
+      <h1><%= @equipment.brand %> <%= @equipment.name %></h1>
 
-			<h4>Condition</h4>
-			<p><%= @equipment.condition %></p>
+      <h4>Condition</h4>
+      <p><%= @equipment.condition %></p>
 
-			<h4>Description</h4>
-			<p><%= @equipment.description %></p>
+      <h4>Description</h4>
+      <p><%= @equipment.description %></p>
 
 
-			<h4>Permissions</h4>
-			<ul class="permissions-list">
-				<% @equipment.permissions.each do |permission| %>
-				<li><%= permission.name %></li>
-				<% end %>
-			</ul>
+      <h4>Permissions</h4>
+      <ul class="permissions-list">
+        <% @equipment.permissions.each do |permission| %>
+          <li><%= permission.name %></li>
+      <% end %>
+      </ul>
 
-			<% if @equipment.is_kit? %>
-			<h4>Contents</h4>
-			<ul class="contents-list">
-				<% @equipment.sub_items.each do |item| %>
-				<li title="<%= item.description %>"><%= item.name %> <%= '(Optional)' if item.is_optional? %></li>
-				<% end %>
-			</ul>
-			<% end %>
-			
-			<% if current_user.is_admin? %>
-				<div class="buttons">
-					<%= link_to edit_equipment_path(@equipment), class: 'btn btn-large btn-primary' do %>
-						<i class="fa fa-edit"></i> Edit
-					<% end %>
-					<%= link_to @equipment, method: :delete, class: 'btn btn-large btn-danger', data: { confirm: 'Are you sure?' } do %>
-						<i class="fa fa-trash-o"></i> Delete
-					<% end %> 
-				</div>
-			<% end %>
-		</div>
-	</div>
-	<div class="col-sm-7">
-		<div class="related-reservations">
-			<%= render 'shared/user_reservation_list', reservations: @equipment.reservations, 
-			title: 'Recent Reservations', empty_text: 'This equipment has not been reserved',
-			show_approve_deny_buttons: false %>
-		</div>
-	</div>
-</div>
+      <% if @equipment.is_kit? %>
+        <h4>Contents</h4>
+      <ul class="contents-list">
+        <% @equipment.sub_items.each do |item| %>
+          <li title="<%= item.description %>"><%= item.name %> <%= '(Optional)' if item.is_optional? %></li>
+      <% end %>
+      </ul>
+    <% end %>
+
+      <% if current_user.is_admin? %>
+        <div class="buttons">
+        <%= link_to edit_equipment_path(@equipment), class: 'btn btn-large btn-primary' do %>
+          <i class="fa fa-edit"></i> Edit
+      <% end %>
+        <%= link_to @equipment, method: :delete, class: 'btn btn-large btn-danger', data: { confirm: 'Are you sure?' } do %>
+          <i class="fa fa-trash-o"></i> Delete
+      <% end %>
+      </div>
+    <% end %>
+    </div>
+  </div>
+  <div class="col-sm-7">
+    <div class="related-reservations">
+      <%= render 'shared/user_reservation_list', reservations: @equipment.reservations.reorder('updated_at DESC').limit(5),
+        title: 'Recent Reservations', empty_text: 'This equipment has not been reserved',
+        show_approve_deny_buttons: false %>
+    </div>
+    </div>
+  </div>

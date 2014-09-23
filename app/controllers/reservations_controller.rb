@@ -186,8 +186,10 @@ class ReservationsController < ApplicationController
 
     def format_time_input
       if params[:datetime_format]
-        params[:reservation][:out_time] = DateTime.strptime(params[:reservation][:out_time], '%m/%d/%Y %I:%M %p')
-        params[:reservation][:in_time] = DateTime.strptime(params[:reservation][:in_time], '%m/%d/%Y %I:%M %p')
+        params[:reservation][:out_time] += " MDT"
+        params[:reservation][:out_time] = DateTime.strptime(params[:reservation][:out_time], '%m/%d/%Y %I:%M %p %z')
+        params[:reservation][:in_time] += " MDT"
+        params[:reservation][:in_time] = DateTime.strptime(params[:reservation][:in_time], '%m/%d/%Y %I:%M %p %z')
       end
     end
 
