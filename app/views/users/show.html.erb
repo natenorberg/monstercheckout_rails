@@ -1,65 +1,65 @@
-<% if @user == current_user %> 
-	<% provide(:title, 'Profile') %> 
-<% else %> 
-	<% provide(:title, @user.name) %>
+<% if @user == current_user %>
+  <% provide(:title, 'Profile') %>
+<% else %>
+  <% provide(:title, @user.name) %>
 <% end %>
 
 <% if @user != current_user %>
-<ol class="breadcrumb">
-	<li><%= link_to 'Admin', admin_path %></li>
-	<li><%= link_to 'Users', users_path %></li>
-	<li class="active"><%= @user.name %></li>
+  <ol class="breadcrumb">
+  <li><%= link_to 'Admin', admin_path %></li>
+  <li><%= link_to 'Users', users_path %></li>
+  <li class="active"><%= @user.name %></li>
 </ol>
 <% end %>
 
 <div class="top-padding"></div>
 
 <div class="row">
-	<div class="col-sm-5">
-		<div class="info">
-				<div class="profile-pic">
-					<%= gravatar_for(@user, 120) %>
-				</div>
-				<div class="profile-info">
-					<h2><%= @user.name %> 
-						<% if @user.is_admin? %> <i class="fa fa-rocket" title='Administrator access'></i>
-						<% end %>
-						<% if @user.is_monitor? && !@user.is_admin? %> <i class="fa fa-key" title='Lab Monitor access'></i>
-						<% end %>
-						
-					</h2>
-					
-					<h4>
-					  <a href="mailto:<%= @user.email %>"><%= @user.email %></a>
-					</h4>
+  <div class="col-sm-5">
+    <div class="info">
+      <div class="profile-pic">
+        <%= gravatar_for(@user, 120) %>
+      </div>
+      <div class="profile-info">
+        <h2><%= @user.name %>
+        <% if @user.is_admin? %> <i class="fa fa-rocket" title='Administrator access'></i>
+          <% end %>
+          <% if @user.is_monitor? && !@user.is_admin? %> <i class="fa fa-key" title='Lab Monitor access'></i>
+          <% end %>
 
-					<h4 class="inline-header">Permissions</h4>
-					<ul class="permissions-list">
-						<% @user.permissions.each do |permission| %>
-						<li><%= permission.name %></li>
-						<% end %>
-					</ul>
-				</div>
-			
-			
-			<div class="buttons">
-				<%= link_to edit_user_path(@user), class: 'btn btn-large btn-primary' do %>
-					<i class="fa fa-edit"></i> Edit
-				<% end %>
-				<%= link_to password_user_path(@user), class: 'btn btn-large btn-primary' do %>
-					<i class="fa fa-lock"></i> Reset Password
-				<% end %>
-				<% if current_user.is_admin? && current_user != @user %>
-					<%= link_to @user, method: :delete, class: 'btn btn-large btn-danger', data: { confirm: 'Are you sure?' } do %>
-						<i class="fa fa-trash-o"></i> Delete
-					<% end %> 
-				<% end %>
-			</div>
-		</div>
-	</div>
-	<div class="col-sm-7">
-		<div class="related-reservations">
-			<%= render 'shared/icon_reservation_list', reservations: @user.reservations, title: 'Reservations' %> 
-		</div>
-	</div>
+        </h2>
+
+        <h4>
+          <a href="mailto:<%= @user.email %>"><%= @user.email %></a>
+        </h4>
+
+        <h4 class="inline-header">Permissions</h4>
+        <ul class="permissions-list">
+          <% @user.permissions.each do |permission| %>
+            <li><%= permission.name %></li>
+        <% end %>
+        </ul>
+      </div>
+
+
+      <div class="buttons">
+        <%= link_to edit_user_path(@user), class: 'btn btn-large btn-primary' do %>
+          <i class="fa fa-edit"></i> Edit
+      <% end %>
+        <%= link_to password_user_path(@user), class: 'btn btn-large btn-primary' do %>
+          <i class="fa fa-lock"></i> Reset Password
+      <% end %>
+        <% if current_user.is_admin? && current_user != @user %>
+          <%= link_to @user, method: :delete, class: 'btn btn-large btn-danger', data: { confirm: 'Are you sure?' } do %>
+          <i class="fa fa-trash-o"></i> Delete
+      <% end %>
+      <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-7">
+    <div class="related-reservations">
+      <%= render 'shared/icon_reservation_list', reservations: @user.reservations.reorder('updated_at DESC').limit(5), title: 'Recent Reservations' %>
+    </div>
+  </div>
 </div>
