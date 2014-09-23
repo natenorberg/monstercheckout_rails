@@ -36,7 +36,7 @@ module ApplicationHelper
   end
 
   def version_number
-    '1.0'
+    '1.1 Development'
   end
 
 end
