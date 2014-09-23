@@ -7,7 +7,7 @@ class UserMailer < ActionMailer::Base
 
     recipients = User.approval_needed_mailing_list
     recipients.each do |admin|
-      mail(to: @admin.email, subject: 'A reservation needs your approval')
+      mail(to: admin.email, subject: 'A reservation needs your approval')
     end
   end
 end
