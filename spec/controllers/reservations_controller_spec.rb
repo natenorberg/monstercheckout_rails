@@ -27,7 +27,7 @@ RSpec.describe ReservationsController, :type => :controller do
     { user_id: FactoryGirl.create(:user).id,
       project: 'Make phat beats',
       out_time: 1.days.ago,
-      in_time: 2.days.from_now} 
+      in_time: 2.days.from_now}
   }
 
   let(:invalid_attributes) {

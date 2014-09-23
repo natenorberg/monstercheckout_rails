@@ -2,15 +2,16 @@
 #
 # Table name: users
 #
-#  id              :integer          not null, primary key
-#  name            :string(255)
-#  email           :string(255)
-#  created_at      :datetime
-#  updated_at      :datetime
-#  password_digest :string(255)
-#  remember_token  :string(255)
-#  is_admin        :boolean          default(FALSE)
-#  is_monitor      :boolean
+#  id                        :integer          not null, primary key
+#  name                      :string(255)
+#  email                     :string(255)
+#  created_at                :datetime
+#  updated_at                :datetime
+#  password_digest           :string(255)
+#  remember_token            :string(255)
+#  is_admin                  :boolean          default(FALSE)
+#  is_monitor                :boolean
+#  notify_on_approval_needed :boolean
 #
 
 class User < ActiveRecord::Base
@@ -31,6 +32,9 @@ class User < ActiveRecord::Base
                     uniqueness: { case_sensitive: false }
   validates :password, presence: true, length: { minimum: 6 }, on: :create
   validates :password_confirmation, presence: true, on: :create
+
+  # Mailing lists
+  scope :approval_needed_mailing_list, -> { where(is_admin: true, notify_on_approval_needed: true) }
 
   def monitor_access?
     is_admin? || is_monitor?

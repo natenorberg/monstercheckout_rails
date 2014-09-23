@@ -48,8 +48,9 @@ class ReservationsController < ApplicationController
         format.json { render json: @reservation.errors, status: :unprocessable_entity }
       elsif @reservation.save
         update_quantities
-        format.html { redirect_to @reservation, flash: { success: 'Reservation was successfully created.' } }
-        format.json { render :show, status: :created, location: @reservation }
+        UserMailer.need_approval_email(@reservation).deliver
+        format.html { redirect_to @reservation, flash: { success: 'Reservation was successfully updated.' }}
+        format.json { render json: @reservation.errors, status: :unprocessable_entity }
       else
         format.html { render :new }
         format.json { render json: @reservation.errors, status: :unprocessable_entity }
@@ -60,7 +61,7 @@ class ReservationsController < ApplicationController
   # PATCH/PUT /reservations/1
   # PATCH/PUT /reservations/1.json
   def update
-    format_time_input 
+    format_time_input
     params[:reservation][:equipment_ids] ||= []
     @conflicts = conflicts
     respond_to do |format|
@@ -71,6 +72,7 @@ class ReservationsController < ApplicationController
       elsif @reservation.update(reservation_params)
         update_quantities
         reset_approval_status
+        UserMailer.need_approval_email(@reservation).deliver
         format.html { redirect_to @reservation, flash: { success: 'Reservation was successfully updated.' } }
         format.json { render :show, status: :ok, location: @reservation }
       else
@@ -108,7 +110,7 @@ class ReservationsController < ApplicationController
         else
           @reservation.returned!
         end
-        
+
         format.html { redirect_to @reservation, flash: { success: 'Reservation is checked in' } }
         format.json { render :show, status: :ok, location: @reservation }
       else
@@ -138,7 +140,7 @@ class ReservationsController < ApplicationController
       if @reservation.save
         format.html { redirect_to @reservation, flash: { success: 'Reservation has been approved' } }
         format.json { render :show, status: :ok, location: @reservation }
-      else  
+      else
         format.html { render :show }
         format.json { render json: @reservation.errors, status: :unprocessable_entity }
       end
@@ -226,7 +228,7 @@ class ReservationsController < ApplicationController
       overlapping_reservations = []
       other_reservations.each do |reservation|
         if overlap(reservation, params[:reservation][:out_time], params[:reservation][:in_time])
-          overlapping_reservations << reservation        
+          overlapping_reservations << reservation
         end
       end
 
@@ -285,8 +287,8 @@ class ReservationsController < ApplicationController
 
     def add_conflict_errors
       @conflicts.each do |item, reservation|
-        @reservation.errors.add(:base, 
-          "#{item} is already reserved from #{reservation.out_time.strftime(ReservationsHelper::SHORT_DATETIME_FORMAT)} 
+        @reservation.errors.add(:base,
+          "#{item} is already reserved from #{reservation.out_time.strftime(ReservationsHelper::SHORT_DATETIME_FORMAT)}
           to #{reservation.in_time.strftime(ReservationsHelper::SHORT_DATETIME_FORMAT)}")
       end
     end
