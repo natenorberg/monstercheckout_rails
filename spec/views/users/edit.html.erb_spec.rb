@@ -36,6 +36,30 @@ RSpec.describe 'users/edit', :type => :view do
 
       assert_select 'ol.breadcrumb', :count => 0
     end
+
+    describe 'when user is admin' do
+      before do 
+        @user.is_admin = true
+      end
+
+      it 'should render admin notification settings' do
+        render
+
+        assert_select 'input[name=?]', 'user[notify_on_approval_needed]'
+      end
+    end
+
+    describe 'when user is not admin' do
+      before do 
+        @user.is_admin = false
+      end
+
+      it 'should not render admin notification settings' do
+        render
+
+        assert_select 'input[name=?]', 'user[notify_on_approval_needed]', count: 0
+      end
+    end
   end
 
   describe 'when user is not current_user' do

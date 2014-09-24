@@ -48,7 +48,7 @@ class ReservationsController < ApplicationController
         format.json { render json: @reservation.errors, status: :unprocessable_entity }
       elsif @reservation.save
         update_quantities
-        UserMailer.need_approval_email(@reservation).deliver
+        send_approval_needed_emails
         format.html { redirect_to @reservation, flash: { success: 'Reservation was successfully updated.' }}
         format.json { render json: @reservation.errors, status: :unprocessable_entity }
       else
@@ -72,7 +72,7 @@ class ReservationsController < ApplicationController
       elsif @reservation.update(reservation_params)
         update_quantities
         reset_approval_status
-        UserMailer.need_approval_email(@reservation).deliver
+        send_approval_needed_emails
         format.html { redirect_to @reservation, flash: { success: 'Reservation was successfully updated.' } }
         format.json { render :show, status: :ok, location: @reservation }
       else
@@ -292,6 +292,13 @@ class ReservationsController < ApplicationController
         @reservation.errors.add(:base,
           "#{item} is already reserved from #{reservation.out_time.strftime(ReservationsHelper::SHORT_DATETIME_FORMAT)}
           to #{reservation.in_time.strftime(ReservationsHelper::SHORT_DATETIME_FORMAT)}")
+      end
+    end
+
+    def send_approval_needed_emails
+      users = User.approval_needed_mailing_list
+      users.each do |user|
+        UserMailer.need_approval_email(user, @reservation).deliver
       end
     end
 

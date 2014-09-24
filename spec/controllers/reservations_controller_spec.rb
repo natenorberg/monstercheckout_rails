@@ -127,6 +127,13 @@ RSpec.describe ReservationsController, :type => :controller do
         post :create, {:reservation => valid_attributes}, valid_session
         expect(response).to redirect_to(Reservation.last)
       end
+
+      it 'sends an email notification' do
+        User.stub(:approval_needed_mailing_list).and_return([FactoryGirl.create(:admin)])
+        expect { 
+          post :create, {:reservation => valid_attributes}, valid_session
+        }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      end
     end
 
     describe 'with invalid params' do
@@ -184,6 +191,13 @@ RSpec.describe ReservationsController, :type => :controller do
           expect(reservation.is_approved).to eq(false)
           expect(reservation.status).to eq('requested')
         end
+
+        it 'sends an email notification' do
+          User.stub(:approval_needed_mailing_list).and_return([FactoryGirl.create(:admin)])
+          expect { 
+            post :create, {:reservation => valid_attributes}, valid_session
+          }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        end
       end
 
       describe 'with denied reservation' do
@@ -197,6 +211,13 @@ RSpec.describe ReservationsController, :type => :controller do
           reservation.reload
           expect(reservation.is_denied).to eq(false)
           expect(reservation.status).to eq('requested')
+        end
+        
+        it 'sends an email notification' do
+          User.stub(:approval_needed_mailing_list).and_return([FactoryGirl.create(:admin)])
+          expect { 
+            post :create, {:reservation => valid_attributes}, valid_session
+          }.to change { ActionMailer::Base.deliveries.count }.by(1)
         end
       end
     end

@@ -7,6 +7,7 @@ FactoryGirl.define do
 
     factory :admin do
       is_admin true
+      notify_on_approval_needed true
     end
 
     factory :monitor do
