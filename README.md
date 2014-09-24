@@ -19,4 +19,8 @@ The original app was created in Python with the [Django](https://www.djangoproje
 The original release will be when the rails version of the product reaches feature parity with the Django app
 
 ###1.1
-After the original release, the product will be enhanced by replacing a few of the static pages (such as the lab monitor views) with AngularJS apps. Files that are candidates to be replaced with AngularJS implementations will be tagged with `ng-candidate` in a comment in the html.erb files.
+This release contains some non-essential but helpful features. Email notifications is the biggest feature, but it also includes things like the ability for an admin to provide a reason why a reservation was denied and other simple features that were easy to implement but no one knew we'd want them until after it started being used.
+
+
+###1.2
+Eventually, the product should be enhanced by replacing a few of the static pages (such as the lab monitor views) with AngularJS apps. Files that are candidates to be replaced with AngularJS implementations will be tagged with `ng-candidate` in a comment in the html.erb files.
