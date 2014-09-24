@@ -11,7 +11,11 @@
 #  remember_token            :string(255)
 #  is_admin                  :boolean          default(FALSE)
 #  is_monitor                :boolean
-#  notify_on_approval_needed :boolean
+#  notify_on_approval_needed :boolean          default(TRUE)
+#  notify_on_approved        :boolean          default(TRUE)
+#  notify_on_denied          :boolean          default(TRUE)
+#  notify_on_checked_out     :boolean          default(TRUE)
+#  notify_on_checked_in      :boolean          default(TRUE)
 #
 
 class User < ActiveRecord::Base

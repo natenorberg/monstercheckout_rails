@@ -89,6 +89,14 @@ describe 'User' do
     end
   end
 
+  it 'has correct default notification settings' do
+    expect(@user.notify_on_approval_needed?).to eq(true)
+    expect(@user.notify_on_approved?).to eq(true)
+    expect(@user.notify_on_denied?).to eq(true)
+    expect(@user.notify_on_checked_out?).to eq(true)
+    expect(@user.notify_on_checked_in?).to eq(true)
+  end
+
   # Password/confirmation tests
   it 'should be invalid when password is blank' do
     @user.password = @user.password_confirmation = ''
