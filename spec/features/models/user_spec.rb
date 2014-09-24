@@ -31,6 +31,10 @@ describe 'User' do
     expect(@user).to respond_to(:monitor_checkins)
     expect(@user).to respond_to(:permissions)
     expect(@user).to respond_to(:notify_on_approval_needed?)
+    expect(@user).to respond_to(:notify_on_approved?)
+    expect(@user).to respond_to(:notify_on_denied?)
+    expect(@user).to respond_to(:notify_on_checked_out?)
+    expect(@user).to respond_to(:notify_on_checked_in?)
   end
 
   it 'should have a valid factory' do
