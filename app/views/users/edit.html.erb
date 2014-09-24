@@ -83,13 +83,17 @@
 						<% end %>
 
             <% if @user == current_user %>
-              <h4>Email Notifications</h4>
+              <h4>Email Notifications <i class="fa fa-envelope"></i> </h4>
               <div class="form-divider"></div>
 
               <ul class="permissions-list">
                 <% if current_user.is_admin? %>
                   <li><%= f.check_box :notify_on_approval_needed %> <%= f.label :notify_on_approval_needed, 'When a reservation requires admin approval' %></li>
                 <% end %>
+                <li><%= f.check_box :notify_on_approved %> <%= f.label :notify_on_approved, 'When my reservation gets approved' %></li>
+                <li><%= f.check_box :notify_on_denied %> <%= f.label :notify_on_denied, 'When my reservation gets denied' %></li>
+                <li><%= f.check_box :notify_on_checked_out %> <%= f.label :notify_on_checked_out, 'When my reservation gets checked out' %></li>
+                <li><%= f.check_box :notify_on_checked_in %> <%= f.label :notify_on_checked_in, 'When my reservation gets returned' %></li>
               </ul>
             <% end %>
 

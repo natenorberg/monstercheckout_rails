@@ -37,6 +37,15 @@ RSpec.describe 'users/edit', :type => :view do
       assert_select 'ol.breadcrumb', :count => 0
     end
 
+    it 'should render notification settings' do
+      render
+
+      assert_select 'input[name=?]', 'user[notify_on_approved]'
+      assert_select 'input[name=?]', 'user[notify_on_denied]'
+      assert_select 'input[name=?]', 'user[notify_on_checked_out]'
+      assert_select 'input[name=?]', 'user[notify_on_checked_in]'
+    end
+
     describe 'when user is admin' do
       before do 
         @user.is_admin = true
@@ -67,6 +76,15 @@ RSpec.describe 'users/edit', :type => :view do
       render
 
       verify_breadcrumbs ['Admin', 'Users', @user.name, 'Edit']
+    end
+
+    it 'should not render notification settings' do
+      render
+
+      assert_select 'input[name=?]', 'user[notify_on_approved]', count: 0
+      assert_select 'input[name=?]', 'user[notify_on_denied]', count: 0
+      assert_select 'input[name=?]', 'user[notify_on_checked_out]', count: 0
+      assert_select 'input[name=?]', 'user[notify_on_checked_in]', count: 0
     end
   end
 end
