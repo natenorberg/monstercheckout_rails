@@ -8,6 +8,8 @@ class ReservationsController < ApplicationController
   before_filter :reservation_can_be_checked_out, only: [:checkout, :checkout_update]
   before_filter :reservation_can_be_checked_in, only: [:checkin, :checkin_update]
 
+  after_filter :notify_approval_needed, only: [:create, :update]
+
   # GET /reservations
   # GET /reservations.json
   def index
@@ -48,7 +50,6 @@ class ReservationsController < ApplicationController
         format.json { render json: @reservation.errors, status: :unprocessable_entity }
       elsif @reservation.save
         update_quantities
-        send_approval_needed_emails
         format.html { redirect_to @reservation, flash: { success: 'Reservation was successfully updated.' }}
         format.json { render json: @reservation.errors, status: :unprocessable_entity }
       else
@@ -72,7 +73,6 @@ class ReservationsController < ApplicationController
       elsif @reservation.update(reservation_params)
         update_quantities
         reset_approval_status
-        send_approval_needed_emails
         format.html { redirect_to @reservation, flash: { success: 'Reservation was successfully updated.' } }
         format.json { render :show, status: :ok, location: @reservation }
       else
@@ -295,7 +295,7 @@ class ReservationsController < ApplicationController
       end
     end
 
-    def send_approval_needed_emails
+    def notify_approval_needed
       users = User.approval_needed_mailing_list
       users.each do |user|
         UserMailer.need_approval_email(user, @reservation).deliver
