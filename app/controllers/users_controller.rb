@@ -47,6 +47,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        send_welcome_email
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
@@ -87,6 +88,10 @@ class UsersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
+    end
+
+    def send_welcome_email
+      UserMailer.welcome_email(@user).deliver
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

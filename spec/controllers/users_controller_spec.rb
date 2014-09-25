@@ -120,6 +120,12 @@ RSpec.describe UsersController, :type => :controller do
         post :create, {:user => valid_attributes}, valid_session
         expect(response).to redirect_to(User.last)
       end
+
+      it 'sends an email notification' do
+        expect { 
+          post :create, {:user => valid_attributes}, valid_session
+        }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      end
     end
 
     describe 'with invalid params' do

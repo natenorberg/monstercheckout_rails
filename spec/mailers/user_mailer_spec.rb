@@ -1,6 +1,23 @@
 require 'rails_helper'
 
 describe UserMailer do
+  describe 'welcome_email' do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:mail) { UserMailer.welcome_email(user) }
+
+    it 'renders the subject' do
+      expect(mail.subject).to eq('Welcome to MONSTER Checkout')
+    end
+
+    it 'renders the user email' do
+      expect(mail.to).to eq([user.email])
+    end
+
+    it 'renders the sender email' do
+      expect(mail.from).to eq(['noreply@montana.edu'])
+    end
+  end
+
   describe 'need_approval_email' do
     let(:admin) { FactoryGirl.create(:admin) }
     let(:reservation) { FactoryGirl.create(:reservation) }
