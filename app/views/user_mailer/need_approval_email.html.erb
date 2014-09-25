@@ -1,40 +1,19 @@
-<html>
-<head>
-<meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
-</head>
+<h1 style="font-weight:200;"><%= @reservation.user.name %> has requested a reservation</h1>
+<h2><%= @reservation.project %></h2>
 
-<body>
-<div style="width:100%; max-width:700px; background-color: #ddd; margin-left:auto; margin-right: auto;">
-  <table style="width:100%; border-collapse:collapse; font-family:'Helvetica Neue', 'Open Sans', arial, helvetica, sans-serif;">
-    <tr style="background-color:#3570a5; border:1px solid #255481; color:#ecf0f1; font-family: Helvetica Neue, Arial, sans-serif;">
-      <td style="padding:15px;">
-        <h1 style="margin:0; font-size:18px; line-height:20px; font-weight:normal; font-family: 'Helvetica Neue', 'Open Sans', arial, helvetica, sans-serif;">MONSTER Checkout</h1>
-      </td>
-    </tr>
-    <tr style="background-color: #fff; border-left:1px solid #ddd;">
-      <td style="padding:20px;">
-        <h1 style="font-weight:200;"><%= @reservation.user.name %> has requested a reservation</h1>
-        <h2><%= @reservation.project %></h2>
+<p><strong>Reserved from:</strong> <%= @reservation.out_time.strftime(ReservationsHelper::LONG_DATETIME_FORMAT) %> <br><strong>to:</strong> <%= @reservation.in_time.strftime(ReservationsHelper::LONG_DATETIME_FORMAT) %></p>
 
-        <p><strong>Reserved from:</strong> <%= @reservation.out_time.strftime(ReservationsHelper::LONG_DATETIME_FORMAT) %> <br><strong>to:</strong> <%= @reservation.in_time.strftime(ReservationsHelper::LONG_DATETIME_FORMAT) %></p>
+<h3 style="margin-bottom:5px;">Equipment</h3>
 
-        <h3 style="margin-bottom:5px;">Equipment</h3>
+<ul class="equipment-show-list" style="list-style-type:none; margin:0; padding:0;">
+  <% @reservation.reservation_equipment.each do |item| %>
+  <li><%= item.equipment.name %> <% if item.quantity > 1 %>(x<%= item.quantity %>) <% end %></li>
+  <% end %>
+</ul>
 
-        <ul class="equipment-show-list" style="list-style-type:none; margin:0; padding:0;">
-          <% @reservation.reservation_equipment.each do |item| %>
-            <li><%= item.equipment.name %> <% if item.quantity > 1 %>(x<%= item.quantity %>) <% end %></li>
-          <% end %>
-        <p><a href="<%= reservation_url(@reservation) %>">View this reservation online</a></p>
-      </td>
-    </tr>
-    <tr style="background-color: #f5f5f5; border:1px solid #ddd;">
-      <td style="padding:10px 15px;">
-        <a href="<%= approve_reservation_url(@reservation) %>" style="color: white; background-color: #5cb85c; border:1px solid #4cae4c; border-radius: 4px; display: inline-block; margin: 0 4px 0 0; font-weight: normal; text-align: center; vertical-align: middle; white-space: nowrap; padding: 8px 15px; font-size: 14px; line-height: 1.428571429; text-decoration:none;">Approve</a>
-        <a href="<%= deny_reservation_url(@reservation) %>" style="color: white; background-color: #d75452; border:1px solid #d2403f; border-radius: 4px; display: inline-block; margin: 0; font-weight: normal; text-align: center; vertical-align: middle; white-space: nowrap; padding: 8px 15px; font-size: 14px; line-height: 1.428571429; text-decoration:none;">Deny</a>
-      </td>
-    </tr>
-  </table>
-</div>
+<p><a href="<%= reservation_url(@reservation) %>">View this reservation online</a></p>
 
-</body>
-</html>
+<% content_for :button_bar do %>
+  <a href="<%= approve_reservation_url(@reservation) %>" style="color: white; background-color: #5cb85c; border:1px solid #4cae4c; border-radius: 4px; display: inline-block; margin: 0 4px 0 0; font-weight: normal; text-align: center; vertical-align: middle; white-space: nowrap; padding: 8px 15px; font-size: 14px; line-height: 1.428571429; text-decoration:none;">Approve</a>
+  <a href="<%= deny_reservation_url(@reservation) %>" style="color: white; background-color: #d75452; border:1px solid #d2403f; border-radius: 4px; display: inline-block; margin: 0; font-weight: normal; text-align: center; vertical-align: middle; white-space: nowrap; padding: 8px 15px; font-size: 14px; line-height: 1.428571429; text-decoration:none;">Deny</a>
+<% end %>
