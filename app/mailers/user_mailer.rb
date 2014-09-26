@@ -16,11 +16,13 @@ class UserMailer < ActionMailer::Base
 
   def approved_email(reservation)
     @reservation = reservation
+    @show_button_bar = true
     mail(to: reservation.user.email, subject: 'Your reservation has been approved')
   end
 
   def denied_email(reservation)
     @reservation = reservation
+    @show_button_bar = true
     mail(to: reservation.user.email, subject: 'Your reservation has been denied')
   end
 end
