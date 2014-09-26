@@ -138,6 +138,7 @@ class ReservationsController < ApplicationController
     @reservation.admin_response_time = Time.now
     respond_to do |format|
       if @reservation.save
+        notify_approved
         format.html { redirect_to @reservation, flash: { success: 'Reservation has been approved' } }
         format.json { render :show, status: :ok, location: @reservation }
       else
@@ -155,6 +156,7 @@ class ReservationsController < ApplicationController
     @reservation.admin_response_time = Time.now
     respond_to do |format|
       if @reservation.save
+        notify_denied
         format.html { redirect_to @reservation, flash: { error: 'Reservation has been denied' } }
         format.json { render :show, status: :ok, location: @reservation }
       else
@@ -300,6 +302,14 @@ class ReservationsController < ApplicationController
       users.each do |user|
         UserMailer.need_approval_email(user, @reservation).deliver
       end
+    end
+
+    def notify_approved
+      UserMailer.approved_email(@reservation).deliver
+    end
+
+    def notify_denied
+      UserMailer.denied_email(@reservation).deliver
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

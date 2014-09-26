@@ -173,4 +173,11 @@ describe 'User' do
       expect(@user.allowed_equipment).to eq([@equipment])
     end
   end
+
+  # First name
+  describe 'first_name' do
+    it 'should return the first name of user' do
+      expect(@user.first_name).to eq('Person')
+    end
+  end
 end

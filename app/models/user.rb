@@ -55,6 +55,10 @@ class User < ActiveRecord::Base
     Equipment.where(id: ids.to_a)
   end
 
+  def first_name
+    name.split(' ')[0]
+  end
+
   private
 
     def create_remember_token

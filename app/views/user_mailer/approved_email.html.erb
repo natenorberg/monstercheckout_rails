@@ -1,0 +1,3 @@
+<h2 style="font-weight: 300;padding: 0 20px;margin-bottom: 0px;font-size: 30px;">Hi <%= @reservation.user.first_name %>,</h2>
+
+<p style="background-color: #eff6e4;margin-top: 10px;padding: 20px;font-size: 20px;">Your reservation for <%= @reservation.project %> has been approved! <br> You can pick it up at <%= @reservation.out_time.strftime(ReservationsHelper::LONG_DATETIME_FORMAT) %></p>

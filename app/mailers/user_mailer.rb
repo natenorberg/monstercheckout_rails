@@ -4,7 +4,6 @@ class UserMailer < ActionMailer::Base
 
   def welcome_email(user)
     @user = user
-
     mail(to: user.email, subject: 'Welcome to MONSTER Checkout')
   end
 
@@ -13,5 +12,15 @@ class UserMailer < ActionMailer::Base
     @show_button_bar = true
 
     mail(to: user.email, subject: 'A reservation needs your approval')
+  end
+
+  def approved_email(reservation)
+    @reservation = reservation
+    mail(to: reservation.user.email, subject: 'Your reservation has been approved')
+  end
+
+  def denied_email(reservation)
+    @reservation = reservation
+    mail(to: reservation.user.email, subject: 'Your reservation has been denied')
   end
 end

@@ -270,36 +270,44 @@ RSpec.describe ReservationsController, :type => :controller do
   end
 
   describe 'GET approve' do
+    before do
+      @reservation = FactoryGirl.create(:reservation)
+    end
+
     describe 'when current_user is admin' do
+
       it 'changes the approved status of the reservation' do
-        reservation = FactoryGirl.create(:reservation)
-        get :approve, {:id => reservation.to_param}, admin_session
-        reservation.reload
-        expect(reservation.is_approved?).to eq(true)
-        expect(reservation.status).to eq('approved')
-        expect(reservation.admin_response_time).to_not eq(nil)
+        get :approve, {:id => @reservation.to_param}, admin_session
+        @reservation.reload
+        expect(@reservation.is_approved?).to eq(true)
+        expect(@reservation.status).to eq('approved')
+        expect(@reservation.admin_response_time).to_not eq(nil)
       end
 
       it 'redirects to show page' do
-        reservation = FactoryGirl.create(:reservation)
-        get :approve, {:id => reservation.to_param}, admin_session
+        get :approve, {:id => @reservation.to_param}, admin_session
+        expect(response).to redirect_to(@reservation)
+      end
 
-        expect(response).to redirect_to(reservation)
+      it 'send an email' do
+        expect { 
+          get :approve, {:id => @reservation.to_param}, admin_session
+        }.to change { ActionMailer::Base.deliveries.count }.by(1)
       end
     end
 
     describe 'when current_user is not admin' do
       it 'does not change the approved status of the reservation' do
-        reservation = FactoryGirl.create(:reservation)
-        get :approve, {:id => reservation.to_param}, non_admin_session
-        reservation.reload
-        expect(reservation.is_approved?).to eq(false)
-        expect(reservation.status).to eq('requested')
+        @reservation = FactoryGirl.create(:reservation)
+        get :approve, {:id => @reservation.to_param}, non_admin_session
+        @reservation.reload
+        expect(@reservation.is_approved?).to eq(false)
+        expect(@reservation.status).to eq('requested')
       end
 
       it 'redirects to show page' do
-        reservation = FactoryGirl.create(:reservation)
-        get :approve, {:id => reservation.to_param}, non_admin_session
+        @reservation = FactoryGirl.create(:reservation)
+        get :approve, {:id => @reservation.to_param}, non_admin_session
 
         expect(response).to redirect_to(root_path)
       end
@@ -307,37 +315,41 @@ RSpec.describe ReservationsController, :type => :controller do
   end
 
   describe 'GET deny' do
+    before do 
+      @reservation = FactoryGirl.create(:reservation)
+    end
+
     describe 'when current_user is admin' do
       it 'changes the denied status of the reservation' do
-        reservation = FactoryGirl.create(:reservation)
-        get :deny, {:id => reservation.to_param}, admin_session
-        reservation.reload
-        expect(reservation.is_denied?).to eq(true)
-        expect(reservation.status).to eq('denied')
-        expect(reservation.admin_response_time).to_not eq(nil)
+        get :deny, {:id => @reservation.to_param}, admin_session
+        @reservation.reload
+        expect(@reservation.is_denied?).to eq(true)
+        expect(@reservation.status).to eq('denied')
+        expect(@reservation.admin_response_time).to_not eq(nil)
       end
 
       it 'redirects to show page' do
-        reservation = FactoryGirl.create(:reservation)
-        get :deny, {:id => reservation.to_param}, admin_session
+        get :deny, {:id => @reservation.to_param}, admin_session
+        expect(response).to redirect_to(@reservation)
+      end
 
-        expect(response).to redirect_to(reservation)
+      it 'send an email' do
+        expect { 
+          get :approve, {:id => @reservation.to_param}, admin_session
+        }.to change { ActionMailer::Base.deliveries.count }.by(1)
       end
     end
 
     describe 'when current_user is not admin' do
       it 'does not change the denied status of the reservation' do
-        reservation = FactoryGirl.create(:reservation)
-        get :deny, {:id => reservation.to_param}, non_admin_session
-        reservation.reload
-        expect(reservation.is_denied?).to eq(false)
-        expect(reservation.status).to eq('requested')
+        get :deny, {:id => @reservation.to_param}, non_admin_session
+        @reservation.reload
+        expect(@reservation.is_denied?).to eq(false)
+        expect(@reservation.status).to eq('requested')
       end
 
       it 'redirects to show page' do
-        reservation = FactoryGirl.create(:reservation)
-        get :deny, {:id => reservation.to_param}, non_admin_session
-
+        get :deny, {:id => @reservation.to_param}, non_admin_session
         expect(response).to redirect_to(root_path)
       end
     end

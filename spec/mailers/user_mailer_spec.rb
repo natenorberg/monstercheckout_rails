@@ -49,4 +49,38 @@ describe UserMailer do
       expect(mail.body.encoded).to have_link 'Deny', href: 'http://localhost:3000/reservations/1/deny'
     end
   end
+
+  shared_examples_for 'user reservation update emails' do
+    it 'renders the user email' do
+      expect(mail.to).to eq([reservation.user.email])
+    end
+
+    it 'renders the sender email' do
+      expect(mail.from).to eq(['noreply@montana.edu'])
+    end
+  end
+
+  describe 'approved_email' do
+    let(:reservation) { FactoryGirl.create(:approved_reservation) }
+    let(:mail) { UserMailer.approved_email(reservation) }
+
+    it_should_behave_like 'user reservation update emails'
+
+    it 'renders the subject' do
+      expect(mail.subject).to eq('Your reservation has been approved')
+    end
+
+    # TODO: Test layout
+  end
+
+  describe 'denied_email' do
+    let(:reservation) { FactoryGirl.create(:reservation) }
+    let(:mail) { UserMailer.denied_email(reservation) }
+
+    it_should_behave_like 'user reservation update emails'
+
+    it 'renders the subject' do
+      expect(mail.subject).to eq('Your reservation has been denied')
+    end
+  end
 end
