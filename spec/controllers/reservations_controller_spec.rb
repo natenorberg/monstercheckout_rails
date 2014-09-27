@@ -58,9 +58,12 @@ RSpec.describe ReservationsController, :type => :controller do
 
   def monitor_session
     valid_session
+    monitor = FactoryGirl.create(:monitor)
     @user.stub(:monitor_access?).and_return true
-    @monitor_id = 77
+    @monitor_id = monitor.id
+    @monitor_name = monitor.name
     @user.stub(:id).and_return @monitor_id
+    @user.stub(:name).and_return @monitor_name
   end
 
   def non_monitor_session
@@ -384,15 +387,24 @@ RSpec.describe ReservationsController, :type => :controller do
 
   describe 'POST checkout_update' do
     describe 'when current_user is monitor' do
-      it 'updates the reservation with checkout information' do
-        reservation = Reservation.create! valid_attributes
-        reservation.approved!
-        put :checkout_update, {:id => reservation.to_param, :reservation => {:check_out_comments => 'checkout comments'}}, monitor_session
-        reservation.reload
+      before do 
+        @reservation = Reservation.create! valid_attributes
+        @reservation.approved!
+      end
 
-        expect(reservation.check_out_comments).to eq('checkout comments')
-        expect(reservation.checked_out_by_id).to eq(@monitor_id)
-        expect(reservation.checked_out_time).to_not eq(nil)
+      it 'updates the reservation with checkout information' do
+        put :checkout_update, {:id => @reservation.to_param, :reservation => {:check_out_comments => 'checkout comments'}}, monitor_session
+        @reservation.reload
+
+        expect(@reservation.check_out_comments).to eq('checkout comments')
+        expect(@reservation.checked_out_by_id).to eq(@monitor_id)
+        expect(@reservation.checked_out_time).to_not eq(nil)
+      end
+
+      it 'send an email' do
+        expect { 
+          put :checkout_update, {:id => @reservation.to_param, :reservation => {:check_out_comments => 'checkout comments'}}, monitor_session
+        }.to change { ActionMailer::Base.deliveries.count }.by(1)
       end
 
       describe 'when reservation is not approved' do

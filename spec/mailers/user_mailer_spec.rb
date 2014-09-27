@@ -98,6 +98,10 @@ describe UserMailer do
       let(:reservation) { FactoryGirl.create(:checkout) }
       let(:mail) { UserMailer.checked_out_email(reservation) }
 
+      before do 
+        reservation.checked_out_by = FactoryGirl.create(:monitor)
+      end
+
       it_should_behave_like 'user reservation update emails'
 
       it 'renders the subject' do
@@ -108,7 +112,23 @@ describe UserMailer do
         expect(mail.body.encoded).to match reservation.user.first_name
         expect(mail.body.encoded).to match reservation.project
         expect(mail.body.encoded).to match reservation.in_time.strftime(ReservationsHelper::LONG_DATETIME_FORMAT)
+        expect(mail.body.encoded).to match reservation.check_out_comments
         expect(mail.body.encoded).to have_link 'View Reservation', href: 'http://localhost:3000/reservations/1'
+      end
+    end
+
+    describe 'returned_email' do
+      let(:reservation) { FactoryGirl.create(:checkin) }
+      let(:mail) { UserMailer.returned_email(reservation) }
+      before do 
+        reservation.checked_out_by = FactoryGirl.create(:monitor)
+        reservation.checked_in_by = FactoryGirl.create(:monitor)
+      end
+
+      it_should_behave_like 'user reservation update emails'
+
+      it 'renders the subject' do
+        expect(mail.subject).to eq('Your reservation has been returned')
       end
     end
   end

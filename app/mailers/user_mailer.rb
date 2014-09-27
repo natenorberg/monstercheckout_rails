@@ -31,4 +31,10 @@ class UserMailer < ActionMailer::Base
     @show_button_bar = true
     mail(to: reservation.user.email, subject: 'Your reservation has been checked out')
   end
+
+  def returned_email(reservation)
+    @reservation = reservation
+    @show_button_bar = true
+    mail(to: reservation.user.email, subject: 'Your reservation has been returned')
+  end
 end
