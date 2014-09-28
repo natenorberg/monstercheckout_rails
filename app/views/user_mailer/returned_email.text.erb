@@ -1,0 +1,6 @@
+Hi <%= @reservation.user.first_name %>,
+
+Your reservation for <%= @reservation.project %> has been returned.
+
+Checked in by <%= @reservation.checked_in_by.name %>
+Comments: <%= @reservation.check_in_comments %>

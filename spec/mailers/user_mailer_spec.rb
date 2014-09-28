@@ -113,6 +113,7 @@ describe UserMailer do
         expect(mail.body.encoded).to match reservation.project
         expect(mail.body.encoded).to match reservation.in_time.strftime(ReservationsHelper::LONG_DATETIME_FORMAT)
         expect(mail.body.encoded).to match reservation.check_out_comments
+        expect(mail.body.encoded).to match reservation.checked_out_by.name
         expect(mail.body.encoded).to have_link 'View Reservation', href: 'http://localhost:3000/reservations/1'
       end
     end
@@ -129,6 +130,14 @@ describe UserMailer do
 
       it 'renders the subject' do
         expect(mail.subject).to eq('Your reservation has been returned')
+      end
+
+      it 'renders reservation info' do
+        expect(mail.body.encoded).to match reservation.user.first_name
+        expect(mail.body.encoded).to match reservation.project
+        expect(mail.body.encoded).to match reservation.checked_in_by.name
+        expect(mail.body.encoded).to match reservation.check_in_comments
+        expect(mail.body.encoded).to have_link 'View Reservation', href: 'http://localhost:3000/reservations/1'
       end
     end
   end

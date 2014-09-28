@@ -111,7 +111,7 @@ class ReservationsController < ApplicationController
         else
           @reservation.returned!
         end
-
+        notify_returned
         format.html { redirect_to @reservation, flash: { success: 'Reservation is checked in' } }
         format.json { render :show, status: :ok, location: @reservation }
       else
@@ -315,6 +315,10 @@ class ReservationsController < ApplicationController
 
     def notify_checked_out
       UserMailer.checked_out_email(@reservation).deliver
+    end
+
+    def notify_returned
+      UserMailer.returned_email(@reservation).deliver
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
