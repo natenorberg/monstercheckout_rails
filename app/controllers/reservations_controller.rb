@@ -306,19 +306,27 @@ class ReservationsController < ApplicationController
     end
 
     def notify_approved
-      UserMailer.approved_email(@reservation).deliver
+      if @reservation.user.notify_on_approved?
+        UserMailer.approved_email(@reservation).deliver
+      end
     end
 
     def notify_denied
-      UserMailer.denied_email(@reservation).deliver
+      if @reservation.user.notify_on_denied?
+        UserMailer.denied_email(@reservation).deliver
+      end
     end
 
     def notify_checked_out
-      UserMailer.checked_out_email(@reservation).deliver
+      if @reservation.user.notify_on_checked_out?
+        UserMailer.checked_out_email(@reservation).deliver
+      end
     end
 
     def notify_returned
-      UserMailer.returned_email(@reservation).deliver
+      if @reservation.user.notify_on_checked_in?
+        UserMailer.returned_email(@reservation).deliver
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

@@ -292,10 +292,24 @@ RSpec.describe ReservationsController, :type => :controller do
         expect(response).to redirect_to(@reservation)
       end
 
-      it 'send an email' do
-        expect { 
-          get :approve, {:id => @reservation.to_param}, admin_session
-        }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      describe 'when user has notifications enabled' do
+        it 'sends an email' do
+          @reservation.user.notify_on_approved = true
+          @reservation.save
+          expect { 
+            get :approve, {:id => @reservation.to_param}, admin_session
+          }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        end
+      end
+
+      describe 'when user does not have notifications enabled' do
+        it 'does not send an email' do
+          @reservation.user.notify_on_approved = false
+          @reservation.user.save
+          expect { 
+            get :approve, {:id => @reservation.to_param}, admin_session
+          }.to change { ActionMailer::Base.deliveries.count }.by(0)
+        end
       end
     end
 
@@ -336,10 +350,24 @@ RSpec.describe ReservationsController, :type => :controller do
         expect(response).to redirect_to(@reservation)
       end
 
-      it 'send an email' do
-        expect { 
-          get :approve, {:id => @reservation.to_param}, admin_session
-        }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      describe 'when user has notifications enabled' do
+        it 'sends an email' do
+          @reservation.user.notify_on_denied = true
+          @reservation.user.save
+          expect { 
+            get :deny, {:id => @reservation.to_param}, admin_session
+          }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        end
+      end
+
+      describe 'when user does not have notifications enabled' do
+        it 'does not send an email' do
+          @reservation.user.notify_on_denied = false
+          @reservation.user.save
+          expect { 
+            get :deny, {:id => @reservation.to_param}, admin_session
+          }.to change { ActionMailer::Base.deliveries.count }.by(0)
+        end
       end
     end
 
@@ -401,10 +429,24 @@ RSpec.describe ReservationsController, :type => :controller do
         expect(@reservation.checked_out_time).to_not eq(nil)
       end
 
-      it 'send an email' do
-        expect { 
-          put :checkout_update, {:id => @reservation.to_param, :reservation => {:check_out_comments => 'checkout comments'}}, monitor_session
-        }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      describe 'when user has notifications enabled' do
+        it 'sends an email' do
+          @reservation.user.notify_on_checked_out = true
+          @reservation.user.save
+          expect { 
+            put :checkout_update, {:id => @reservation.to_param, :reservation => {:check_out_comments => 'checkout comments'}}, monitor_session
+          }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        end
+      end
+
+      describe 'when user does not have notifications enabled' do
+        it 'does not send an email' do
+          @reservation.user.notify_on_checked_out = false
+          @reservation.user.save
+          expect { 
+            put :checkout_update, {:id => @reservation.to_param, :reservation => {:check_out_comments => 'checkout comments'}}, monitor_session
+          }.to change { ActionMailer::Base.deliveries.count }.by(0)
+        end
       end
 
       describe 'when reservation is not approved' do
@@ -469,10 +511,24 @@ RSpec.describe ReservationsController, :type => :controller do
           expect(@reservation.checked_in_time).to_not eq(nil)
         end
 
-        it 'send an email' do
-          expect { 
-            put :checkin_update, {:id => @reservation.to_param, :reservation => {:check_in_comments => 'checkin comments'}}, monitor_session
-          }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        describe 'when user has notifications enabled' do
+          it 'sends an email' do
+            @reservation.user.notify_on_checked_in = true
+            @reservation.user.save
+            expect { 
+              put :checkin_update, {:id => @reservation.to_param, :reservation => {:check_in_comments => 'checkin comments'}}, monitor_session
+            }.to change { ActionMailer::Base.deliveries.count }.by(1)
+          end
+        end
+
+        describe 'when user does not have notifications enabled' do
+          it 'does not send an email' do
+            @reservation.user.notify_on_checked_in = false
+            @reservation.user.save
+            expect { 
+              put :checkin_update, {:id => @reservation.to_param, :reservation => {:check_in_comments => 'checkin comments'}}, monitor_session
+            }.to change { ActionMailer::Base.deliveries.count }.by(0)
+          end
         end
       end
 
