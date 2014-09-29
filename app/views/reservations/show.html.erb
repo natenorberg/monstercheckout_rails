@@ -29,40 +29,55 @@
         <% end %>
       </ul>
 
-      <% if @reservation.can_edit?(current_user) %>
-        <%= link_to edit_reservation_path(@reservation), class: 'btn btn-large btn-primary', id: 'edit_reservation_button' do %>
-          <i class="fa fa-pencil"></i> Edit
+      <div class="buttons">
+        <% if @reservation.can_edit?(current_user) %>
+          <%= link_to edit_reservation_path(@reservation), class: 'btn btn-large btn-primary', id: 'edit_reservation_button' do %>
+            <i class="fa fa-pencil"></i> Edit
+          <% end %>
         <% end %>
-      <% end %>
-      <% if @reservation.is_approved %>
-        <script type="text/javascript">
-          $("#edit_reservation_button").click(function(event) {
-              event.preventDefault();
-              var r = confirm('Are you sure you want to edit this reservation?\nThe administrator will need to approve your checkout again.');
-              if (r == true) {
-                window.location = "<%= edit_reservation_path(@reservation) %>";
-              };
-          });
-        </script>
-      <% end %>
-      <% if current_user.monitor_access? && @reservation.approved? %>
-        <%= link_to checkout_reservation_path(@reservation), class: 'btn btn-large btn-primary' do %>
-          <i class="fa fa-sign-out"></i> Check Out
+        <% if @reservation.is_approved %>
+          <script type="text/javascript">
+            $("#edit_reservation_button").click(function(event) {
+                event.preventDefault();
+                var r = confirm('Are you sure you want to edit this reservation?\nThe administrator will need to approve your checkout again.');
+                if (r == true) {
+                  window.location = "<%= edit_reservation_path(@reservation) %>";
+                };
+            });
+          </script>
         <% end %>
-      <% end %>
-      <% if current_user.monitor_access? && @reservation.can_checkin? %>
-        <%= link_to checkin_reservation_path(@reservation), class: 'btn btn-large btn-primary' do %>
-          <i class="fa fa-sign-in"></i> Check In
+        <% if current_user.monitor_access? && @reservation.approved? %>
+          <%= link_to checkout_reservation_path(@reservation), class: 'btn btn-large btn-primary' do %>
+            <i class="fa fa-sign-out"></i> Check Out
+          <% end %>
         <% end %>
-      <% end %>
-      <% if current_user.is_admin? && @reservation.requested? %>
-        <%= link_to approve_reservation_path(@reservation), class: 'btn btn-large btn-success' do %>
-          <i class="fa fa-check"></i> Approve
+        <% if current_user.monitor_access? && @reservation.can_checkin? %>
+          <%= link_to checkin_reservation_path(@reservation), class: 'btn btn-large btn-primary' do %>
+            <i class="fa fa-sign-in"></i> Check In
+          <% end %>
         <% end %>
-        <%= link_to deny_reservation_path(@reservation), class: 'btn btn-large btn-danger' do %>
-          <i class="fa fa-times"></i> Deny
+        <% if current_user.is_admin? && @reservation.requested? %>
+          <%= link_to approve_reservation_path(@reservation), class: 'btn btn-large btn-success' do %>
+            <i class="fa fa-check"></i> Approve
+          <% end %>
+          <%= link_to '#', id: 'deny_button', class: 'btn btn-large btn-danger' do %>
+            <i class="fa fa-times"></i> Deny
+          <% end %>
         <% end %>
-      <% end %>
+      </div>
+
+      <div id="deny_form" style="display:none;">
+        <%= form_for @reservation, url: deny_reservation_path(@reservation), method: :post do |f| %>
+          <div class="field" id="denied_reason_field">
+            <%= f.label :denied_reason, 'Please give a reason why the reservation is denied' %><br/>
+            <%= f.text_area :denied_reason, class: 'form-control' %>
+          </div>
+
+          <div class="actions">
+            <%= f.submit 'Deny', class: 'btn btn-large btn-danger', id: 'submit_button' %>
+          </div>
+        <% end %>
+      </div>
 
     </div>
   </div>

@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   resources :reservations do
     member do
       get 'approve'
-      get 'deny'
+      post 'deny'
       get 'checkout'
       post 'checkout_update'
       get 'checkin'

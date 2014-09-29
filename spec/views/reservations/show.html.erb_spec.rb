@@ -40,7 +40,7 @@ RSpec.describe 'reservations/show', :type => :view do
         render
 
         assert_select 'a.btn.btn-large.btn-success[href=?]', approve_reservation_path(@reservation), text: 'Approve'
-        assert_select 'a.btn.btn-large.btn-danger[href=?]', deny_reservation_path(@reservation), text: 'Deny'
+        assert_select 'a#deny_button.btn.btn-large.btn-danger', text: 'Deny'
       end
     end
 
@@ -49,7 +49,7 @@ RSpec.describe 'reservations/show', :type => :view do
         render
 
         assert_select 'a.btn.btn-large.btn-success[href=?]', approve_reservation_path(@reservation), text: 'Approve', count: 0
-        assert_select 'a.btn.btn-large.btn-danger[href=?]', deny_reservation_path(@reservation), text: 'Deny', count: 0
+        assert_select 'a#deny_button.btn.btn-large.btn-danger', text: 'Deny', count: 0
       end
     end
   end

@@ -36,7 +36,7 @@ RSpec.describe ReservationsController, :type => :routing do
     end
 
     it 'routes to #deny' do
-      expect(:get => '/reservations/1/deny').to route_to('reservations#deny', :id => '1')
+      expect(:post => '/reservations/1/deny').to route_to('reservations#deny', :id => '1')
     end
 
     it 'routes to #checkout' do

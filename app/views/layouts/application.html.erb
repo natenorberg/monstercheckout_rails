@@ -7,16 +7,16 @@
   <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,200' rel='stylesheet' type='text/css'>
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
   <%= csrf_meta_tags %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 </head>
 <body>
 <%= render 'layouts/header' unless @disable_nav %>
 <% flash.each do |key, value| %>
-	<div class="alert <%= bootstrap_class_for(key) %>"> <%= value %> </div>
+  <div class="alert <%= bootstrap_class_for(key) %>"> <%= value %> </div>
 <% end %>
 <%= yield %>
 <%= render 'layouts/footer' %>
 <%= debug(params) if Rails.env.development? %>
 
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 </body>
 </html>

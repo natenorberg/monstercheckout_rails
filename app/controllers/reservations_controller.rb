@@ -338,6 +338,7 @@ class ReservationsController < ApplicationController
                                           :checked_out_by_id, :checked_in_by_id,
                                           :is_approved,
                                           :check_out_comments, :check_in_comments,
+                                          :denied_reason,
                                           equipment_ids: [],
                                           sub_item_ids: [])
     end
