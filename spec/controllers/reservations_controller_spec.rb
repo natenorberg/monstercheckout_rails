@@ -331,22 +331,25 @@ RSpec.describe ReservationsController, :type => :controller do
     end
   end
 
-  describe 'GET deny' do
+  describe 'POST deny' do
+    let(:reason) { "The administrator doesn't like you" }
+
     before do 
       @reservation = FactoryGirl.create(:reservation)
     end
 
     describe 'when current_user is admin' do
       it 'changes the denied status of the reservation' do
-        get :deny, {:id => @reservation.to_param}, admin_session
+        post :deny, {:id => @reservation.to_param, :reservation => {:denied_reason => reason}}, admin_session
         @reservation.reload
         expect(@reservation.is_denied?).to eq(true)
         expect(@reservation.status).to eq('denied')
         expect(@reservation.admin_response_time).to_not eq(nil)
+        expect(@reservation.denied_reason).to eq(reason)
       end
 
       it 'redirects to show page' do
-        get :deny, {:id => @reservation.to_param}, admin_session
+        post :deny, {:id => @reservation.to_param, :reservation => {:denied_reason => reason}}, admin_session
         expect(response).to redirect_to(@reservation)
       end
 
@@ -355,7 +358,7 @@ RSpec.describe ReservationsController, :type => :controller do
           @reservation.user.notify_on_denied = true
           @reservation.user.save
           expect { 
-            get :deny, {:id => @reservation.to_param}, admin_session
+            post :deny, {:id => @reservation.to_param, :reservation => {:denied_reason => reason}}, admin_session
           }.to change { ActionMailer::Base.deliveries.count }.by(1)
         end
       end
@@ -365,7 +368,7 @@ RSpec.describe ReservationsController, :type => :controller do
           @reservation.user.notify_on_denied = false
           @reservation.user.save
           expect { 
-            get :deny, {:id => @reservation.to_param}, admin_session
+            post :deny, {:id => @reservation.to_param, :reservation => {:denied_reason => reason}}, admin_session
           }.to change { ActionMailer::Base.deliveries.count }.by(0)
         end
       end
@@ -373,14 +376,14 @@ RSpec.describe ReservationsController, :type => :controller do
 
     describe 'when current_user is not admin' do
       it 'does not change the denied status of the reservation' do
-        get :deny, {:id => @reservation.to_param}, non_admin_session
+        post :deny, {:id => @reservation.to_param, :reservation => {:denied_reason => reason}}, non_admin_session
         @reservation.reload
         expect(@reservation.is_denied?).to eq(false)
         expect(@reservation.status).to eq('requested')
       end
 
       it 'redirects to show page' do
-        get :deny, {:id => @reservation.to_param}, non_admin_session
+        post :deny, {:id => @reservation.to_param, :reservation => {:denied_reason => reason}}, non_admin_session
         expect(response).to redirect_to(root_path)
       end
     end

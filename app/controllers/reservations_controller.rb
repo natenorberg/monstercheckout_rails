@@ -156,7 +156,7 @@ class ReservationsController < ApplicationController
     @reservation.status = :denied
     @reservation.admin_response_time = Time.now
     respond_to do |format|
-      if @reservation.save
+      if @reservation.update(reservation_params)
         notify_denied
         format.html { redirect_to @reservation, flash: { error: 'Reservation has been denied' } }
         format.json { render :show, status: :ok, location: @reservation }

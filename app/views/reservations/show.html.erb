@@ -19,7 +19,10 @@
 
       <p><strong>Reserved from:</strong> <%= @reservation.out_time.strftime(ReservationsHelper::LONG_DATETIME_FORMAT) %> <br><strong>to:</strong> <%= @reservation.in_time.strftime(ReservationsHelper::LONG_DATETIME_FORMAT) %></p>
 
-      <h4><strong>Status: </strong><%= status_text(@reservation).html_safe %></h4>
+      <h4><strong>Status: </strong><%= status_text(@reservation).html_safe %>
+        <!-- TODO: Move this over into the timeline widget -->
+        <% if @reservation.denied? %> because <%= @reservation.denied_reason %><% end %>
+      </h4>
 
       <h4>Equipment</h4>
 
