@@ -80,6 +80,11 @@ describe UserMailer do
 
   describe 'denied_email' do
     let(:reservation) { FactoryGirl.create(:reservation) }
+    let(:reason) { 'Because I said so' }
+    before do
+      reservation.denied_reason = reason
+      reservation.save
+    end
     let(:mail) { UserMailer.denied_email(reservation) }
 
     it_should_behave_like 'user reservation update emails'
@@ -92,6 +97,7 @@ describe UserMailer do
       expect(mail.body.encoded).to match reservation.user.first_name
       expect(mail.body.encoded).to match reservation.project
       expect(mail.body.encoded).to have_link 'View Reservation', href: 'http://localhost:3000/reservations/1'
+      expect(mail.body.encoded).to match reason
     end
 
     describe 'checked_out_email' do

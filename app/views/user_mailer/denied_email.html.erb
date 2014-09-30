@@ -2,6 +2,10 @@
 
 <p style="background-color: #f6e1e1;margin-top: 10px;padding: 20px;font-size: 20px;">Your reservation for <%= @reservation.project %> has been denied. Please contact your administrator to find out why and then edit and resubmit your reservation.</p>
 
+<% if @reservation.denied_reason %>
+<p style="padding: 20px;font-size: 20px;"><strong>Comments:</strong><br/><%= @reservation.denied_reason %></p>
+<% end %>
+
 <% content_for :button_bar do %>
 <a href="<%= reservation_url(@reservation) %>" style="color: white; background-color: #468cc8; border:1px solid #397fbb; border-radius: 4px; display: inline-block; margin: 0 4px 0 0; font-weight: normal; text-align: center; vertical-align: middle; white-space: nowrap; padding: 8px 15px; font-size: 14px; line-height: 1.428571429; text-decoration:none;">View Reservation</a>
 <% end %>

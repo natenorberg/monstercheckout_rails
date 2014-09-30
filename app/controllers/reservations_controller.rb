@@ -149,8 +149,8 @@ class ReservationsController < ApplicationController
     end
   end
 
-  # GET /reservations/1/deny
-  # GET /reservations/1/deny.json
+  # POST /reservations/1/deny
+  # POST /reservations/1/deny.json
   def deny
     @reservation.is_denied = true
     @reservation.status = :denied

@@ -123,7 +123,7 @@ RSpec.describe 'reservations/_timeline', :type => :view do
 
       assert_select 'li.list-group-item>strong.status-text-denied'
       assert_select 'li.list-group-item', text: /Denied Date/
-      assert_select '.timeline-comments', text: reason
+      expect(rendered).to match(reason)
     end
   end
 end
