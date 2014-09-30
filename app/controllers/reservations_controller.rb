@@ -208,6 +208,7 @@ class ReservationsController < ApplicationController
       @reservation.is_approved = false
       @reservation.is_denied = false
       @reservation.status = :requested
+      @reservation.denied_reason = nil
       @reservation.save
     end
 

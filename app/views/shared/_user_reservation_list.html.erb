@@ -10,55 +10,77 @@
 			<div class="buttons">
 				<% if show_approve_deny_buttons && current_user.is_admin? && reservation.requested? %>
 					<%= link_to approve_reservation_path(reservation), class: 'btn btn-large btn-success', id:"approve_button_#{reservation.id}" do %>
-						          <i class="fa fa-check"></i> Approve
-						        <% end %>
-						        <%= link_to deny_reservation_path(reservation), class: 'btn btn-large btn-danger', id: "deny_button_#{reservation.id}" do %>
-						          <i class="fa fa-times"></i> Deny
-						        <% end %>
-						        <script type="text/javascript">
-						        //<![CDATA[
-						        $('#approve_button_<%= reservation.id %>').click(function (event) {
-						        	event.preventDefault();
-						        	$.ajax({
-						        		url: "<%= approve_reservation_path(reservation, format: :json) %>",
-						        		data: {id: '<%= reservation.id %>'},
-						        		type: 'GET',
-						        		dataType: 'json',
-						        		success: function (response) {
-						        			$('.status_text_<%= reservation.id %>').html('<span class=\"status-text-approved\"><i class=\"fa fa-thumbs-o-up\"></i> Approved</span>');
-						        			$('#approve_button_<%= reservation.id %>').hide();
-						        			$('#deny_button_<%= reservation.id %>').hide();
-						        		},
-						        		error: function (error) {
-						        			alert('Something went horribly wrong!');
-						        		}
-						        	});
-						        });
-				
-						        $('#deny_button_<%= reservation.id %>').click(function (event) {
-						        	event.preventDefault();
-						        	$.ajax({
-						        		url: "<%= deny_reservation_path(reservation, format: :json) %>",
-						        		data: {id: '<%= reservation.id %>'},
-						        		type: 'GET',
-						        		dataType: 'json',
-						        		success: function (response) {
-						        			$('.status_text_<%= reservation.id %>').html("<span class='status-text-denied'><i class='fa fa-thumbs-o-down'></i> Denied</span>");
-						        			$('#approve_button_<%= reservation.id %>').hide();
-						        			$('#deny_button_<%= reservation.id %>').hide();
-						        		},
-						        		error: function (error) {
-						        			alert('Something went horribly wrong!');
-						        		}
-						        	});
-						        });
-				
-						        $('#deny_button').click(function (event) {
-						        	event.preventDefault();
-						        	alert('Deny button clicked');
-						        })
-						        //]]>
-						        </script>
+	          <i class="fa fa-check"></i> Approve
+	        <% end %>
+	        <%= link_to '#', class: 'btn btn-large btn-danger', id: "deny_button_#{reservation.id}" do %>
+	          <i class="fa fa-times"></i> Deny
+	        <% end %>
+
+	        <div id="deny_form_<%= reservation.id %>" style="display:none;">
+	        <%= form_for reservation, url: deny_reservation_path(reservation), method: :post do |f| %>
+	          <div class="field" id="denied_reason_field">
+	            <%= f.label :denied_reason, 'Please give a reason why the reservation is denied' %><br/>
+	            <%= f.text_area :denied_reason, class: 'form-control' %>
+	          </div>
+
+	          <div class="actions">
+	            <%= f.submit 'Deny', class: 'btn btn-large btn-danger', id: "submit_deny_#{reservation.id}" %>
+	          </div>
+	        <% end %>
+	      	</div>
+
+	        <script type="text/javascript">
+	        //<![CDATA[
+	        $('#approve_button_<%= reservation.id %>').click(function (event) {
+	        	event.preventDefault();
+	        	$.ajax({
+	        		url: "<%= approve_reservation_path(reservation, format: :json) %>",
+	        		data: {id: '<%= reservation.id %>'},
+	        		type: 'GET',
+	        		dataType: 'json',
+	        		success: function (response) {
+	        			$('.status_text_<%= reservation.id %>').html('<span class=\"status-text-approved\"><i class=\"fa fa-thumbs-o-up\"></i> Approved</span>');
+	        			$('#approve_button_<%= reservation.id %>').hide();
+	        			$('#deny_button_<%= reservation.id %>').hide();
+	        		},
+	        		error: function (error) {
+	        			alert('Something went horribly wrong!');
+	        		}
+	        	});
+	        });
+
+	        $('#deny_button_<%= reservation.id %>').click(function (event) {
+	        	event.preventDefault();
+	        	$('#approve_button_<%= reservation.id %>').hide();
+	        	$('#deny_button_<%= reservation.id %>').hide();
+	        	$('#deny_form_<%= reservation.id %>').show();
+	        });
+
+	        $('#submit_deny_<%= reservation.id %>').click(function (event) {
+	        	event.preventDefault();
+	        	var deniedReason = $('textarea#reservation_denied_reason').val();
+	        	$.ajax({
+	        		url: "<%= deny_reservation_path(reservation, format: :json) %>",
+	        		beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+	        		data: {reservation: {id: '<%= reservation.id %>', denied_reason: deniedReason}},
+	        		type: 'POST',
+	        		dataType: 'json',
+	        		success: function (response) {
+	        			$('.status_text_<%= reservation.id %>').html("<span class='status-text-denied'><i class='fa fa-thumbs-o-down'></i> Denied</span>");
+	        			$('#deny_form_<%= reservation.id %>').hide();
+	        		},
+	        		error: function (error) {
+	        			alert('Something went horribly wrong!');
+	        		}
+	        	});
+	        });
+
+	        $('#deny_button').click(function (event) {
+	        	event.preventDefault();
+	        	alert('Deny button clicked');
+	        })
+	        //]]>
+	        </script>
 				<% end %>
 				<% if current_user.monitor_access? %>
 					<% if reservation.approved? %>

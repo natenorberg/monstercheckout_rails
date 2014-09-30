@@ -204,9 +204,10 @@ RSpec.describe ReservationsController, :type => :controller do
       end
 
       describe 'with denied reservation' do
-        it 'unapproves the reservation' do
+        it 'undenies the reservation' do
           reservation = Reservation.create! valid_attributes
           reservation.is_denied = true
+          reservation.denied_reason = 'Bad reservation'
           reservation.status = :denied
           reservation.save
 
@@ -214,6 +215,7 @@ RSpec.describe ReservationsController, :type => :controller do
           reservation.reload
           expect(reservation.is_denied).to eq(false)
           expect(reservation.status).to eq('requested')
+          expect(reservation.denied_reason).to eq(nil)
         end
         
         it 'sends an email notification' do
