@@ -73,6 +73,20 @@ a {
   height: 30px;
 }
 
+.icon-background {
+  width: 100% !important;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0.1;
+  font-size: 275px;
+  text-align: center;
+  margin-top: 43px; 
+  color: #003978;
+  z-index: -1;
+}
+
 /* Breadcrumbs */
 ol.breadcrumb {
   height: 36px;
