@@ -110,9 +110,11 @@ RSpec.describe 'reservations/_timeline', :type => :view do
   end
 
   describe 'denied record' do
+    let(:reason) { 'Because I said so' }
     before(:each) do
       @reservation.is_denied = true
       @reservation.admin_response_time = Time.now
+      @reservation.denied_reason = reason
       view.stub(:auto_shrink_date).with(@reservation.admin_response_time).and_return 'Denied Date'
     end
 
@@ -121,6 +123,7 @@ RSpec.describe 'reservations/_timeline', :type => :view do
 
       assert_select 'li.list-group-item>strong.status-text-denied'
       assert_select 'li.list-group-item', text: /Denied Date/
+      assert_select '.timeline-comments', text: reason
     end
   end
 end
