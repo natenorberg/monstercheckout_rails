@@ -13,7 +13,7 @@ class ReservationsController < ApplicationController
   # GET /reservations
   # GET /reservations.json
   def index
-    @user_reservations = Reservation.where(user: current_user)
+    @user_reservations = Reservation.where(user: current_user).paginate(page: params[:page], :per_page => 5)
     if current_user.is_admin?
       @awaiting_approval = Reservation.where(status: 'requested')
       @all_reservations = Reservation.all

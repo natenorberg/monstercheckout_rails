@@ -3,6 +3,10 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 /* Reservation items */
+.reservations-table {
+  border: 1px #ddd solid;
+}
+
 .reservation-icon, .reservation-info {
   display: inline-block;
   vertical-align: top;
