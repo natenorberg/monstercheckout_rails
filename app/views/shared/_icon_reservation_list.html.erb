@@ -9,6 +9,9 @@
 				<%= render 'shared/icon_reservation', reservation: reservation %>
 			</li>
 		<% end %>
+		<li class="list-group-item pagination-item">
+			<%= will_paginate reservations, renderer: BootstrapPagination::Rails %>
+		</li>
 	</ul>
 	<% else %>
 		<div class="panel-body">

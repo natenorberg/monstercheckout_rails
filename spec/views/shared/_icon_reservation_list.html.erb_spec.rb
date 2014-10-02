@@ -4,6 +4,7 @@ RSpec.describe 'shared/_icon_reservation_list', :type => :view do
   before(:each) do
     @title = 'Test Reservations'
     @reservations = [ FactoryGirl.create(:reservation), FactoryGirl.create(:reservation)]
+    view.stub(:will_paginate).and_return 'will_paginate'
   end
 
   it 'renders a list of reservations' do
@@ -24,5 +25,11 @@ RSpec.describe 'shared/_icon_reservation_list', :type => :view do
     assert_select '.panel-body>em', text: 'You have no reservations'
 
     assert_select 'a.btn.btn-large.btn-primary', :text => 'New Reservation'
+  end
+
+  it 'renders pagination if needed' do
+    render partial: 'shared/icon_reservation_list', locals: { reservations: @reservations, title: @title }
+
+    expect(rendered).to match /will_paginate/
   end
 end

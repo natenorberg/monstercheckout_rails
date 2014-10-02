@@ -163,6 +163,28 @@ ul.equipment-show-list {
   margin: 0 15px 20px 15px;
 }
 
+li.list-group-item.pagination-item {
+  padding: 0;
+  height: 32px;
+
+  ul.pagination {
+    margin: 0 auto;
+    line-height: 9px;
+
+    .prev, .active {
+      span, a {
+        border: 0;
+      }
+    }
+
+    li>a {
+      border-top: 0;
+      border-bottom: 0;
+      border-radius: 0;
+    }
+  }
+}
+
 .checklist-container {
   padding: 0 15px;
 }
