@@ -1,3 +1,5 @@
+<% should_paginate ||= false %>
+
 <div class="panel panel-default reservation-panel">
 	<div class='panel-heading'>
 		<h3 class="panel-title"><%= title %></h3>
@@ -9,9 +11,11 @@
 				<%= render 'shared/icon_reservation', reservation: reservation %>
 			</li>
 		<% end %>
+		<% if should_paginate %>
 		<li class="list-group-item pagination-item">
 			<%= will_paginate reservations, renderer: BootstrapPagination::Rails %>
 		</li>
+		<% end %>
 	</ul>
 	<% else %>
 		<div class="panel-body">

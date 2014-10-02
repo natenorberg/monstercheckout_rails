@@ -28,8 +28,8 @@ RSpec.describe 'shared/_icon_reservation_list', :type => :view do
   end
 
   it 'renders pagination if needed' do
-    render partial: 'shared/icon_reservation_list', locals: { reservations: @reservations, title: @title }
+    render partial: 'shared/icon_reservation_list', locals: { reservations: @reservations, title: @title, should_paginate: true }
 
-    expect(rendered).to match /will_paginate/
+    expect(rendered).to match(/will_paginate/)
   end
 end
