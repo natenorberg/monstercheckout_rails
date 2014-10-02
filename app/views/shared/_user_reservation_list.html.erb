@@ -1,3 +1,5 @@
+<% should_show_buttons ||= false %>
+
 <div class="panel panel-default reservation-panel">
 <div class='panel-heading'>
 	<h3 class="panel-title"><%= title %></h3>
@@ -7,8 +9,10 @@
 	<% reservations.each do |reservation| %>
 		<li class="list-group-item">
 			<%= render 'shared/user_reservation', reservation: reservation %>
+
+			<% if should_show_buttons %>
 			<div class="buttons">
-				<% if show_approve_deny_buttons && current_user.is_admin? && reservation.requested? %>
+				<% if current_user.is_admin? && reservation.requested? %>
 					<%= link_to approve_reservation_path(reservation), class: 'btn btn-large btn-success', id:"approve_button_#{reservation.id}" do %>
 	          <i class="fa fa-check"></i> Approve
 	        <% end %>
@@ -95,6 +99,8 @@
 					<% end %>
 				<% end %>
 			</div>
+			<% end %>
+
 		</li>
 	<% end %>
 </ul>

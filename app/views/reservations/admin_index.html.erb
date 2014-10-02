@@ -1,10 +1,10 @@
 <div ng-app="admin-reservation-index">
 	<h1 class="page-header">Reservations</h1>
 
-	<div class="row" ng-controller="indexCtrl">
+	<div class="row">
 		<div class="col-sm-6">
 			<%= render 'shared/user_reservation_list', reservations: @awaiting_approval, 
-			title: 'Awaiting Approval', empty_text: 'There are no reservations that need approval', show_approve_deny_buttons: true %>
+			title: 'Awaiting Approval', empty_text: 'There are no reservations that need approval', should_show_buttons: true %>
 
 			<%= render 'shared/icon_reservation_list', reservations: @user_reservations, title: 'Your Reservations', should_paginate: true  %>
 		</div>
