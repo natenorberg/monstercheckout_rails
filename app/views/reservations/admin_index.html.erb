@@ -3,14 +3,14 @@
 
 	<div class="row">
 		<div class="col-sm-6">
-			<%= render 'shared/user_reservation_list', reservations: @awaiting_approval, 
+			<%= render 'shared/user_reservation_list', reservations: @awaiting_approval,
 			title: 'Awaiting Approval', empty_text: 'There are no reservations that need approval', should_show_buttons: true %>
 
-			<%= render 'shared/icon_reservation_list', reservations: @user_reservations, title: 'Your Reservations', should_paginate: true  %>
+			<%= render 'shared/icon_reservation_list', reservations: @user_reservations, title: 'Your Reservations', should_paginate: true, page_param_name: 'user_reservations_page'  %>
 		</div>
 		<div class="col-sm-6">
-			<%= render 'shared/user_reservation_list', reservations: @all_reservations, title: 'All Reservations', 
-			show_approve_deny_buttons: false %>
+			<%= render 'shared/user_reservation_list', reservations: @all_reservations, title: 'All Reservations',
+			should_show_buttons: false, should_paginate: true, page_param_name: 'all_reservations_page' %>
 		</div>
 	</div>
 </div>

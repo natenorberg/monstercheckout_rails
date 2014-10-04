@@ -13,7 +13,8 @@
 		<% end %>
 		<% if should_paginate %>
 		<li class="list-group-item pagination-item">
-			<%= will_paginate reservations, renderer: BootstrapPagination::Rails %>
+      <% page_param_name ||= 'page' %>
+			<%= will_paginate reservations, param_name: page_param_name, renderer: BootstrapPagination::Rails %>
 		</li>
 		<% end %>
 	</ul>
