@@ -5,6 +5,7 @@ RSpec.describe 'shared/_icon_reservation_list', :type => :view do
     @title = 'Test Reservations'
     @reservations = [ FactoryGirl.create(:reservation), FactoryGirl.create(:reservation)]
     view.stub(:will_paginate).and_return 'will_paginate'
+    @reservations.stub(:total_pages).and_return 2
   end
 
   it 'renders a list of reservations' do

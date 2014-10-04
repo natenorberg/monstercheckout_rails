@@ -34,6 +34,7 @@ RSpec.describe 'reservations/admin_index', :type => :view do
     mock_user.stub(:is_admin?).and_return true
     view.stub(:current_user).and_return mock_user
     view.stub(:will_paginate)
+    reservations.stub(:total_pages).and_return 1
   end
 
   it 'renders the index widgets' do

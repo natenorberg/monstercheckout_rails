@@ -104,7 +104,7 @@
 
 		</li>
 	<% end %>
-  <% if should_paginate %>
+  <% if should_paginate && reservations.total_pages > 1 %>
     <li class="list-group-item pagination-item">
     <% page_param_name ||= 'page' %>
     <%= will_paginate reservations, param_name: page_param_name, renderer: BootstrapPagination::Rails %>
