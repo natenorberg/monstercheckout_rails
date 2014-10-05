@@ -35,16 +35,20 @@
       </ul>
     <% end %>
 
-      <% if current_user.is_admin? %>
-        <div class="buttons">
+    <% if current_user.is_admin? %>
+      <div class="buttons">
         <%= link_to edit_equipment_path(@equipment), class: 'btn btn-large btn-primary' do %>
           <i class="fa fa-edit"></i> Edit
-      <% end %>
+        <% end %>
         <%= link_to @equipment, method: :delete, class: 'btn btn-large btn-danger', data: { confirm: 'Are you sure?' } do %>
           <i class="fa fa-trash-o"></i> Delete
-      <% end %>
+        <% end %>
+        <%= link_to history_equipment_path(@equipment), class: 'btn btn-large btn-primary' do %>
+          <i class="fa fa-archive"></i> History
+        <% end %>
       </div>
     <% end %>
+
     </div>
   </div>
   <div class="col-sm-7">
