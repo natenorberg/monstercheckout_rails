@@ -28,6 +28,10 @@ Rails.application.routes.draw do
     end
   end
   resources :equipment do
+    member do
+      get 'history'
+    end
+
     resources :sub_items
   end
   resources :users do

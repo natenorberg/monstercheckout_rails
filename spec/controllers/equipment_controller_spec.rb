@@ -27,7 +27,7 @@ RSpec.describe EquipmentController, :type => :controller do
     {name: 'Test Microphone', brand: 'Shure', quantity: 1, condition: 'Unknown', description: 'Description'}
   }
 
-  let(:kit_attributes) { 
+  let(:kit_attributes) {
     {name: 'Test Kit', brand: 'Test', quantity: 1, condition: 'Greate', description: 'Lots of stuff', is_kit: 1}
   }
 
@@ -183,6 +183,24 @@ RSpec.describe EquipmentController, :type => :controller do
       equipment = Equipment.create! valid_attributes
       delete :destroy, {:id => equipment.to_param}, admin_session
       expect(response).to redirect_to(equipment_index_url)
+    end
+  end
+
+  describe 'GET history' do
+    describe 'when user is admin' do
+      it 'assigns the requested equipment as @equipment' do
+        equipment = Equipment.create! valid_attributes
+        get :history, {:id => equipment.to_param}, admin_session
+        expect(assigns(:equipment)).to eq(equipment)
+      end
+    end
+
+    describe 'when user is not an admin' do
+      it 'redirects to root path' do
+        equipment = Equipment.create! valid_attributes
+        get :history, {:id => equipment.to_param}, valid_session
+        expect(response).to redirect_to(root_path)
+      end
     end
   end
 

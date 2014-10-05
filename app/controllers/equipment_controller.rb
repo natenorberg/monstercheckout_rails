@@ -1,7 +1,7 @@
 class EquipmentController < ApplicationController
-  before_action :set_equipment,  only: [:show, :edit, :update, :destroy]
+  before_action :set_equipment,  only: [:show, :edit, :update, :destroy, :history]
   before_filter :user_signed_in,  only: [:new, :edit, :create, :update, :destroy]
-  before_filter :user_is_admin,  only: [:new, :edit, :create, :update, :destroy]
+  before_filter :user_is_admin,  only: [:new, :edit, :create, :update, :destroy, :history]
 
   # GET /equipment
   # GET /equipment.json
@@ -30,11 +30,11 @@ class EquipmentController < ApplicationController
 
     respond_to do |format|
       if @equipment.save
-        format.html { 
+        format.html {
           if @equipment.is_kit?
             redirect_to new_equipment_sub_item_path(@equipment), notice: 'Please enter the items that make up this kit'
           else
-            redirect_to @equipment, notice: 'Equipment was successfully created.' 
+            redirect_to @equipment, notice: 'Equipment was successfully created.'
           end
         }
         format.json { render :show, status: :created, location: @equipment }
@@ -67,6 +67,10 @@ class EquipmentController < ApplicationController
       format.html { redirect_to equipment_index_url, notice: 'Equipment was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  # GET /equipment/1/history
+  def history
   end
 
   private
