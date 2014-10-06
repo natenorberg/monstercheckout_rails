@@ -17,7 +17,13 @@ Rails.application.routes.draw do
   get 'admin/dashboard' => 'admin#dashboard'
   get 'admin' => 'admin#dashboard'
 
+  get 'archive' => 'reservations#archive'
+
   resources :reservations do
+    collection do
+      get 'archive'
+    end
+
     member do
       get 'approve'
       post 'deny'

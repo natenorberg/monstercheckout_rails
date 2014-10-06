@@ -3,7 +3,7 @@ class ReservationsController < ApplicationController
   before_action :set_equipment, only: [:new, :create, :edit, :update]
   before_filter :user_signed_in
   before_filter :current_user_or_admin, only: [:destroy]
-  before_filter :user_is_admin, only: [:approve, :deny]
+  before_filter :user_is_admin, only: [:archive, :approve, :deny]
   before_filter :user_is_monitor, only: [:checkout, :checkout_update, :checkin, :checkin_update]
   before_filter :reservation_can_be_checked_out, only: [:checkout, :checkout_update]
   before_filter :reservation_can_be_checked_in, only: [:checkin, :checkin_update]
@@ -19,6 +19,12 @@ class ReservationsController < ApplicationController
       @all_reservations = Reservation.all.paginate(page: params[:all_reservations_page], :per_page => 5)
       render :admin_index
     end
+  end
+
+  # GET /reservations/archive
+  # GET /archive
+  def archive
+    @reservations = Reservation.all
   end
 
   # GET /reservations/1

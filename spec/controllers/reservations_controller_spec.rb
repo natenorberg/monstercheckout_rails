@@ -82,6 +82,23 @@ RSpec.describe ReservationsController, :type => :controller do
     end
   end
 
+  describe 'GET archive' do
+    describe 'when user is admin' do
+      it 'assigns user reservations as @reservations' do
+        reservation = Reservation.create! valid_attributes
+        get :archive, {}, admin_session
+        expect(assigns(:reservations)).to eq([reservation])
+      end
+    end
+
+    describe 'when user is not admin' do
+      it 'redirects to root path' do
+        get :archive, {}, non_admin_session
+        expect(response).to redirect_to(root_path)
+      end
+    end
+  end
+
   describe 'GET show' do
     it 'assigns the requested reservation as @reservation' do
       reservation = Reservation.create! valid_attributes

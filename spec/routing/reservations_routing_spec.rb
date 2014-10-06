@@ -7,6 +7,11 @@ RSpec.describe ReservationsController, :type => :routing do
       expect(:get => '/reservations').to route_to('reservations#index')
     end
 
+    it 'routes to #archive' do
+      expect(:get => '/reservations/archive').to route_to('reservations#archive')
+      expect(:get => '/archive').to route_to('reservations#archive')
+    end
+
     it 'routes to #new' do
       expect(:get => '/reservations/new').to route_to('reservations#new')
     end
