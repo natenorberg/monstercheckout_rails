@@ -190,3 +190,24 @@ img.gravatar {
   margin-bottom: 0;
   @include box_sizing;
 }
+
+@media print {
+  footer.footer,
+  .debug_dump,
+  .print-button {
+    display: none;
+  }
+
+  img.gravatar {
+    display: none;
+  }
+
+  .page-header {
+    font-size: 25px;
+  }
+
+  /* Remove links added afterwards so that archive pages look right */
+  a[href]:after {
+    content: none;
+  }
+}

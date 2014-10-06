@@ -2,20 +2,22 @@
 <h1 class="page-header"><%= @equipment.name %> History</h1>
 
 <div class="row">
-  <div class="col-sm-8 col-sm-offset-2">
+  <div class="col-sm-8 col-sm-offset-2 print-full-width">
     <button onclick="window.print()" class="btn btn-large btn-primary pull-right print-button">
       <i class="fa fa-print"></i> Print
     </button>
     <table class="table table-striped equipment-table">
       <tbody>
 
-        <% @equipment.reservations.each do |reservation| %>
+        <% @equipment.reservations.where(is_denied: [false, nil]).each do |reservation| %>
         <tr>
           <td>
             <div>
               <%= render 'shared/user_reservation', reservation: reservation %>
             </div>
+          </td>
 
+          <td>
             <div class="equipment-history-comments-area">
               <% if reservation.check_out_comments %>
                 <div class="equipment-history-comments">
