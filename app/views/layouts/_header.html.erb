@@ -21,23 +21,30 @@
 					<li class="<%= 'active' if params[:controller] == 'equipment' || params[:controller] == 'sub_items' %>">
 						<%= link_to equipment_index_path do %>
 							<i class="fa fa-microphone"></i> Equipment
-						<% end %>		
+						<% end %>
 					</li>
 					<% if current_user.is_admin? %>
 						<li class="<%= 'active' if is_admin_action?(params[:controller], params[:action]) %>">
 							<%= link_to admin_path do %>
 								<i class="fa fa-rocket"></i> Admin
-							<% end %>		
+							<% end %>
 						</li>
+
 					<% end %>
 
 					<% if current_user.monitor_access? %>
 					<li class="<%= 'active' if is_monitor_action?(params[:controller], params[:action]) %>">
 						<%= link_to monitor_path do %>
 							<i class="fa fa-key"></i> Monitor
-						<% end %>		
+						<% end %>
 					</li>
 					<% end %>
+
+          <% if current_user.is_admin? %>
+            <li> <a href="#"><i class="fa fa-search"></i> Search</a>
+            </li>
+          <% end %>
+
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 							<i class="fa fa-user"></i> <%= current_user.name %> <span class="caret"></span>
