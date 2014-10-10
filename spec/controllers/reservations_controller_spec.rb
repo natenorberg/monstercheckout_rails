@@ -85,7 +85,7 @@ RSpec.describe ReservationsController, :type => :controller do
   describe 'GET archive' do
     describe 'when user is admin' do
       it 'assigns user reservations as @reservations' do
-        reservation = Reservation.create! valid_attributes
+        reservation = FactoryGirl.create(:checkout)
         get :archive, {}, admin_session
         expect(assigns(:reservations)).to eq([reservation])
       end

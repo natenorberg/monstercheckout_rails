@@ -24,7 +24,8 @@ class ReservationsController < ApplicationController
   # GET /reservations/archive
   # GET /archive
   def archive
-    @reservations = Reservation.all
+    # Only show reservations that were ever actually checked out
+    @reservations = Reservation.where('checked_out_time is not null')
   end
 
   # GET /reservations/1
