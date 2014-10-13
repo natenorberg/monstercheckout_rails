@@ -52,6 +52,7 @@ Rails.application.routes.draw do
   end
   resources :reservation_equipment
 
+  get 'search' => 'search#index', as: :search
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

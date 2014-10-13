@@ -41,8 +41,12 @@
 					<% end %>
 
           <% if current_user.is_admin? %>
-            <li> <a href="#"><i class="fa fa-search"></i> Search</a>
-            </li>
+            <%= form_tag search_path, method: :get, role: 'search', class: 'navbar-form' do %>
+              <div class="form-group">
+              <%= text_field_tag 'keyword', nil, class: 'form-control', placeholder: 'Search' %>
+              </div>
+            <% end %>
+            <!--<li> <a href="#"><i class="fa fa-search"></i> Search</a> </li>-->
           <% end %>
 
 					<li class="dropdown">
