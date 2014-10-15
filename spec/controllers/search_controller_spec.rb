@@ -10,23 +10,39 @@ RSpec.describe SearchController, :type => :controller do
       end
 
       describe 'searching for user' do
-        before do 
+        before do
           @user = FactoryGirl.create(:user)
         end
 
-        it 'redirects to user page for exact name match' do
-          get :index, {keyword: @user.name}
-          expect(response).to redirect_to(@user)
+        describe 'as an admin' do
+          before do
+            @mock_user.stub(:is_admin?).and_return true
+          end
+          it 'redirects to user page for exact name match' do
+            get :index, {keyword: @user.name}
+            expect(response).to redirect_to(@user)
+          end
+
+          it 'redirects to user page for exact email match' do
+            get :index, {keyword: @user.email}
+            expect(response).to redirect_to(@user)
+          end
         end
 
-        it 'redirects to user page for exact email match' do
-          get :index, {keyword: @user.email}
-          expect(response).to redirect_to(@user)
+        describe 'as a non-admin' do
+          before do
+            @mock_user.stub(:is_admin?).and_return false
+          end
+
+          it 'does not redirect to user page' do
+            get :index, {keyword: @user.email}
+            expect(response).to_not redirect_to(@user)
+          end
         end
       end
 
       describe 'searching for equipment' do
-        before do 
+        before do
           @equipment = FactoryGirl.create(:equipment)
         end
 
@@ -37,13 +53,32 @@ RSpec.describe SearchController, :type => :controller do
       end
 
       describe 'searching for reservation' do
-        before do 
+        before do
           @reservation = FactoryGirl.create(:reservation)
         end
 
-        it 'redirects to reservation page for exact project match' do
-          get :index, {keyword: @reservation.project}
-          expect(response).to redirect_to(@reservation)
+        describe 'as a monitor' do
+          before do
+            @mock_user.stub(:is_admin?).and_return false
+            @mock_user.stub(:is_monitor?).and_return true
+          end
+
+          it 'redirects to reservation page for exact project match' do
+            get :index, {keyword: @reservation.project}
+            expect(response).to redirect_to(@reservation)
+          end
+        end
+
+        describe 'as a non-monitor' do
+          before do
+            @mock_user.stub(:is_admin?).and_return false
+            @mock_user.stub(:is_monitor?).and_return false
+          end
+
+          it 'does not redirect to reservation page' do
+            get :index, {keyword: @reservation.project}
+            expect(response).to_not redirect_to(@reservation)
+          end
         end
       end
 
@@ -52,12 +87,12 @@ RSpec.describe SearchController, :type => :controller do
         let(:equipment) { FactoryGirl.create(:equipment) }
         let(:reservation) { FactoryGirl.create(:reservation) }
 
-        before do 
+        before do
           Search.stub(:find).and_return({:users => user, :equipment => equipment, :reservations => reservation})
         end
 
         describe 'when user is admin' do
-          before do 
+          before do
             @mock_user.stub(:is_admin?).and_return true
           end
 
@@ -70,7 +105,7 @@ RSpec.describe SearchController, :type => :controller do
         end
 
         describe 'when user is monitor' do
-          before do 
+          before do
             @mock_user.stub(:is_admin?).and_return false
             @mock_user.stub(:monitor_access?).and_return true
           end
@@ -88,7 +123,7 @@ RSpec.describe SearchController, :type => :controller do
         end
 
         describe 'when user is normal user' do
-          before do 
+          before do
             @mock_user.stub(:is_admin?).and_return false
             @mock_user.stub(:monitor_access?).and_return false
           end

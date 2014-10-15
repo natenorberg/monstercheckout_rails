@@ -9,7 +9,7 @@ class SearchController < ApplicationController
       @search_term = params[:keyword]
 
       results = Search.find(params[:keyword])
-      
+
       @users = results[:users] if current_user.is_admin?
       @reservations = results[:reservations] if current_user.monitor_access?
       @equipment = results[:equipment]
@@ -19,9 +19,23 @@ class SearchController < ApplicationController
   private
 
     def find_exact_match(keyword)
-      User.find_by(name: keyword) || User.find_by(email: keyword) ||
-        Equipment.find_by(name: keyword) ||
-        Reservation.find_by(project: keyword)
-    end
+      if current_user.is_admin?
+        match = User.find_by(name: keyword) || User.find_by(email: keyword)
+        if !match.nil?
+          return match
+        end
+      end
 
+      match = Equipment.find_by(name: keyword)
+      if !match.nil?
+        return match
+      end
+
+      if current_user.monitor_access?
+        match = Reservation.find_by(project: keyword)
+        if !match.nil?
+          return match
+        end
+      end
+    end
 end
