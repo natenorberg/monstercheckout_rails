@@ -3,3 +3,30 @@
 <h1 class="page-header">Search Results</h1>
 
 <h2>Search results for <%= @search_term %></h2>
+
+<% if @users && @users.any? %>
+<h4>Users</h4>
+<ul>
+  <% @users.each do |user| %>
+  <li><%= link_to user.name, user %></li>
+  <% end %>
+</ul>
+<% end %>
+
+<% if @equipment && @equipment.any? %>
+<h4>Equipment</h4>
+<ul>
+  <% @equipment.each do |item| %>
+  <li><%= link_to item.name, item %></li>
+  <% end %>
+</ul>
+<% end %>
+
+<% if @reservations && @reservations.any? %>
+<h4>Reservations</h4>
+<ul>
+  <% @reservations.each do |reservation| %>
+  <li><%= link_to reservation.project, reservation %></li>
+  <% end %>
+</ul>
+<% end %>
