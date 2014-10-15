@@ -10,9 +10,9 @@ class SearchController < ApplicationController
 
       results = Search.find(params[:keyword])
       
-      @users = results[:users]
+      @users = results[:users] if current_user.is_admin?
+      @reservations = results[:reservations] if current_user.monitor_access?
       @equipment = results[:equipment]
-      @reservations = results[:reservations]
     end
   end
 
