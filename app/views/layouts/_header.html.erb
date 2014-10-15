@@ -40,7 +40,7 @@
 				</li>
 				<% end %>
 
-				<%= form_tag search_path, method: :get, role: 'search', class: 'navbar-form navbar-left', id: 'navbar_search_field' do %>
+				<%= form_tag search_path, method: :get, role: 'search', class: 'navbar-form navbar-right', id: 'navbar_search_field' do %>
 				<div class="input-group">
 					<%= text_field_tag 'keyword', nil, class: 'form-control', placeholder: 'Search' %>
 					<span class="input-group-btn">
