@@ -18,9 +18,19 @@ RSpec.describe SearchController, :type => :controller do
           before do
             @mock_user.stub(:is_admin?).and_return true
           end
+
           it 'redirects to user page for exact name match' do
             get :index, {keyword: @user.name}
             expect(response).to redirect_to(@user)
+          end
+
+          it 'assigns users if matching more than one' do
+            other_user = FactoryGirl.create(:user)
+            other_user.name = @user.name
+            other_user.save
+
+            get :index, {keyword: @user.name}
+            expect(assigns(:users)).to eq([@user, other_user])
           end
 
           it 'redirects to user page for exact email match' do
@@ -50,6 +60,15 @@ RSpec.describe SearchController, :type => :controller do
           get :index, {keyword: @equipment.name}
           expect(response).to redirect_to(@equipment)
         end
+
+        it 'assigns equipment if matching more than one' do
+          other_equipment = FactoryGirl.create(:equipment)
+          other_equipment.name = @equipment.name
+          other_equipment.save
+
+          get :index, {keyword: @equipment.name}
+          expect(assigns(:equipment)).to eq([@equipment, other_equipment])
+        end
       end
 
       describe 'searching for reservation' do
@@ -60,12 +79,21 @@ RSpec.describe SearchController, :type => :controller do
         describe 'as a monitor' do
           before do
             @mock_user.stub(:is_admin?).and_return false
-            @mock_user.stub(:is_monitor?).and_return true
+            @mock_user.stub(:monitor_access?).and_return true
           end
 
           it 'redirects to reservation page for exact project match' do
             get :index, {keyword: @reservation.project}
             expect(response).to redirect_to(@reservation)
+          end
+
+          it 'assigns reservations if matching more than one' do
+            other_reservation = FactoryGirl.create(:reservation)
+            other_reservation.project = @reservation.project
+            other_reservation.save
+
+            get :index, {keyword: @reservation.project}
+            expect(assigns(:reservations)).to eq([@reservation, other_reservation])
           end
         end
 

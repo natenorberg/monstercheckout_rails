@@ -2,9 +2,9 @@ class SearchController < ApplicationController
   before_filter :user_signed_in
 
   def index
-    # TODO: Deal with more than one exact matches
-    if match = find_exact_match(params[:keyword])
-      redirect_to(match)
+    matches = find_exact_matches(params[:keyword])
+    if !matches.nil? && matches.count == 1
+      redirect_to(matches.first)
     else
       @search_term = params[:keyword]
 
@@ -18,23 +18,23 @@ class SearchController < ApplicationController
 
   private
 
-    def find_exact_match(keyword)
+    def find_exact_matches(keyword)
       if current_user.is_admin?
-        match = User.find_by(name: keyword) || User.find_by(email: keyword)
-        if !match.nil?
-          return match
+        matches = User.where(email: keyword) + User.where(name: keyword)
+        if !matches.nil? && matches.count > 0
+          return matches
         end
       end
 
-      match = Equipment.find_by(name: keyword)
-      if !match.nil?
-        return match
+      matches = Equipment.where(name: keyword)
+      if !matches.nil? && matches.count > 0
+        return matches
       end
 
       if current_user.monitor_access?
-        match = Reservation.find_by(project: keyword)
-        if !match.nil?
-          return match
+        matches = Reservation.where(project: keyword)
+        if !matches.nil? && matches.count > 0
+          return matches
         end
       end
     end
