@@ -4,7 +4,7 @@
 
 <div class="row search-results-container">
   <% if @users && @users.any? %>
-    <div class="col-sm-4">
+    <div id="user_search_results" class="col-sm-4">
       <h3>Users</h3>
       <ul class="search-result-list">
         <% @users.each do |user| %>
@@ -15,7 +15,7 @@
   <% end %>
 
   <% if @equipment && @equipment.any? %>
-    <div class="col-sm-4">
+    <div id="equipment_search_results" class="col-sm-4">
       <h3>Equipment</h3>
       <ul class="search-result-list">
         <% @equipment.each do |item| %>
@@ -26,7 +26,7 @@
   <% end %>
 
   <% if @reservations && @reservations.any? %>
-    <div class="col-sm-4">
+    <div id="reservation_search_results" class="col-sm-4">
       <h3>Reservations</h3>
       <ul class="search-result-list">
         <% @reservations.each do |reservation| %>
