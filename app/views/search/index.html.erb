@@ -1,6 +1,10 @@
 <% provide(:title, 'Search Results') %>
 
-<h2 class="page-header text-center">Search Results for <%= @search_term %></h2>
+<% if (@users && @users.any?) || (@equipment && @equipment.any?) || (@reservations && @reservations.any?)%>
+  <h2 class="page-header text-center">Search Results for <%= @search_term %></h2>
+<% else %>
+  <h2 class="page-header search-empty-message">No search results for <%= @search_term %></h2>
+<% end %>
 
 <div class="row search-results-container">
   <% if @users && @users.any? %>
@@ -35,4 +39,5 @@
       </ul>
     </div>
   <% end %>
+
 </div>

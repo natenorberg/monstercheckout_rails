@@ -22,4 +22,18 @@ RSpec.describe 'search/index', :type => :view do
     assert_select '#reservation_search_results>h3', :text => 'Reservations'
     assert_select '#reservation_search_results>ul.search-result-list'
   end
+
+  describe 'when there are no search results' do
+    before do
+      assign(:equipment, [])
+      assign(:users, [])
+      assign(:reservations, [])
+    end
+
+    it 'renders a message' do
+      render
+
+      assert_select '.search-empty-message'
+    end
+  end
 end
