@@ -9,7 +9,6 @@ footer {
   margin-top: 45px;
   padding-top: 5px;
   border-top: 1px solid $grayMediumLight;
-  color: #999;
 
     a {
       color: $gray;
@@ -22,6 +21,7 @@ footer {
   small {
       float: left;
       margin-left: 15px;
+      color: #999;
   }
 
   ul {
