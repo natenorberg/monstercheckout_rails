@@ -66,7 +66,7 @@ $colHighlight   : #ffffff;
     color: $colHighlight; }
   }
 }
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .navbar-default .navbar-nav .open .dropdown-menu {
     > li > a {
       color: $colDefault;
@@ -81,6 +81,10 @@ $colHighlight   : #ffffff;
       }
     }
   }
+
+  #navbar_search_field {
+    width: 200px;
+  }
 }
 
 #navbar_search_field {
@@ -88,7 +92,7 @@ $colHighlight   : #ffffff;
   margin-bottom: 0;
 }
 
-@media screen and (max-width:1070px) {  
+@media screen and (max-width:1070px) {
   .nav-item-text {
     display: none;
 
