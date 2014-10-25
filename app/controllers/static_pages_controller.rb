@@ -14,4 +14,8 @@ class StaticPagesController < ApplicationController
 
   def help
   end
+
+  # Release notes
+  def v1_1
+  end
 end

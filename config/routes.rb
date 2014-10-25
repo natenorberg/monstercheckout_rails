@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get 'welcome' => 'static_pages#welcome'
   get 'about'   => 'static_pages#about'
   get 'help'    => 'static_pages#help'
+  get 'version/1.1' => 'static_pages#v1_1'
 
   get 'signin'  => 'sessions#new'
   get 'signout' => 'sessions#destroy'

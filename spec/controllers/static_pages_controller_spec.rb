@@ -36,4 +36,11 @@ RSpec.describe StaticPagesController, :type => :controller do
     end
   end
 
+  describe "GET 'v1_1" do
+    it 'returns http success' do
+      get 'v1_1'
+      expect(response).to be_success
+    end
+  end
+
 end
