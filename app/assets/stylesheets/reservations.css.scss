@@ -20,8 +20,12 @@
   color: #b99c5f;
 }
 
+.reservation-list-container {
+  display: block;
+}
+
 .reservation-info {
-  padding-left: 15px;
+  padding-left: 5px;
 
   > .reservation-header {
     font-family: "Helvetica Neue", arial, sans-serif;
@@ -34,6 +38,10 @@
     font-family: "Helvetica Neue", arial, sans-serif;
     font-weight: 200;
     font-size: 17px;
+  }
+
+  .reservation-time {
+    display: block;
   }
 }
 
@@ -57,6 +65,14 @@
 }
 
 @media screen and (max-width:570px) {
+    .reservation-icon { display:none }
+}
+
+@media screen and (min-width:571px) and (max-width:765px) {
+  .reservation-icon {display:inline-block;}
+}
+
+@media screen and (min-width:766px) and (max-width:987px) {
     .reservation-icon { display:none }
 }
 
