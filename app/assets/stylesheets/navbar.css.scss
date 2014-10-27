@@ -92,7 +92,7 @@ $colHighlight   : #ffffff;
   margin-bottom: 0;
 }
 
-@media screen and (max-width:1070px) {
+@media screen and (min-width:769px) and (max-width:1070px) {
   .nav-item-text {
     display: none;
 
