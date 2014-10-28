@@ -35,5 +35,12 @@ RSpec.describe UsersController, :type => :routing do
       expect(:delete => '/users/1').to route_to('users#destroy', :id => '1')
     end
 
+    it 'routes to #monitors' do
+      expect(:get => '/users/monitors').to route_to('users#monitors')
+    end
+
+    it 'routes to #admins' do
+      expect(:get => '/users/admins').to route_to('users#admins')
+    end
   end
 end

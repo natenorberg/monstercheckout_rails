@@ -19,6 +19,7 @@
 #  status              :integer
 #  is_denied           :boolean
 #  admin_response_time :datetime
+#  denied_reason       :string(255)
 #
 
 class Reservation < ActiveRecord::Base

@@ -26,3 +26,37 @@ ul.contents-list {
   padding: 0;
   list-style-type: none;
 }
+
+.equipment-history-comments-area {
+  margin-left: 90px;
+  font-size: 17px;
+}
+
+.equipment-history-comments {
+  margin: 5px 0;
+}
+
+@media print {
+  .equipment-history-comments-area {
+    margin-left: 15px;
+  }
+
+  .print-full-width {
+    margin: 0;
+    width: 100%;
+  }
+
+  .equipment-table .reservation-info {
+    .reservation-header {
+      font-size: 20px;
+    }
+
+    .reservation-subheader {
+      font-size: 15px;
+    }
+
+    .equipment-history-comments-area {
+      font-size: 15px;
+    }
+  }
+}

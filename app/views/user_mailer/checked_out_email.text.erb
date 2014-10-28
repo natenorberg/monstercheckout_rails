@@ -1,0 +1,6 @@
+Hi <%= @reservation.user.first_name %>,
+
+Your reservation for <%= @reservation.project %> has been checked out. Your equipment is due back at <%= @reservation.in_time.strftime(ReservationsHelper::LONG_DATETIME_FORMAT) %>.
+
+Checked out by <%= @reservation.checked_out_by.name %>
+Comments: <%= @reservation.check_out_comments %>

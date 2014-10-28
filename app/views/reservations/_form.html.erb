@@ -1,92 +1,102 @@
+<% provide(:title, 'New Reservation') %>
+
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1">
     <%= form_for(@reservation) do |f| %>
       <% if @reservation.errors.any? %>
-      <div class="alert alert-danger">
-      <h4><%= pluralize(@reservation.errors.count, 'error') %> prohibited this reservation from being saved:</h4>
+        <div class="alert alert-danger">
+          <h4><%= pluralize(@reservation.errors.count, 'error') %> prohibited this reservation from being saved:</h4>
 
-      <ul>
-        <% @reservation.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-    <%= f.hidden_field :user_id, value: current_user.id %>
-
-    <div class="field">
-      <%= f.label :project %><br>
-      <%= f.text_field :project, class: 'form-control' %>
-    </div>
-    <div class="field">
-      <div class="row">
-        <div class="col-sm-6">
-          <%= f.label :out_time %>
-          <div class='input-group'>
-            <input type='text' name='reservation[out_time]' value="<%= @reservation.out_time.strftime('%m/%d/%Y %l:%m %p') if @reservation.out_time %>" class="form-control" id='reservation_out_time'/>
-            <span class="input-group-addon"><span class="fa fa-calendar"></span>
-            </span>
-          </div>
+          <ul>
+            <% @reservation.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
         </div>
-        <div class="col-sm-6">
-          <%= f.label :in_time %>
-          <div class="form-group">
+      <% end %>
+
+      <% # TODO: This should be taken care of in the controller %>
+      <% if current_user.is_admin? && ENV['TRANSITION_MODE'] # Temporary hack for Joe %>
+        <div class="field">
+          <%= f.label :user_id, 'Student' %>
+          <%= f.select :user_id, options_for_select(User.all.map{ |u| [u.name, u.id] }), class: 'form-control' %>
+        </div>
+      <% else %>
+        <%= f.hidden_field :user_id, value: current_user.id %>
+      <% end %>
+
+      <div class="field">
+        <%= f.label :project %><br>
+        <%= f.text_field :project, class: 'form-control' %>
+      </div>
+      <div class="field">
+        <div class="row">
+          <div class="col-sm-6">
+            <%= f.label :out_time %>
             <div class='input-group'>
-              <input type='text' name='reservation[in_time]' value="<%= @reservation.in_time.strftime('%m/%d/%Y %l:%m %p') if @reservation.in_time %>" class="form-control"  id='reservation_in_time'/>
+              <input type='text' name='reservation[out_time]' value="<%= @reservation.out_time.strftime('%m/%d/%Y %l:%m %p') if @reservation.out_time %>" class="form-control" id='reservation_out_time'/>
               <span class="input-group-addon"><span class="fa fa-calendar"></span>
               </span>
             </div>
           </div>
+          <div class="col-sm-6">
+            <%= f.label :in_time %>
+            <div class="form-group">
+              <div class='input-group'>
+                <input type='text' name='reservation[in_time]' value="<%= @reservation.in_time.strftime('%m/%d/%Y %l:%m %p') if @reservation.in_time %>" class="form-control"  id='reservation_in_time'/>
+                <span class="input-group-addon"><span class="fa fa-calendar"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-1"></div>
         </div>
-        <div class="col-sm-1"></div>
       </div>
-    </div>
-    <%= hidden_field_tag 'datetime_format', '%m/%d/%y %l:%m %p' %>
-    <div class="field">
-      <div class="row" id="reservation_form_list_container">
-        <div id="equipment_list">
-          <%= f.label :equipment %>
+      <%= hidden_field_tag 'datetime_format', '%m/%d/%y %l:%m %p' %>
+      <div class="field">
+        <div class="row" id="reservation_form_list_container">
+          <div id="equipment_list">
+            <%= f.label :equipment %>
 
-          <ul class="equipment-list">
-            <% @equipment.each do |equipment| %>
-              <li>
-            <% check_box_class = 'kit-checkbox' if equipment.is_kit? %>
-            <%= check_box_tag 'reservation[equipment_ids][]', equipment.id, @reservation.equipment.include?(equipment), class: check_box_class %>
-            <span class="equipment-choice-label" title='<%= equipment.description %>'><%= equipment.name %></span>
-            <% if equipment.quantity > 1 %>
-              <span class="equipment-choice-label pull-right">Quantity:
-              <%= number_field_tag "reservation[quantity][#{equipment.id}]", get_previous_quantity(@reservation.id, equipment.id), min: 1, max: equipment.quantity, class: 'form-control quantity-box' %> / <%= equipment.quantity %></span>
-          <% else %>
-              <%= hidden_field_tag "reservation[quantity][#{equipment.id}]", 1 %>
-          <% end %>
-            </li>
-          <% end %>
-          </ul>
-        </div>
-        <div id="sub_item_list" class="col-sm-5">
-          <% @equipment.each do |equipment| %>
-            <% if equipment.is_kit? %>
-            <div id="sub_item_list_<%= equipment.id %>" <% if !@reservation.equipment.include?(equipment) %> style="display:none;" <% end %>>
-            <label><%= equipment.name %> options</label>
             <ul class="equipment-list">
-              <% equipment.sub_items.each do |item| %>
+              <% @equipment.each do |equipment| %>
                 <li>
-              <%= check_box_tag 'reservation[sub_item_ids][]', item.id, !item.is_optional? || @reservation.sub_items.include?(item), disabled: !item.is_optional? %>
-              <span class="equipment-choice-label" title='<%= item.description %>'><%= item.name %></span>
-              </li>
-            <% end %>
+                <% check_box_class = 'kit-checkbox' if equipment.is_kit? %>
+                <%= check_box_tag 'reservation[equipment_ids][]', equipment.id, @reservation.equipment.include?(equipment), class: check_box_class %>
+                <span class="equipment-choice-label" title='<%= equipment.description %>'><%= equipment.name %></span>
+                <% if equipment.quantity > 1 %>
+                  <span class="equipment-choice-label pull-right">Quantity:
+                    <%= number_field_tag "reservation[quantity][#{equipment.id}]", get_previous_quantity(@reservation.id, equipment.id), min: 1, max: equipment.quantity, class: 'form-control quantity-box' %> / <%= equipment.quantity %></span>
+                <% else %>
+                  <%= hidden_field_tag "reservation[quantity][#{equipment.id}]", 1 %>
+                <% end %>
+                </li>
+              <% end %>
             </ul>
           </div>
-        <% end %>
-        <% end %>
+          <div id="sub_item_list" class="col-sm-5">
+            <% @equipment.each do |equipment| %>
+              <% if equipment.is_kit? %>
+                <div id="sub_item_list_<%= equipment.id %>" <% if !@reservation.equipment.include?(equipment) %> style="display:none;" <% end %>>
+                  <label><%= equipment.name %> options</label>
+                  <ul class="equipment-list">
+                    <% equipment.sub_items.each do |item| %>
+                      <li>
+                      <%= check_box_tag 'reservation[sub_item_ids][]', item.id, !item.is_optional? || @reservation.sub_items.include?(item), disabled: !item.is_optional? %>
+                      <span class="equipment-choice-label" title='<%= item.description %>'><%= item.name %></span>
+                      </li>
+                    <% end %>
+                  </ul>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
         </div>
-      </div>
 
-    </div>
-    <div class="actions">
-      <%= f.submit class: 'btn btn-large btn-success' %>
-    </div>
-  <% end %>
+      </div>
+      <div class="actions">
+        <%= f.submit class: 'btn btn-large btn-success' %>
+      </div>
+    <% end %>
   </div>
 </div>

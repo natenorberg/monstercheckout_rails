@@ -24,11 +24,18 @@ RSpec.describe 'reservations/index', :type => :view do
         :check_in_comments => 'MyTextIn'
       )
     ])
+    view.stub(:will_paginate).and_return 'pagination-info'
   end
 
   it 'renders a list of reservations' do
     render
     assert_select 'tr>td>.reservation-info>span.reservation-header', :text => 'Project'.to_s, :count => 2
     assert_select 'tr>td>.reservation-info>span.reservation-subheader', :text => 'Waiting for approval', :count => 2
+  end
+
+  it 'has pagination info' do
+    render
+
+    expect(rendered).to match 'pagination-info'
   end
 end

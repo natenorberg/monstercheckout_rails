@@ -13,7 +13,7 @@
 require 'rails_helper'
 
 describe 'User' do
-  
+
   before { @user = FactoryGirl.build(:user) }
 
   subject { @user }
@@ -30,6 +30,11 @@ describe 'User' do
     expect(@user).to respond_to(:monitor_checkouts)
     expect(@user).to respond_to(:monitor_checkins)
     expect(@user).to respond_to(:permissions)
+    expect(@user).to respond_to(:notify_on_approval_needed?)
+    expect(@user).to respond_to(:notify_on_approved?)
+    expect(@user).to respond_to(:notify_on_denied?)
+    expect(@user).to respond_to(:notify_on_checked_out?)
+    expect(@user).to respond_to(:notify_on_checked_in?)
   end
 
   it 'should have a valid factory' do
@@ -81,8 +86,16 @@ describe 'User' do
         @user.save
 
         expect(@user.reload.email).to eq(mixed_case_email.downcase)
-    end 
-  end 
+    end
+  end
+
+  it 'has correct default notification settings' do
+    expect(@user.notify_on_approval_needed?).to eq(true)
+    expect(@user.notify_on_approved?).to eq(true)
+    expect(@user.notify_on_denied?).to eq(true)
+    expect(@user.notify_on_checked_out?).to eq(true)
+    expect(@user.notify_on_checked_in?).to eq(true)
+  end
 
   # Password/confirmation tests
   it 'should be invalid when password is blank' do
@@ -124,7 +137,7 @@ describe 'User' do
   end
 
   describe 'monitor_access?' do
-    
+
     it 'should be true if user is monitor' do
       @user.is_monitor = true
       @user.is_admin = false
@@ -149,7 +162,7 @@ describe 'User' do
 
   # Allowed equipment tests
   describe 'allowed_equipment' do
-    before do 
+    before do
       @permission = FactoryGirl.create(:permission)
       @equipment = FactoryGirl.create(:equipment)
       @permission.stub(:equipment).and_return [@equipment]
@@ -158,6 +171,13 @@ describe 'User' do
 
     it 'should return a list of equipment the user can use' do
       expect(@user.allowed_equipment).to eq([@equipment])
+    end
+  end
+
+  # First name
+  describe 'first_name' do
+    it 'should return the first name of user' do
+      expect(@user.first_name).to eq('Person')
     end
   end
 end

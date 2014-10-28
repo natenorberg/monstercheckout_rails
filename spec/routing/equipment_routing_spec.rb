@@ -31,6 +31,10 @@ RSpec.describe EquipmentController, :type => :routing do
       expect(:delete => '/equipment/1').to route_to('equipment#destroy', :id => "1")
     end
 
+    it 'routes to #history' do
+      expect(:get => '/equipment/1/history').to route_to('equipment#history', :id => "1")
+    end
+
     # SubItem routing
     it 'routes to sub_items#index' do
       expect(:get => '/equipment/1/sub_items').to route_to('sub_items#index', :equipment_id => '1')

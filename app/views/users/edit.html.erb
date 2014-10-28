@@ -1,6 +1,6 @@
-<% if @user == current_user %> 
-	<% provide(:title, 'Settings') %> 
-<% else %> 
+<% if @user == current_user %>
+	<% provide(:title, 'Settings') %>
+<% else %>
 	<% provide(:title, @user.name) %>
 <% end %>
 
@@ -28,9 +28,9 @@
 			<div class="row">
 				<div class="profile-info">
 				<h1>
-					<% if @user == current_user %> 
+					<% if @user == current_user %>
 						Settings
-					<% else %> 
+					<% else %>
 						<%= @user.name %>
 					<% end %>
 				</h1>
@@ -55,7 +55,7 @@
 						<%= f.label :email %>
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-							<%= f.text_field :email, class: "form-control" %>
+							<%= f.email_field :email, class: "form-control" %>
 						</div>
 
 						<% if current_user.is_admin? %>
@@ -73,7 +73,7 @@
 								<h4>Site Permissions</h4>
 								<ul class="permissions-list">
 									<li><%= f.check_box :is_monitor %> <%= f.label :is_admin, 'Lab Monitor access' %></li>
-									
+
 									<!-- Don't give admins the option to un-admin themselves -->
 									<% if @user != current_user %>
 										<li><%= f.check_box :is_admin %> <%= f.label :is_admin, 'Administrator access' %></li>
@@ -82,7 +82,21 @@
 							<% end %>
 						<% end %>
 
-					
+            <% if @user == current_user %>
+              <h4>Email Notifications <i class="fa fa-envelope"></i> </h4>
+              <div class="form-divider"></div>
+
+              <ul class="permissions-list">
+                <% if current_user.is_admin? %>
+                  <li><%= f.check_box :notify_on_approval_needed %> <%= f.label :notify_on_approval_needed, 'When a reservation requires admin approval' %></li>
+                <% end %>
+                <li><%= f.check_box :notify_on_approved %> <%= f.label :notify_on_approved, 'When my reservation gets approved' %></li>
+                <li><%= f.check_box :notify_on_denied %> <%= f.label :notify_on_denied, 'When my reservation gets denied' %></li>
+                <li><%= f.check_box :notify_on_checked_out %> <%= f.label :notify_on_checked_out, 'When my reservation gets checked out' %></li>
+                <li><%= f.check_box :notify_on_checked_in %> <%= f.label :notify_on_checked_in, 'When my reservation gets returned' %></li>
+              </ul>
+            <% end %>
+
 						<%= f.submit "Submit" , class: "btn btn-large btn-primary" %>
 					<% end %>
 				</div>

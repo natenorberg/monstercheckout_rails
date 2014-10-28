@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get 'welcome' => 'static_pages#welcome'
   get 'about'   => 'static_pages#about'
   get 'help'    => 'static_pages#help'
+  get 'version/1.1' => 'static_pages#v1_1'
 
   get 'signin'  => 'sessions#new'
   get 'signout' => 'sessions#destroy'
@@ -17,10 +18,16 @@ Rails.application.routes.draw do
   get 'admin/dashboard' => 'admin#dashboard'
   get 'admin' => 'admin#dashboard'
 
+  get 'archive' => 'reservations#archive'
+
   resources :reservations do
+    collection do
+      get 'archive'
+    end
+
     member do
       get 'approve'
-      get 'deny'
+      post 'deny'
       get 'checkout'
       post 'checkout_update'
       get 'checkin'
@@ -28,15 +35,25 @@ Rails.application.routes.draw do
     end
   end
   resources :equipment do
+    member do
+      get 'history'
+    end
+
     resources :sub_items
   end
   resources :users do
     member do
       get 'password'
     end
+
+    collection do
+      get 'monitors'
+      get 'admins'
+    end
   end
   resources :reservation_equipment
 
+  get 'search' => 'search#index', as: :search
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

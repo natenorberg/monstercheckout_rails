@@ -20,5 +20,9 @@ RSpec.describe StaticPagesController, :type => :routing do
       expect(:get => '/help').to route_to('static_pages#help')
     end
 
+    it 'routes to #v1.1' do
+      expect(:get => '/version/1.1').to route_to('static_pages#v1_1')
+    end
+
   end
 end

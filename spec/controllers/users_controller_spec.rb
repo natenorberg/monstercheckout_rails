@@ -35,8 +35,8 @@ RSpec.describe UsersController, :type => :controller do
     {name: '', email: ''}
   }
 
-  let(:invalid_password_attributes) { 
-    { password: 'pass', password_confirmation: 'different' } 
+  let(:invalid_password_attributes) {
+    { password: 'pass', password_confirmation: 'different' }
   }
 
   # This should return the minimal set of values that should be in the session
@@ -56,6 +56,21 @@ RSpec.describe UsersController, :type => :controller do
     end
   end
 
+  describe 'GET monitors' do
+    it 'assigns all monitors as @users' do
+      monitor = FactoryGirl.create(:monitor)
+      get :monitors, {}, valid_session
+      expect(assigns(:users)).to eq([monitor])
+    end
+  end
+
+  describe 'GET admins' do
+    it 'assigns all admins as @users' do
+      admin = FactoryGirl.create(:admin)
+      get :admins, {}, valid_session
+      expect(assigns(:users)).to eq([admin])
+    end
+  end
   describe 'GET show' do
     it 'assigns the requested user as @user' do
       user = User.create! valid_attributes
@@ -104,6 +119,12 @@ RSpec.describe UsersController, :type => :controller do
       it 'redirects to the created user' do
         post :create, {:user => valid_attributes}, valid_session
         expect(response).to redirect_to(User.last)
+      end
+
+      it 'sends an email notification' do
+        expect { 
+          post :create, {:user => valid_attributes}, valid_session
+        }.to change { ActionMailer::Base.deliveries.count }.by(1)
       end
     end
 

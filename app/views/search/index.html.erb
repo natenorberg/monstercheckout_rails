@@ -1,0 +1,43 @@
+<% provide(:title, 'Search Results') %>
+
+<% if (@users && @users.any?) || (@equipment && @equipment.any?) || (@reservations && @reservations.any?)%>
+  <h2 class="page-header text-center">Search Results for <%= @search_term %></h2>
+<% else %>
+  <h2 class="page-header search-empty-message">No search results for <%= @search_term %></h2>
+<% end %>
+
+<div class="row search-results-container">
+  <% if @users && @users.any? %>
+    <div id="user_search_results" class="col-sm-4">
+      <h3>Users</h3>
+      <ul class="search-result-list">
+        <% @users.each do |user| %>
+          <li><%= gravatar_for(user, 50) %> <%= link_to user.name, user %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if @equipment && @equipment.any? %>
+    <div id="equipment_search_results" class="col-sm-4">
+      <h3>Equipment</h3>
+      <ul class="search-result-list">
+        <% @equipment.each do |item| %>
+          <li><%= link_to item.name, item %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if @reservations && @reservations.any? %>
+    <div id="reservation_search_results" class="col-sm-4">
+      <h3>Reservations</h3>
+      <ul class="search-result-list">
+        <% @reservations.each do |reservation| %>
+          <li><%= link_to reservation.project, reservation %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+</div>

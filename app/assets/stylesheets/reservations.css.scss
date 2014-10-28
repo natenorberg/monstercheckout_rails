@@ -3,6 +3,10 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 /* Reservation items */
+.reservations-table {
+  border: 1px #ddd solid;
+}
+
 .reservation-icon, .reservation-info {
   display: inline-block;
   vertical-align: top;
@@ -16,8 +20,12 @@
   color: #b99c5f;
 }
 
+.reservation-list-container {
+  display: block;
+}
+
 .reservation-info {
-  padding-left: 15px;
+  padding-left: 5px;
 
   > .reservation-header {
     font-family: "Helvetica Neue", arial, sans-serif;
@@ -30,6 +38,10 @@
     font-family: "Helvetica Neue", arial, sans-serif;
     font-weight: 200;
     font-size: 17px;
+  }
+
+  .reservation-time {
+    display: block;
   }
 }
 
@@ -53,6 +65,14 @@
 }
 
 @media screen and (max-width:570px) {
+    .reservation-icon { display:none }
+}
+
+@media screen and (min-width:571px) and (max-width:765px) {
+  .reservation-icon {display:inline-block;}
+}
+
+@media screen and (min-width:766px) and (max-width:987px) {
     .reservation-icon { display:none }
 }
 
@@ -114,6 +134,11 @@ ul.equipment-show-list {
   }
 }
 
+ul.equipment-archive-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
 .timeline {
   padding: 0 15px;
 }
@@ -151,8 +176,34 @@ ul.equipment-show-list {
   margin-left: 57px;
 }
 
+.timeline-denied-explanation {
+  margin-top: 7px;
+}
+
 .reservation-panel {
   margin: 0 15px 20px 15px;
+}
+
+li.list-group-item.pagination-item {
+  padding: 0;
+  height: 32px;
+
+  ul.pagination {
+    margin: 0 auto;
+    line-height: 9px;
+
+    .prev, .active {
+      span, a {
+        border: 0;
+      }
+    }
+
+    li>a {
+      border-top: 0;
+      border-bottom: 0;
+      border-radius: 0;
+    }
+  }
 }
 
 .checklist-container {

@@ -3,20 +3,29 @@ class ReservationsController < ApplicationController
   before_action :set_equipment, only: [:new, :create, :edit, :update]
   before_filter :user_signed_in
   before_filter :current_user_or_admin, only: [:destroy]
-  before_filter :user_is_admin, only: [:approve, :deny]
+  before_filter :user_is_admin, only: [:archive, :approve, :deny]
   before_filter :user_is_monitor, only: [:checkout, :checkout_update, :checkin, :checkin_update]
   before_filter :reservation_can_be_checked_out, only: [:checkout, :checkout_update]
   before_filter :reservation_can_be_checked_in, only: [:checkin, :checkin_update]
 
+  after_filter :notify_approval_needed, only: [:create, :update]
+
   # GET /reservations
   # GET /reservations.json
   def index
-    @user_reservations = Reservation.where(user: current_user)
+    @user_reservations = Reservation.where(user: current_user).paginate(page: params[:user_reservations_page], :per_page => 5)
     if current_user.is_admin?
       @awaiting_approval = Reservation.where(status: 'requested')
-      @all_reservations = Reservation.all
+      @all_reservations = Reservation.all.paginate(page: params[:all_reservations_page], :per_page => 5)
       render :admin_index
     end
+  end
+
+  # GET /reservations/archive
+  # GET /archive
+  def archive
+    # Only show reservations that were ever actually checked out
+    @reservations = Reservation.where('checked_out_time is not null')
   end
 
   # GET /reservations/1
@@ -48,8 +57,8 @@ class ReservationsController < ApplicationController
         format.json { render json: @reservation.errors, status: :unprocessable_entity }
       elsif @reservation.save
         update_quantities
-        format.html { redirect_to @reservation, flash: { success: 'Reservation was successfully created.' } }
-        format.json { render :show, status: :created, location: @reservation }
+        format.html { redirect_to @reservation, flash: { success: 'Reservation was successfully updated.' }}
+        format.json { render json: @reservation.errors, status: :unprocessable_entity }
       else
         format.html { render :new }
         format.json { render json: @reservation.errors, status: :unprocessable_entity }
@@ -88,6 +97,7 @@ class ReservationsController < ApplicationController
       if @reservation.update(reservation_params)
         @reservation.status = :out
         @reservation.save
+        notify_checked_out
         format.html { redirect_to @reservation, flash: { success: 'Reservation is checked out' } }
         format.json { render :show, status: :ok, location: @reservation }
       else
@@ -108,7 +118,7 @@ class ReservationsController < ApplicationController
         else
           @reservation.returned!
         end
-
+        notify_returned
         format.html { redirect_to @reservation, flash: { success: 'Reservation is checked in' } }
         format.json { render :show, status: :ok, location: @reservation }
       else
@@ -136,6 +146,7 @@ class ReservationsController < ApplicationController
     @reservation.admin_response_time = Time.now
     respond_to do |format|
       if @reservation.save
+        notify_approved
         format.html { redirect_to @reservation, flash: { success: 'Reservation has been approved' } }
         format.json { render :show, status: :ok, location: @reservation }
       else
@@ -145,14 +156,15 @@ class ReservationsController < ApplicationController
     end
   end
 
-  # GET /reservations/1/deny
-  # GET /reservations/1/deny.json
+  # POST /reservations/1/deny
+  # POST /reservations/1/deny.json
   def deny
     @reservation.is_denied = true
     @reservation.status = :denied
     @reservation.admin_response_time = Time.now
     respond_to do |format|
-      if @reservation.save
+      if @reservation.update(reservation_params)
+        notify_denied
         format.html { redirect_to @reservation, flash: { error: 'Reservation has been denied' } }
         format.json { render :show, status: :ok, location: @reservation }
       else
@@ -203,6 +215,7 @@ class ReservationsController < ApplicationController
       @reservation.is_approved = false
       @reservation.is_denied = false
       @reservation.status = :requested
+      @reservation.denied_reason = nil
       @reservation.save
     end
 
@@ -293,6 +306,37 @@ class ReservationsController < ApplicationController
       end
     end
 
+    def notify_approval_needed
+      users = User.approval_needed_mailing_list
+      users.each do |user|
+        UserMailer.need_approval_email(user, @reservation).deliver
+      end
+    end
+
+    def notify_approved
+      if @reservation.user.notify_on_approved?
+        UserMailer.approved_email(@reservation).deliver
+      end
+    end
+
+    def notify_denied
+      if @reservation.user.notify_on_denied?
+        UserMailer.denied_email(@reservation).deliver
+      end
+    end
+
+    def notify_checked_out
+      if @reservation.user.notify_on_checked_out?
+        UserMailer.checked_out_email(@reservation).deliver
+      end
+    end
+
+    def notify_returned
+      if @reservation.user.notify_on_checked_in?
+        UserMailer.returned_email(@reservation).deliver
+      end
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def reservation_params
       params.require(:reservation).permit(:project,
@@ -302,6 +346,7 @@ class ReservationsController < ApplicationController
                                           :checked_out_by_id, :checked_in_by_id,
                                           :is_approved,
                                           :check_out_comments, :check_in_comments,
+                                          :denied_reason,
                                           equipment_ids: [],
                                           sub_item_ids: [])
     end

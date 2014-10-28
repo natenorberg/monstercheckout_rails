@@ -2,11 +2,11 @@
 
 <h1 class="page-header">Lab Monitor Dashboard</h1>
 
-<div class="row">
+<div class="row dashboard">
 	<div class="col-sm-6">
-		<%= render 'shared/user_reservation_list', reservations: @checkouts, title: 'Ready to check out', show_approve_deny_buttons: false %>
+		<%= render 'shared/user_reservation_list', reservations: @checkouts, title: 'Ready to check out', should_show_buttons: true %>
 	</div>
 	<div class="col-sm-6">
-		<%= render 'shared/user_reservation_list', reservations: @checkins, title: 'Ready to check in', show_approve_deny_buttons: false %>
+		<%= render 'shared/user_reservation_list', reservations: @checkins, title: 'Ready to check in', should_show_buttons: true %>
 	</div>
 </div>

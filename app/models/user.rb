@@ -2,15 +2,20 @@
 #
 # Table name: users
 #
-#  id              :integer          not null, primary key
-#  name            :string(255)
-#  email           :string(255)
-#  created_at      :datetime
-#  updated_at      :datetime
-#  password_digest :string(255)
-#  remember_token  :string(255)
-#  is_admin        :boolean          default(FALSE)
-#  is_monitor      :boolean
+#  id                        :integer          not null, primary key
+#  name                      :string(255)
+#  email                     :string(255)
+#  created_at                :datetime
+#  updated_at                :datetime
+#  password_digest           :string(255)
+#  remember_token            :string(255)
+#  is_admin                  :boolean          default(FALSE)
+#  is_monitor                :boolean
+#  notify_on_approval_needed :boolean          default(TRUE)
+#  notify_on_approved        :boolean          default(TRUE)
+#  notify_on_denied          :boolean          default(TRUE)
+#  notify_on_checked_out     :boolean          default(TRUE)
+#  notify_on_checked_in      :boolean          default(TRUE)
 #
 
 class User < ActiveRecord::Base
@@ -32,6 +37,9 @@ class User < ActiveRecord::Base
   validates :password, presence: true, length: { minimum: 6 }, on: :create
   validates :password_confirmation, presence: true, on: :create
 
+  # Mailing lists
+  scope :approval_needed_mailing_list, -> { where(is_admin: true, notify_on_approval_needed: true) }
+
   def monitor_access?
     is_admin? || is_monitor?
   end
@@ -45,6 +53,10 @@ class User < ActiveRecord::Base
     end
 
     Equipment.where(id: ids.to_a)
+  end
+
+  def first_name
+    name.split(' ')[0]
   end
 
   private

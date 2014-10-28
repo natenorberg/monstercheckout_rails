@@ -1,0 +1,19 @@
+<h1 style="font-weight:200;"><%= @reservation.user.name %> has requested a reservation</h1>
+<h2><%= @reservation.project %></h2>
+
+<p><strong>Reserved from:</strong> <%= @reservation.out_time.strftime(ReservationsHelper::LONG_DATETIME_FORMAT) %> <br><strong>to:</strong> <%= @reservation.in_time.strftime(ReservationsHelper::LONG_DATETIME_FORMAT) %></p>
+
+<h3 style="margin-bottom:5px;">Equipment</h3>
+
+<ul class="equipment-show-list" style="list-style-type:none; margin:0; padding:0;">
+  <% @reservation.reservation_equipment.each do |item| %>
+  <li><%= item.equipment.name %> <% if item.quantity > 1 %>(x<%= item.quantity %>) <% end %></li>
+  <% end %>
+</ul>
+
+<p><a href="<%= reservation_url(@reservation) %>">View this reservation online</a></p>
+
+<% content_for :button_bar do %>
+  <a href="<%= approve_reservation_url(@reservation) %>" style="color: white; background-color: #5cb85c; border:1px solid #4cae4c; border-radius: 4px; display: inline-block; margin: 0 4px 0 0; font-weight: normal; text-align: center; vertical-align: middle; white-space: nowrap; padding: 8px 15px; font-size: 14px; line-height: 1.428571429; text-decoration:none;">Approve</a>
+  <a href="<%= deny_reservation_url(@reservation) %>" style="color: white; background-color: #d75452; border:1px solid #d2403f; border-radius: 4px; display: inline-block; margin: 0; font-weight: normal; text-align: center; vertical-align: middle; white-space: nowrap; padding: 8px 15px; font-size: 14px; line-height: 1.428571429; text-decoration:none;">Deny</a>
+<% end %>

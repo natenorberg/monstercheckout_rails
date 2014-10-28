@@ -11,7 +11,7 @@ RSpec.describe 'shared/_user_reservation_list', :type => :view do
   end
 
   it 'renders a list of reservations' do
-    render partial: 'shared/user_reservation_list', locals: { reservations: @reservations, title: @title, show_approve_deny_buttons: false }
+    render partial: 'shared/user_reservation_list', locals: { reservations: @reservations, title: @title, should_show_buttons: false }
 
     assert_select '.panel-heading>h3.panel-title', text: @title
 
@@ -19,7 +19,7 @@ RSpec.describe 'shared/_user_reservation_list', :type => :view do
   end
 
   it 'renders message when there are no reservations' do
-    render partial: 'shared/user_reservation_list', locals: { reservations: [], title: @title, show_approve_deny_buttons: false }
+    render partial: 'shared/user_reservation_list', locals: { reservations: [], title: @title, should_show_buttons: false }
 
     assert_select '.panel-heading>h3.panel-title', text: @title
 
@@ -27,7 +27,7 @@ RSpec.describe 'shared/_user_reservation_list', :type => :view do
   end
 
   it 'renders custom message when there are no reservations' do
-    render partial: 'shared/user_reservation_list', locals: { reservations: [], title: @title, empty_text: @empty_text, show_approve_deny_buttons: false }
+    render partial: 'shared/user_reservation_list', locals: { reservations: [], title: @title, empty_text: @empty_text, should_show_buttons: false }
 
     assert_select '.panel-heading>h3.panel-title', text: @title
 
@@ -45,7 +45,7 @@ RSpec.describe 'shared/_user_reservation_list', :type => :view do
       end
 
       it 'should render approve/deny buttons' do
-        render partial: 'shared/user_reservation_list', locals: { reservations: @reservations, title: @title, show_approve_deny_buttons: true }
+        render partial: 'shared/user_reservation_list', locals: { reservations: @reservations, title: @title, should_show_buttons: true }
 
         assert_select 'a.btn.btn-large.btn-success', text: 'Approve', count: 2
         assert_select 'a.btn.btn-large.btn-danger', text: 'Deny', count: 2
@@ -56,7 +56,7 @@ RSpec.describe 'shared/_user_reservation_list', :type => :view do
       before { @test_user.stub(:is_admin?).and_return false }
 
       it 'should not render approve/deny buttons' do
-        render partial: 'shared/user_reservation_list', locals: { reservations: @reservations, title: @title, show_approve_deny_buttons: true }
+        render partial: 'shared/user_reservation_list', locals: { reservations: @reservations, title: @title, should_show_buttons: true }
 
         assert_select 'a.btn.btn-large.btn-success', text: 'Approve', count: 0
         assert_select 'a.btn.btn-large.btn-danger', text: 'Deny', count: 0
@@ -75,7 +75,7 @@ RSpec.describe 'shared/_user_reservation_list', :type => :view do
         @reservations.each do |reservation|
           reservation.stub(:approved?).and_return true
         end
-        render partial: 'shared/user_reservation_list', locals: { reservations: @reservations, title: @title, show_approve_deny_buttons: true }
+        render partial: 'shared/user_reservation_list', locals: { reservations: @reservations, title: @title, should_show_buttons: true }
 
         assert_select 'a.btn.btn-large.btn-primary', text: 'Check Out', count: 2
       end
@@ -84,7 +84,7 @@ RSpec.describe 'shared/_user_reservation_list', :type => :view do
         @reservations.each do |reservation|
           reservation.stub(:can_checkin?).and_return true
         end
-        render partial: 'shared/user_reservation_list', locals: { reservations: @reservations, title: @title, show_approve_deny_buttons: true }
+        render partial: 'shared/user_reservation_list', locals: { reservations: @reservations, title: @title, should_show_buttons: true }
 
         assert_select 'a.btn.btn-large.btn-primary', text: 'Check In', count: 2
       end
@@ -94,7 +94,7 @@ RSpec.describe 'shared/_user_reservation_list', :type => :view do
       before { @test_user.stub(:monitor_access?).and_return false }
 
       it 'should not render checkout/checkin buttons' do
-        render partial: 'shared/user_reservation_list', locals: { reservations: @reservations, title: @title, show_approve_deny_buttons: true }
+        render partial: 'shared/user_reservation_list', locals: { reservations: @reservations, title: @title, should_show_buttons: true }
 
         assert_select 'a.btn.btn-large.btn-primary', text: 'Check Out', count: 0
         assert_select 'a.btn.btn-large.btn-primary', text: 'Check In', count: 0

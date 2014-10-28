@@ -27,6 +27,14 @@ RSpec.describe 'users/index', :type => :view do
     assert_select 'tr>td>div>h5', :text => 'email2@example.com'.to_s, :count => 1
   end
 
+  it 'renders tabs for different lists' do
+    render
+
+    assert_select 'ul.nav.nav-pills>li', :text => 'All'
+    assert_select 'ul.nav.nav-pills>li', :text => 'Monitors'
+    assert_select 'ul.nav.nav-pills>li', :text => 'Admins'
+  end
+
   it 'renders breadcrumbs' do
     render
 

@@ -10,6 +10,18 @@ class UsersController < ApplicationController
     @users = User.all
   end
 
+  # GET /users/monitors
+  def monitors
+    @users = User.where(is_monitor: true)
+    render :index
+  end
+
+  # GET /users/admins
+  def admins
+    @users = User.where(is_admin: true)
+    render :index
+  end
+
   # GET /users/1
   # GET /users/1.json
   def show
@@ -35,6 +47,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        send_welcome_email
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
@@ -77,8 +90,18 @@ class UsersController < ApplicationController
       @user = User.find(params[:id])
     end
 
+    def send_welcome_email
+      UserMailer.welcome_email(@user).deliver
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation, :is_admin, :is_monitor, permission_ids: [])
+      params.require(:user).permit(:name, :email, :password, :password_confirmation, :is_admin, :is_monitor, 
+                                   :notify_on_approval_needed, 
+                                   :notify_on_approved, 
+                                   :notify_on_denied, 
+                                   :notify_on_checked_out, 
+                                   :notify_on_checked_in, 
+                                   permission_ids: [])
     end
 end

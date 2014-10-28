@@ -54,6 +54,14 @@
       <li class="list-group-item">
         <strong class='status-text-denied'><i class="fa fa-thumbs-o-down"></i> Denied:</strong> 
         <%= auto_shrink_date(@reservation.admin_response_time).html_safe %>
+        <% if @reservation.denied_reason %>
+          <div class="timeline-denied-explanation">
+            <h4>Comments:</h4>
+            <div class="well well-sm">
+              <%= @reservation.denied_reason %>
+            </div>
+          </div>
+        <% end %>
       </li>
       <% end %>
       <% if @reservation.updated_at > @reservation.created_at && @reservation.requested? %>

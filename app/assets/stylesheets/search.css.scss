@@ -1,0 +1,26 @@
+$border-color: #ddd;
+
+.row.search-results-container {
+  margin: 0;
+}
+
+.search-empty-message {
+  text-align: center;
+  font-weight: 200;
+}
+
+ul.search-result-list {
+  list-style-type: none;
+  padding: 0;
+  border-top: 1px solid $border-color;
+
+  li {
+    border-bottom: 1px solid $border-color;
+    padding: 5px;
+
+    a {
+      font-size: 15px;
+      color: #444;
+    }
+  }
+}

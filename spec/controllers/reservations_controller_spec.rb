@@ -27,7 +27,7 @@ RSpec.describe ReservationsController, :type => :controller do
     { user_id: FactoryGirl.create(:user).id,
       project: 'Make phat beats',
       out_time: 1.days.ago,
-      in_time: 2.days.from_now} 
+      in_time: 2.days.from_now}
   }
 
   let(:invalid_attributes) {
@@ -58,9 +58,12 @@ RSpec.describe ReservationsController, :type => :controller do
 
   def monitor_session
     valid_session
+    monitor = FactoryGirl.create(:monitor)
     @user.stub(:monitor_access?).and_return true
-    @monitor_id = 77
+    @monitor_id = monitor.id
+    @monitor_name = monitor.name
     @user.stub(:id).and_return @monitor_id
+    @user.stub(:name).and_return @monitor_name
   end
 
   def non_monitor_session
@@ -76,6 +79,23 @@ RSpec.describe ReservationsController, :type => :controller do
       controller.stub(:current_user).and_return reservation.user
       get :index, {}
       expect(assigns(:user_reservations)).to eq([reservation])
+    end
+  end
+
+  describe 'GET archive' do
+    describe 'when user is admin' do
+      it 'assigns user reservations as @reservations' do
+        reservation = FactoryGirl.create(:checkout)
+        get :archive, {}, admin_session
+        expect(assigns(:reservations)).to eq([reservation])
+      end
+    end
+
+    describe 'when user is not admin' do
+      it 'redirects to root path' do
+        get :archive, {}, non_admin_session
+        expect(response).to redirect_to(root_path)
+      end
     end
   end
 
@@ -126,6 +146,13 @@ RSpec.describe ReservationsController, :type => :controller do
       it 'redirects to the created reservation' do
         post :create, {:reservation => valid_attributes}, valid_session
         expect(response).to redirect_to(Reservation.last)
+      end
+
+      it 'sends an email notification' do
+        User.stub(:approval_needed_mailing_list).and_return([FactoryGirl.create(:admin)])
+        expect { 
+          post :create, {:reservation => valid_attributes}, valid_session
+        }.to change { ActionMailer::Base.deliveries.count }.by(1)
       end
     end
 
@@ -184,12 +211,20 @@ RSpec.describe ReservationsController, :type => :controller do
           expect(reservation.is_approved).to eq(false)
           expect(reservation.status).to eq('requested')
         end
+
+        it 'sends an email notification' do
+          User.stub(:approval_needed_mailing_list).and_return([FactoryGirl.create(:admin)])
+          expect { 
+            post :create, {:reservation => valid_attributes}, valid_session
+          }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        end
       end
 
       describe 'with denied reservation' do
-        it 'unapproves the reservation' do
+        it 'undenies the reservation' do
           reservation = Reservation.create! valid_attributes
           reservation.is_denied = true
+          reservation.denied_reason = 'Bad reservation'
           reservation.status = :denied
           reservation.save
 
@@ -197,6 +232,14 @@ RSpec.describe ReservationsController, :type => :controller do
           reservation.reload
           expect(reservation.is_denied).to eq(false)
           expect(reservation.status).to eq('requested')
+          expect(reservation.denied_reason).to eq(nil)
+        end
+        
+        it 'sends an email notification' do
+          User.stub(:approval_needed_mailing_list).and_return([FactoryGirl.create(:admin)])
+          expect { 
+            post :create, {:reservation => valid_attributes}, valid_session
+          }.to change { ActionMailer::Base.deliveries.count }.by(1)
         end
       end
     end
@@ -249,74 +292,117 @@ RSpec.describe ReservationsController, :type => :controller do
   end
 
   describe 'GET approve' do
+    before do
+      @reservation = FactoryGirl.create(:reservation)
+    end
+
     describe 'when current_user is admin' do
+
       it 'changes the approved status of the reservation' do
-        reservation = FactoryGirl.create(:reservation)
-        get :approve, {:id => reservation.to_param}, admin_session
-        reservation.reload
-        expect(reservation.is_approved?).to eq(true)
-        expect(reservation.status).to eq('approved')
-        expect(reservation.admin_response_time).to_not eq(nil)
+        get :approve, {:id => @reservation.to_param}, admin_session
+        @reservation.reload
+        expect(@reservation.is_approved?).to eq(true)
+        expect(@reservation.status).to eq('approved')
+        expect(@reservation.admin_response_time).to_not eq(nil)
       end
 
       it 'redirects to show page' do
-        reservation = FactoryGirl.create(:reservation)
-        get :approve, {:id => reservation.to_param}, admin_session
+        get :approve, {:id => @reservation.to_param}, admin_session
+        expect(response).to redirect_to(@reservation)
+      end
 
-        expect(response).to redirect_to(reservation)
+      describe 'when user has notifications enabled' do
+        it 'sends an email' do
+          @reservation.user.notify_on_approved = true
+          @reservation.save
+          expect { 
+            get :approve, {:id => @reservation.to_param}, admin_session
+          }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        end
+      end
+
+      describe 'when user does not have notifications enabled' do
+        it 'does not send an email' do
+          @reservation.user.notify_on_approved = false
+          @reservation.user.save
+          expect { 
+            get :approve, {:id => @reservation.to_param}, admin_session
+          }.to change { ActionMailer::Base.deliveries.count }.by(0)
+        end
       end
     end
 
     describe 'when current_user is not admin' do
       it 'does not change the approved status of the reservation' do
-        reservation = FactoryGirl.create(:reservation)
-        get :approve, {:id => reservation.to_param}, non_admin_session
-        reservation.reload
-        expect(reservation.is_approved?).to eq(false)
-        expect(reservation.status).to eq('requested')
+        @reservation = FactoryGirl.create(:reservation)
+        get :approve, {:id => @reservation.to_param}, non_admin_session
+        @reservation.reload
+        expect(@reservation.is_approved?).to eq(false)
+        expect(@reservation.status).to eq('requested')
       end
 
       it 'redirects to show page' do
-        reservation = FactoryGirl.create(:reservation)
-        get :approve, {:id => reservation.to_param}, non_admin_session
+        @reservation = FactoryGirl.create(:reservation)
+        get :approve, {:id => @reservation.to_param}, non_admin_session
 
         expect(response).to redirect_to(root_path)
       end
     end
   end
 
-  describe 'GET deny' do
+  describe 'POST deny' do
+    let(:reason) { "The administrator doesn't like you" }
+
+    before do 
+      @reservation = FactoryGirl.create(:reservation)
+    end
+
     describe 'when current_user is admin' do
       it 'changes the denied status of the reservation' do
-        reservation = FactoryGirl.create(:reservation)
-        get :deny, {:id => reservation.to_param}, admin_session
-        reservation.reload
-        expect(reservation.is_denied?).to eq(true)
-        expect(reservation.status).to eq('denied')
-        expect(reservation.admin_response_time).to_not eq(nil)
+        post :deny, {:id => @reservation.to_param, :reservation => {:denied_reason => reason}}, admin_session
+        @reservation.reload
+        expect(@reservation.is_denied?).to eq(true)
+        expect(@reservation.status).to eq('denied')
+        expect(@reservation.admin_response_time).to_not eq(nil)
+        expect(@reservation.denied_reason).to eq(reason)
       end
 
       it 'redirects to show page' do
-        reservation = FactoryGirl.create(:reservation)
-        get :deny, {:id => reservation.to_param}, admin_session
+        post :deny, {:id => @reservation.to_param, :reservation => {:denied_reason => reason}}, admin_session
+        expect(response).to redirect_to(@reservation)
+      end
 
-        expect(response).to redirect_to(reservation)
+      describe 'when user has notifications enabled' do
+        it 'sends an email' do
+          @reservation.user.notify_on_denied = true
+          @reservation.user.save
+          expect { 
+            post :deny, {:id => @reservation.to_param, :reservation => {:denied_reason => reason}}, admin_session
+          }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        end
+      end
+
+      describe 'when user does not have notifications enabled' do
+        it 'does not send an email' do
+          @reservation.user.notify_on_denied = false
+          @reservation.user.save
+          expect { 
+            post :deny, {:id => @reservation.to_param, :reservation => {:denied_reason => reason}}, admin_session
+          }.to change { ActionMailer::Base.deliveries.count }.by(0)
+        end
       end
     end
 
     describe 'when current_user is not admin' do
       it 'does not change the denied status of the reservation' do
-        reservation = FactoryGirl.create(:reservation)
-        get :deny, {:id => reservation.to_param}, non_admin_session
-        reservation.reload
-        expect(reservation.is_denied?).to eq(false)
-        expect(reservation.status).to eq('requested')
+        post :deny, {:id => @reservation.to_param, :reservation => {:denied_reason => reason}}, non_admin_session
+        @reservation.reload
+        expect(@reservation.is_denied?).to eq(false)
+        expect(@reservation.status).to eq('requested')
       end
 
       it 'redirects to show page' do
-        reservation = FactoryGirl.create(:reservation)
-        get :deny, {:id => reservation.to_param}, non_admin_session
-
+        post :deny, {:id => @reservation.to_param, :reservation => {:denied_reason => reason}}, non_admin_session
         expect(response).to redirect_to(root_path)
       end
     end
@@ -351,15 +437,38 @@ RSpec.describe ReservationsController, :type => :controller do
 
   describe 'POST checkout_update' do
     describe 'when current_user is monitor' do
-      it 'updates the reservation with checkout information' do
-        reservation = Reservation.create! valid_attributes
-        reservation.approved!
-        put :checkout_update, {:id => reservation.to_param, :reservation => {:check_out_comments => 'checkout comments'}}, monitor_session
-        reservation.reload
+      before do 
+        @reservation = Reservation.create! valid_attributes
+        @reservation.approved!
+      end
 
-        expect(reservation.check_out_comments).to eq('checkout comments')
-        expect(reservation.checked_out_by_id).to eq(@monitor_id)
-        expect(reservation.checked_out_time).to_not eq(nil)
+      it 'updates the reservation with checkout information' do
+        put :checkout_update, {:id => @reservation.to_param, :reservation => {:check_out_comments => 'checkout comments'}}, monitor_session
+        @reservation.reload
+
+        expect(@reservation.check_out_comments).to eq('checkout comments')
+        expect(@reservation.checked_out_by_id).to eq(@monitor_id)
+        expect(@reservation.checked_out_time).to_not eq(nil)
+      end
+
+      describe 'when user has notifications enabled' do
+        it 'sends an email' do
+          @reservation.user.notify_on_checked_out = true
+          @reservation.user.save
+          expect { 
+            put :checkout_update, {:id => @reservation.to_param, :reservation => {:check_out_comments => 'checkout comments'}}, monitor_session
+          }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        end
+      end
+
+      describe 'when user does not have notifications enabled' do
+        it 'does not send an email' do
+          @reservation.user.notify_on_checked_out = false
+          @reservation.user.save
+          expect { 
+            put :checkout_update, {:id => @reservation.to_param, :reservation => {:check_out_comments => 'checkout comments'}}, monitor_session
+          }.to change { ActionMailer::Base.deliveries.count }.by(0)
+        end
       end
 
       describe 'when reservation is not approved' do
@@ -410,15 +519,38 @@ RSpec.describe ReservationsController, :type => :controller do
   describe 'POST checkin_update' do
     describe 'when current_user is monitor' do
       describe 'when returned on time' do
-        it 'updates the reservation with checkin information' do
-          reservation = FactoryGirl.create(:checkout)
-          put :checkin_update, {:id => reservation.to_param, :reservation => {:check_in_comments => 'checkin comments'}}, monitor_session
-          reservation.reload
+        before do 
+          @reservation = FactoryGirl.create(:checkout)
+        end
 
-          expect(reservation.status).to eq('returned')
-          expect(reservation.check_in_comments).to eq('checkin comments')
-          expect(reservation.checked_in_by_id).to eq(@monitor_id)
-          expect(reservation.checked_in_time).to_not eq(nil)
+        it 'updates the reservation with checkin information' do
+          put :checkin_update, {:id => @reservation.to_param, :reservation => {:check_in_comments => 'checkin comments'}}, monitor_session
+          @reservation.reload
+
+          expect(@reservation.status).to eq('returned')
+          expect(@reservation.check_in_comments).to eq('checkin comments')
+          expect(@reservation.checked_in_by_id).to eq(@monitor_id)
+          expect(@reservation.checked_in_time).to_not eq(nil)
+        end
+
+        describe 'when user has notifications enabled' do
+          it 'sends an email' do
+            @reservation.user.notify_on_checked_in = true
+            @reservation.user.save
+            expect { 
+              put :checkin_update, {:id => @reservation.to_param, :reservation => {:check_in_comments => 'checkin comments'}}, monitor_session
+            }.to change { ActionMailer::Base.deliveries.count }.by(1)
+          end
+        end
+
+        describe 'when user does not have notifications enabled' do
+          it 'does not send an email' do
+            @reservation.user.notify_on_checked_in = false
+            @reservation.user.save
+            expect { 
+              put :checkin_update, {:id => @reservation.to_param, :reservation => {:check_in_comments => 'checkin comments'}}, monitor_session
+            }.to change { ActionMailer::Base.deliveries.count }.by(0)
+          end
         end
       end
 

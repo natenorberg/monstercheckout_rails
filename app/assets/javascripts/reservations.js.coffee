@@ -41,3 +41,8 @@ $(document).on 'click', '.check', ->
   else
     document.getElementById("submit_button").disabled = true
   return
+
+$(document).on 'click', '#deny_button', ->
+  $('#deny_form').show()
+  $('.buttons').hide()
+  return

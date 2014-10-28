@@ -1,0 +1,50 @@
+<% provide(:title, "#{@equipment.name} History") %>
+<h1 class="page-header"><%= @equipment.name %> History</h1>
+
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2 print-full-width">
+    <button onclick="window.print()" class="btn btn-large btn-primary pull-right print-button">
+      <i class="fa fa-print"></i> Print
+    </button>
+    <table class="table table-striped equipment-table">
+      <tbody>
+
+        <% @equipment.reservations.where(is_denied: [false, nil]).each do |reservation| %>
+        <tr>
+          <td>
+            <div>
+              <%= render 'shared/user_reservation', reservation: reservation %>
+            </div>
+          </td>
+
+          <td>
+            <div class="equipment-history-comments-area">
+              <% if reservation.check_out_comments %>
+                <div class="equipment-history-comments">
+                  <strong>Checked out by: </strong>
+                  <%= reservation.checked_out_by.name %> <br />
+
+                  <strong>Comments: </strong>
+                  <%= reservation.check_out_comments %> <br />
+                </div>
+              <% end %>
+
+              <% if reservation.check_in_comments %>
+                <div class="equipment-history-comments">
+                  <strong>Checked in by: </strong>
+                  <%= reservation.checked_in_by.name %> <br />
+
+                  <strong>Comments: </strong>
+                  <%= reservation.check_in_comments %> <br />
+                </div>
+              <% end %>
+            </div>
+
+          </td>
+        </tr>
+        <% end %>
+
+      </tbody>
+    </table>
+  </div>
+</div>

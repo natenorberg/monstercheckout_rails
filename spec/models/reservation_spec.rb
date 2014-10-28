@@ -19,6 +19,7 @@
 #  status              :integer
 #  is_denied           :boolean
 #  admin_response_time :datetime
+#  denied_reason       :string(255)
 #
 
 require 'rails_helper'
@@ -35,6 +36,7 @@ RSpec.describe Reservation, :type => :model do
     expect(@reservation).to respond_to(:checked_in_time)
     expect(@reservation).to respond_to(:is_approved?)
     expect(@reservation).to respond_to(:is_denied?)
+    expect(@reservation).to respond_to(:denied_reason)
     expect(@reservation).to respond_to(:admin_response_time)
     expect(@reservation).to respond_to(:check_out_comments)
     expect(@reservation).to respond_to(:check_in_comments)

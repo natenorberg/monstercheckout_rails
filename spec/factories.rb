@@ -7,6 +7,7 @@ FactoryGirl.define do
 
     factory :admin do
       is_admin true
+      notify_on_approval_needed true
     end
 
     factory :monitor do
@@ -45,6 +46,7 @@ FactoryGirl.define do
     factory :checkout do
       checked_out_time 1.days.ago
       check_out_comments 'Lookin good'
+      association :checked_out_by, :factory => :monitor
       status 'out'
 
       factory :checkin do

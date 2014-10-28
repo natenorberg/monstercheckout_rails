@@ -1,0 +1,12 @@
+<%= @reservation.user.name %> has requested a reservation
+
+Reserved from <%= @reservation.out_time.strftime(ReservationsHelper::LONG_DATETIME_FORMAT) %>
+to: <%= @reservation.in_time.strftime(ReservationsHelper::LONG_DATETIME_FORMAT) %>
+
+Equipment:
+<% @reservation.reservation_equipment.each do |item| %>
+<%= item.equipment.name %> <% if item.quantity > 1 %>(x<%= item.quantity %>) <% end %>
+<% end %>
+
+View this reservation online:
+<%= reservation_url(@reservation) %>:w
