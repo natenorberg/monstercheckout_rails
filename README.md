@@ -25,4 +25,4 @@ This release contains some non-essential but helpful features. Email notificatio
 
 
 ###1.2
-Eventually, the product should be enhanced by replacing a few of the static pages (such as the lab monitor views) with AngularJS apps. Files that are candidates to be replaced with AngularJS implementations will be tagged with `ng-candidate` in a comment in the html.erb files.
+Eventually, the product should be enhanced by replacing a few of the static pages (such as the lab monitor views) with AngularJS apps. I might just use this along with the ionic framework to create a mobile app while I'm at it
