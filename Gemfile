@@ -40,6 +40,7 @@ group :test do
   gem 'rspec-activemodel-mocks'
   gem 'capybara'
   gem 'factory_girl_rails', '1.4.0'
+  gem 'codeclimate-test-reporter'
 end
 
 # Use jquery as the JavaScript library
