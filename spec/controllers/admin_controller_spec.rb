@@ -26,7 +26,6 @@ RSpec.describe AdminController, :type => :controller do
         get :dashboard, {}
 
         expect(response).to redirect_to(root_path)
-        expect(true).to eq(false) #testing travis build
     end
   end
 end
