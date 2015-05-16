@@ -3,6 +3,14 @@
 
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1">
+    <% if current_user.is_admin? %>
+      <div class="button-container">
+        <%= link_to new_equipment_path, class: 'btn btn-large btn-primary' do %>
+          <i class="fa fa-plus"></i> New Equipment
+        <% end %>
+      </div>
+    <% end %>
+
       <!-- ng-candidate: Have option to filter equipment the user doesn't have permission to see. (Just using JQuery works but breaks the striped look) -->
       <table id="equipment_table" class="table table-striped equipment-table">
           <thead>
@@ -13,7 +21,7 @@
               <% if current_user.is_admin? %><th></th><% end %>
             </tr>
           </thead>
-        
+
           <tbody>
             <% @equipment.each do |equipment| %>
               <tr <% if !equipment.can_be_checked_out_by(current_user) %> class='equipment-denied-row'<% end %>>
@@ -34,13 +42,8 @@
             <% end %>
           </tbody>
         </table>
-        
+
         <br>
-        
-        <% if current_user.is_admin? %>
-        <%= link_to new_equipment_path, class: 'btn btn-large btn-primary' do %> 
-          <i class="fa fa-plus"></i> New Equipment 
-        <% end %>
-        <% end %>
+
     </div>
 </div>

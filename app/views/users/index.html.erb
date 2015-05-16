@@ -7,6 +7,12 @@
 
 <div class="row">
   <div class="col-sm-10 col-sm-offset-1">
+    <div class="button-container">
+      <%= link_to new_user_path, class: 'btn btn-large btn-primary' do %>
+        <i class="fa fa-plus"></i> New User
+      <% end %>
+    </div>
+
     <ul class="nav nav-pills user-type-tabs">
       <li class="<%= 'active' if params[:action] == 'index' %>"><%= link_to 'All', users_path %></li>
       <li class="<%= 'active' if params[:action] == 'monitors' %>"><%= link_to 'Monitors', monitors_users_path %></li>
@@ -42,10 +48,6 @@
         <% end %>
       </tbody>
     </table>
-
-    <%= link_to new_user_path, class: 'btn btn-large btn-primary' do %>
-      <i class="fa fa-plus"></i> New User
-    <% end %>
   </div>
 </div>
 
