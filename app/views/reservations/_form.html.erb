@@ -15,15 +15,7 @@
         </div>
       <% end %>
 
-      <% # TODO: This should be taken care of in the controller %>
-      <% if current_user.is_admin? && ENV['TRANSITION_MODE'] # Temporary hack for Joe %>
-        <div class="field">
-          <%= f.label :user_id, 'Student' %>
-          <%= f.select :user_id, options_for_select(User.all.map{ |u| [u.name, u.id] }), class: 'form-control' %>
-        </div>
-      <% else %>
-        <%= f.hidden_field :user_id, value: current_user.id %>
-      <% end %>
+      <%= f.hidden_field :user_id, value: current_user.id %>
 
       <div class="field">
         <%= f.label :project %><br>
