@@ -33,12 +33,14 @@ group :production do
   gem 'rails_12factor', group: :production
 end
 
-group :test do 
-  gem 'rspec-rails' 
+group :test do
+  gem 'rspec-rails'
   gem 'rspec-its'
   gem 'rspec-mocks'
   gem 'rspec-activemodel-mocks'
   gem 'capybara'
+  gem "database_cleaner"
+  gem 'selenium-webdriver'
   gem 'factory_girl_rails', '1.4.0'
   gem 'codeclimate-test-reporter'
 end
