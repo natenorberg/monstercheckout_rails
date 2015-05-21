@@ -15,6 +15,11 @@ FactoryGirl.define do
     end
   end
 
+  factory :permission do
+    sequence(:name) { |n| "Permission #{n}"}
+    description 'A permission used for testing'
+  end
+
   factory :equipment do
     sequence(:name) { |n| "Mic #{n}" }
     brand 'Test Brand'
@@ -61,10 +66,5 @@ FactoryGirl.define do
     reservation
     equipment
     quantity 2
-  end
-
-  factory :permission do
-    sequence(:name) { |n| "Permission #{n}"}
-    description 'A permission used for testing'
   end
 end
