@@ -44,51 +44,43 @@ class ReservationsController < ApplicationController
 
   # POST /reservations
   # POST /reservations.json
+  # TODO: Complex method
   def create
     format_time_input
-    params[:reservation][:equipment_ids] ||= []
-    @conflicts = conflicts
+    check_input
     @reservation = Reservation.new(reservation_params)
     @reservation.status = :requested
     respond_to do |format|
+      # TODO: Duplication
       if @conflicts.any?
-        add_conflict_errors
-        format.html { render :new }
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
+        respond_to_conflicts :new, format
       elsif @reservation.save
-        update_quantities
-        format.html { redirect_to @reservation, flash: { success: 'Reservation was successfully updated.' }}
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
+        respond_to_update format
       else
-        format.html { render :new }
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
+        respond_to_errors :new, format
       end
     end
   end
 
   # PATCH/PUT /reservations/1
   # PATCH/PUT /reservations/1.json
+  # TODO: Complex method
   def update
     format_time_input
-    params[:reservation][:equipment_ids] ||= []
-    @conflicts = conflicts
+    check_input
     respond_to do |format|
+      # TODO: Duplication
       if @conflicts.any?
-        add_conflict_errors
-        format.html { render :edit }
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
+        respond_to_conflicts :edit, format
       elsif @reservation.update(reservation_params)
-        update_quantities
-        reset_approval_status
-        format.html { redirect_to @reservation, flash: { success: 'Reservation was successfully updated.' } }
-        format.json { render :show, status: :ok, location: @reservation }
+        respond_to_update format
       else
-        format.html { render :edit }
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
+        respond_to_errors :edit, format
       end
     end
   end
 
+  # TODO: Complex method
   def checkout_update
     params[:reservation][:checked_out_time] = Time.now
     params[:reservation][:checked_out_by_id] = current_user.id
@@ -101,12 +93,12 @@ class ReservationsController < ApplicationController
         format.html { redirect_to @reservation, flash: { success: 'Reservation is checked out' } }
         format.json { render :show, status: :ok, location: @reservation }
       else
-        format.html { render :checkout }
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
+        respond_to_errors :checkout, format
       end
     end
   end
 
+  # TODO: Complex method
   def checkin_update
     params[:reservation][:checked_in_time] = Time.now
     params[:reservation][:checked_in_by_id] = current_user.id
@@ -122,8 +114,7 @@ class ReservationsController < ApplicationController
         format.html { redirect_to @reservation, flash: { success: 'Reservation is checked in' } }
         format.json { render :show, status: :ok, location: @reservation }
       else
-        format.html { render :checkin }
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
+        respond_to_errors :checkin, format
       end
     end
   end
@@ -150,8 +141,7 @@ class ReservationsController < ApplicationController
         format.html { redirect_to @reservation, flash: { success: 'Reservation has been approved' } }
         format.json { render :show, status: :ok, location: @reservation }
       else
-        format.html { render :show }
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
+        respond_to_errors :show, format
       end
     end
   end
@@ -168,8 +158,7 @@ class ReservationsController < ApplicationController
         format.html { redirect_to @reservation, flash: { error: 'Reservation has been denied' } }
         format.json { render :show, status: :ok, location: @reservation }
       else
-        format.html { render :show }
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
+        respond_to_errors :show, format
       end
     end
   end
@@ -203,6 +192,11 @@ class ReservationsController < ApplicationController
       end
     end
 
+    def check_input
+      params[:reservation][:equipment_ids] ||= []
+      @conflicts = conflicts
+    end
+
     def update_quantities
       @reservation.equipment.each do |item|
         association = ReservationEquipment.where(reservation_id: @reservation.id, equipment_id: item.id).first
@@ -229,6 +223,7 @@ class ReservationsController < ApplicationController
 
     # TODO: Move this into its own class
     # TODO: Get tests around this
+    # TODO: Complex method
     def conflicts
       # Get the other reservations to check agains
       # TODO: Be more selective here
@@ -267,6 +262,7 @@ class ReservationsController < ApplicationController
       end
     end
 
+    # TODO: Complex method
     def conflicting_equipment(equipment_ids, quantities, other_reservations)
       equipment = Equipment.where(:id => equipment_ids)
       conflicts = {}
@@ -304,6 +300,24 @@ class ReservationsController < ApplicationController
           "#{item} is already reserved from #{reservation.out_time.strftime(ReservationsHelper::SHORT_DATETIME_FORMAT)}
           to #{reservation.in_time.strftime(ReservationsHelper::SHORT_DATETIME_FORMAT)}")
       end
+    end
+
+    def respond_to_conflicts(action, format)
+      add_conflict_errors
+      format.html { render action }
+      format.json { render json: @reservation.errors, status: :unprocessable_entity }
+    end
+
+    def respond_to_update(format)
+      update_quantities
+      reset_approval_status
+      format.html { redirect_to @reservation, flash: { success: 'Reservation was successfully updated.' } }
+      format.json { render :show, status: :ok, location: @reservation }
+    end
+
+    def respond_to_errors(action, format)
+      format.html { render action }
+      format.json { render json: @reservation.errors, status: :unprocessable_entity }
     end
 
     def notify_approval_needed
