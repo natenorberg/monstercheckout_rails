@@ -3,6 +3,10 @@ MONSTER Checkout
 
 [![Build Status](https://travis-ci.org/natenorberg/monstercheckout_rails.svg?branch=master)](https://travis-ci.org/natenorberg/monstercheckout_rails)
 
+[![Code Climate](https://codeclimate.com/github/natenorberg/monstercheckout_rails/badges/gpa.svg)](https://codeclimate.com/github/natenorberg/monstercheckout_rails)
+
+[![Test Coverage](https://codeclimate.com/github/natenorberg/monstercheckout_rails/badges/coverage.svg)](https://codeclimate.com/github/natenorberg/monstercheckout_rails/coverage)
+
 MONSTER Checkout is an interdisciplinary project created by Nate Norberg, Brian Maher, and Joe Sweeney to simplify the checkout process for the Montana State University Music Technology program.
 
 The old checkout system was simple and easy to follow, but it used a lot of paper. The new system follows the same procedure but you can use it anywhere. You only need to come to the building to check equipment in and out.
