@@ -13,10 +13,10 @@ class ReservationsController < ApplicationController
   # GET /reservations
   # GET /reservations.json
   def index
-    @user_reservations = Reservation.where(user: current_user).order(:out_time).reverse_order.paginate(page: params[:user_reservations_page], :per_page => 5)
+    @user_reservations = query_reservations(user: current_user).paginate(page: params[:user_reservations_page], :per_page => 5)
     if current_user.is_admin?
-      @awaiting_approval = Reservation.where(status: 'requested').order(:out_time).reverse_order
-      @all_reservations = Reservation.all.order(:out_time).reverse_order.paginate(page: params[:all_reservations_page], :per_page => 5)
+      @awaiting_approval = query_reservations(status: 'requested')
+      @all_reservations = query_reservations.paginate(page: params[:all_reservations_page], :per_page => 5)
       render :admin_index
     end
   end
@@ -325,6 +325,15 @@ class ReservationsController < ApplicationController
       users.each do |user|
         UserMailer.need_approval_email(user, @reservation).deliver
       end
+    end
+
+    def query_reservations(conditions=nil)
+      if conditions
+        reservations = Reservation.where(conditions)
+      else
+        reservations = Reservation.all
+      end
+      reservations.order(:out_time).reverse_order
     end
 
     def notify_approved
