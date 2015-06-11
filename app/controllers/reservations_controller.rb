@@ -80,7 +80,6 @@ class ReservationsController < ApplicationController
     end
   end
 
-  # TODO: Complex method
   def checkout_update
     params[:reservation][:checked_out_time] = Time.now
     params[:reservation][:checked_out_by_id] = current_user.id
