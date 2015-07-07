@@ -67,4 +67,9 @@ FactoryGirl.define do
     equipment
     quantity 2
   end
+
+  factory :category do
+    name 'Test'
+    description 'Equipment used for testing the app'
+  end
 end

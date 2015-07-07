@@ -11,6 +11,7 @@
 #  updated_at  :datetime
 #  description :string(255)
 #  is_kit      :boolean
+#  type        :integer
 #
 
 class Equipment < ActiveRecord::Base
