@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150707011258) do
+ActiveRecord::Schema.define(version: 20150707230603) do
 
   create_table "categories", force: true do |t|
     t.string   "name"
@@ -30,7 +30,10 @@ ActiveRecord::Schema.define(version: 20150707011258) do
     t.string   "description"
     t.boolean  "is_kit"
     t.integer  "type"
+    t.integer  "category_id"
   end
+
+  add_index "equipment", ["category_id"], name: "index_equipment_on_category_id"
 
   create_table "equipment_permissions", id: false, force: true do |t|
     t.integer "equipment_id"

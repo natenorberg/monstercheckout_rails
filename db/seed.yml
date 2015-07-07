@@ -203,3 +203,13 @@ permissions:
 
   - name: Staff
     description: People who work for the MSU music department
+
+categories:
+  - name: Mic
+    description: Microphone
+
+  - name: Accessory
+    description: Equipment that goes along with other equipment
+
+  - name: Misc.
+    description: Other equipment

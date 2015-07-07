@@ -12,6 +12,7 @@
 #  description :string(255)
 #  is_kit      :boolean
 #  type        :integer
+#  category_id :integer
 #
 
 class Equipment < ActiveRecord::Base
