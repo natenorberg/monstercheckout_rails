@@ -10,5 +10,7 @@
 #
 
 class Category < ActiveRecord::Base
+  has_many :equipment
+
   validates :name, presence: true, uniqueness: true
 end

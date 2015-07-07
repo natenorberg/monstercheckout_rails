@@ -30,6 +30,7 @@ RSpec.describe Equipment, :type => :model do
     expect(@equipment).to respond_to(:permissions)
     expect(@equipment).to respond_to(:is_kit?)
     expect(@equipment).to respond_to(:sub_items)
+    expect(@equipment).to respond_to(:category)
   end
 
   it 'should have a valid factory' do

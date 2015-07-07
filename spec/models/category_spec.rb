@@ -18,6 +18,7 @@ RSpec.describe Category, :type => :model do
   it 'should respond to attributes' do
     expect(@category).to respond_to(:name)
     expect(@category).to respond_to(:description)
+    expect(@category).to respond_to(:equipment)
   end
 
   it 'should have a valid factory' do
