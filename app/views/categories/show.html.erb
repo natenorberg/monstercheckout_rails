@@ -10,5 +10,12 @@
   <%= @category.description %>
 </p>
 
+<ul>
+  <% @category.equipment.each do |item| %>
+    <li> <%= item.name %> </li>
+  <% end %>
+</ul>
+
+
 <%= link_to 'Edit', edit_category_path(@category) %> |
 <%= link_to 'Back', categories_path %>

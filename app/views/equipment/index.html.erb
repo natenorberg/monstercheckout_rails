@@ -9,6 +9,12 @@
           <i class="fa fa-plus"></i> New Equipment
         <% end %>
       </div>
+      <ul class="nav nav-pills user-type-tabs">
+        <li class="<%= 'active' if params[:controller] == 'equipment' %>"> <%= link_to 'All', equipment_index_path %> </li>
+        <% Category.all.each do |category| %>
+          <li class="<%= 'active' if params[:id] == category.id.to_s %>"> <%= link_to category.name, category %> </li>
+        <% end %>
+      </ul>
     <% end %>
 
       <!-- ng-candidate: Have option to filter equipment the user doesn't have permission to see. (Just using JQuery works but breaks the striped look) -->
