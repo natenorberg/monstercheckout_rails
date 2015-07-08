@@ -17,10 +17,12 @@ class EquipmentController < ApplicationController
   # GET /equipment/new
   def new
     @equipment = Equipment.new
+    @categories = Category.all.map { |c| [c.name, c.id] }
   end
 
   # GET /equipment/1/edit
   def edit
+    @categories = Category.all.map { |c| [c.name, c.id] }
   end
 
   # POST /equipment
@@ -81,6 +83,6 @@ class EquipmentController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def equipment_params
-      params.require(:equipment).permit(:name, :brand, :quantity, :condition, :description, :is_kit, permission_ids: [])
+      params.require(:equipment).permit(:name, :brand, :quantity, :condition, :description, :is_kit, :category_id, permission_ids: [])
     end
 end

@@ -14,7 +14,12 @@
           <%= f.label :brand %>
           <%= f.text_field :brand, class: 'form-control' %>
         </div>
-      
+
+        <div class="field">
+          <%= f.label :category %>
+          <%= f.collection_select :category_id, Category.all, :id, :name %>
+        </div>
+
         <div class="field">
           <%= f.label :quantity %>
           <%= f.number_field :quantity, min: 1, step: 1, class: 'form-control' %>
@@ -29,9 +34,9 @@
           <%= f.label :description %>
           <%= f.text_area :description, class: 'form-control' %>
         </div>
-        
+
         <%= f.submit "Save Equipment", class: 'btn btn-large btn-success' %>
-        
+
     </div>
     <div class="col-sm-4">
       <h4>Permissions</h4>
@@ -43,7 +48,7 @@
 
       <div id="kit_info">
         <div class="form-divider"></div>
-        
+
         <h4> <i class="fa fa-suitcase"></i> Recording kit</h4>
           <%= f.check_box :is_kit %> <span>This item has several items that need to be checked out together.</span>
 
