@@ -27,10 +27,18 @@ RSpec.describe CategoriesController, :type => :controller do
   end
 
   describe "GET show" do
+    before do
+      @category = Category.create! valid_attributes
+    end
+
     it "assigns the requested category as @category" do
-      category = Category.create! valid_attributes
-      get :show, {:id => category.to_param}, valid_session
-      expect(assigns(:category)).to eq(category)
+      get :show, {:id => @category.to_param}, valid_session
+      expect(assigns(:category)).to eq(@category)
+    end
+
+    it 'renders the equipment/index view' do
+      get :show, {:id => @category.to_param}, valid_session
+      expect(response).to render_template('equipment/index')
     end
   end
 
