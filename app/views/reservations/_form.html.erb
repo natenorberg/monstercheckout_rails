@@ -55,7 +55,9 @@
             <% else %>
             <ul class="equipment-list">
               <% @categories.each do |category| %>
-                <div id="category_<%= category.id %>_header" data-id="<%= category.id %>" class="section-header"> <%= category.name %> </div>
+                <div id="category_<%= category.id %>_header" data-id="<%= category.id %>" class="section-header">
+                  <i class="fa fa-caret-down"></i> <%= category.name %>
+                </div>
                 <div id="category_<%= category.id %>_list">
                   <% @equipment.where(category_id: category.id).each do |equipment| %>
                     <li>

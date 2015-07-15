@@ -49,7 +49,12 @@ $(document).on 'click', '#deny_button', ->
 
 $(document).on 'click', '.equipment-list .section-header', ->
   list = $("#category_#{@dataset.id}_list")
+  icon = $("#category_#{@dataset.id}_header .fa")
   if list.is(':visible')
     list.hide()
+    icon.removeClass('fa-caret-down')
+    icon.addClass('fa-caret-right')
   else
     list.show()
+    icon.removeClass('fa-caret-right')
+    icon.addClass('fa-caret-down')
