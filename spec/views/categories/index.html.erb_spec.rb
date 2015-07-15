@@ -11,4 +11,10 @@ RSpec.describe "categories/index", :type => :view do
   it "renders a list of categories" do
     render
   end
+
+  it 'renders breadcrumbs' do
+    render
+
+    verify_breadcrumbs ['Equipment', 'Categories']
+  end
 end
