@@ -46,3 +46,10 @@ $(document).on 'click', '#deny_button', ->
   $('#deny_form').show()
   $('.buttons').hide()
   return
+
+$(document).on 'click', '.equipment-list .section-header', ->
+  list = $("#category_#{@dataset.id}_list")
+  if list.is(':visible')
+    list.hide()
+  else
+    list.show()

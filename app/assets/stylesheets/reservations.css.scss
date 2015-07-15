@@ -255,6 +255,10 @@ span.checklist-label {
     font-weight: 700;
     border: solid #cecece;
     border-width: 0 1px 1px 1px;
+
+    &:hover {
+      background: #ddd;
+    }
   }
 }
 
