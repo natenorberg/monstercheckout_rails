@@ -3,6 +3,8 @@ require 'rails_helper'
 RSpec.describe 'reservations/new', :type => :view do
   before(:each) do
     @equipment = [FactoryGirl.create(:equipment), FactoryGirl.create(:equipment)]
+    @equipment.stub(:where).and_return(@equipment)
+    @categories = [FactoryGirl.create(:category)]
     @out_time = 1.days.ago
     @in_time = 1.days.from_now
     @user = FactoryGirl.create(:user)
