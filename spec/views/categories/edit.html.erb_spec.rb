@@ -14,4 +14,10 @@ RSpec.describe "categories/edit", :type => :view do
     assert_select "form[action=?][method=?]", category_path(@category), "post" do
     end
   end
+
+  it 'renders breadcrumbs' do
+    render
+
+    verify_breadcrumbs ['Equipment', 'Categories', @category.name, 'Edit']
+  end
 end

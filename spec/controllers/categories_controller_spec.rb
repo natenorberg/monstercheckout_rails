@@ -83,9 +83,9 @@ RSpec.describe CategoriesController, :type => :controller do
         expect(assigns(:category)).to be_persisted
       end
 
-      it "redirects to the created category" do
+      it "redirects to the categories index" do
         post :create, {:category => valid_attributes}, admin_session
-        expect(response).to redirect_to(Category.last)
+        expect(response).to redirect_to(categories_path)
       end
     end
 
@@ -122,10 +122,10 @@ RSpec.describe CategoriesController, :type => :controller do
         expect(assigns(:category)).to eq(category)
       end
 
-      it "redirects to the category" do
+      it "redirects to the index page" do
         category = Category.create! valid_attributes
         put :update, {:id => category.to_param, :category => valid_attributes}, admin_session
-        expect(response).to redirect_to(category)
+        expect(response).to redirect_to(categories_path)
       end
     end
 
