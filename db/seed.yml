@@ -205,8 +205,8 @@ permissions:
     description: People who work for the MSU music department
 
 categories:
-  - name: Mic
-    description: Microphone
+  - name: Mics
+    description: Microphones
 
   - name: Accessory
     description: Equipment that goes along with other equipment
