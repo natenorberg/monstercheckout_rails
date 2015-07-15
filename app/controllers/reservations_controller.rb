@@ -180,6 +180,7 @@ class ReservationsController < ApplicationController
 
     def set_equipment
       @equipment = current_user.allowed_equipment
+      @categories = Category.all
     end
 
     def format_time_input

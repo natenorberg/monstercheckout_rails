@@ -54,7 +54,9 @@
             <h2>You have no approved equipment. Please contact your administrator.</h2>
             <% else %>
             <ul class="equipment-list">
-              <% @equipment.each do |equipment| %>
+              <% @categories.each do |category| %>
+                <div class="section-header"> <%= category.name %> </div>
+              <% @equipment.where(category_id: category.id).each do |equipment| %>
                 <li>
                 <% check_box_class = 'kit-checkbox' if equipment.is_kit? %>
                 <%= check_box_tag 'reservation[equipment_ids][]', equipment.id, @reservation.equipment.include?(equipment), class: check_box_class %>
@@ -66,6 +68,7 @@
                   <%= hidden_field_tag "reservation[quantity][#{equipment.id}]", 1 %>
                 <% end %>
                 </li>
+              <% end %>
               <% end %>
             </ul>
             <% end %>
