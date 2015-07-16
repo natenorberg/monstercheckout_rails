@@ -108,6 +108,20 @@ a {
   margin-bottom: 10px;
 }
 
+.btn {
+  transition: $fadeTransition;
+}
+
+.nav.nav-pills {
+  a {
+    transition: $fadeTransition;
+
+    &:active {
+      background-color: #ddd;
+    }
+  }
+}
+
 /* Breadcrumbs */
 ol.breadcrumb {
   height: 36px;
@@ -145,6 +159,7 @@ p {
 a.quick_link {
   color: #333;
   text-decoration: none;
+  transition: $fadeTransition;
 
   & > p {
     font-size: 20px;
