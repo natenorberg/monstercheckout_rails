@@ -64,7 +64,7 @@
 					</ul>
 				</li>
 				<%= form_tag search_path, method: :get, role: 'search', class: 'navbar-form navbar-right', id: 'navbar_search_field' do %>
-				<div class="input-group">
+				<div id="search_input_group" class="input-group">
 					<%= text_field_tag 'keyword', nil, class: 'form-control', placeholder: 'Search' %>
 					<span class="input-group-btn">
 					<button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
