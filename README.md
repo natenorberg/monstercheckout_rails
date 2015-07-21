@@ -1,7 +1,7 @@
 MONSTER Checkout
 ================
 
-[![Build Status](https://travis-ci.org/natenorberg/monstercheckout_rails.svg?branch=master)](https://travis-ci.org/natenorberg/monstercheckout_rails) [![Code Climate](https://codeclimate.com/github/natenorberg/monstercheckout_rails/badges/gpa.svg)](https://codeclimate.com/github/natenorberg/monstercheckout_rails) [![Test Coverage](https://codeclimate.com/github/natenorberg/monstercheckout_rails/badges/coverage.svg)](https://codeclimate.com/github/natenorberg/monstercheckout_rails/coverage)
+[![Build Status](https://travis-ci.org/natenorberg/monstercheckout_rails.svg?branch=develop)](https://travis-ci.org/natenorberg/monstercheckout_rails) [![Code Climate](https://codeclimate.com/github/natenorberg/monstercheckout_rails/badges/gpa.svg)](https://codeclimate.com/github/natenorberg/monstercheckout_rails) [![Test Coverage](https://codeclimate.com/github/natenorberg/monstercheckout_rails/badges/coverage.svg)](https://codeclimate.com/github/natenorberg/monstercheckout_rails/coverage)
 
 MONSTER Checkout is an interdisciplinary project created by Nate Norberg, Brian Maher, and Joe Sweeney to simplify the checkout process for the Montana State University Music Technology program.
 
