@@ -104,6 +104,14 @@ $colHighlight   : #ffffff;
 
 #search_input_group {
   margin: 0;
+
+  .twitter-typeahead {
+    vertical-align: middle;
+  }
+
+  input {
+    border-radius: 3px 0 0 3px;
+  }
 }
 
 // typeahead.js styling
