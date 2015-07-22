@@ -1,13 +1,13 @@
 equipment = new Bloodhound(
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name')
   queryTokenizer: Bloodhound.tokenizers.whitespace
-  prefetch: '/equipment'
+  prefetch: { url: '/equipment', cache: false }
 )
 
 users = new Bloodhound(
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name')
   queryTokenizer: Bloodhound.tokenizers.whitespace
-  prefetch: '/users'
+  prefetch: { url: '/users', cache: false }
 )
 
 $('#search_input_group input').typeahead { highlight: true }, {
