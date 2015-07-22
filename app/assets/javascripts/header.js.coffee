@@ -10,6 +10,12 @@ users = new Bloodhound(
   prefetch: { url: '/users', cache: false }
 )
 
+reservations = new Bloodhound(
+  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('project')
+  queryTokenizer: Bloodhound.tokenizers.whitespace
+  prefetch: { url: '/reservations', cache: false }
+)
+
 $('#search_input_group input').typeahead { highlight: true }, {
   name: 'equipment'
   display: 'name'
@@ -20,4 +26,9 @@ $('#search_input_group input').typeahead { highlight: true }, {
   display: 'name'
   source: users
   templates: header: '<h3 class="search-section">Users</h3>'
+}, {
+  name: 'reservations'
+  display: 'project'
+  source: reservations
+  templates: header: '<h3 class="search-section">Reservations</h3>'
 }
