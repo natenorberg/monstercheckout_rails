@@ -14,10 +14,10 @@ $('#search_input_group input').typeahead { highlight: true }, {
   name: 'equipment'
   display: 'name'
   source: equipment
-  templates: header: '<h3 class="league-name">Equipment</h3>'
+  templates: header: '<h3 class="search-section">Equipment</h3>'
 }, {
   name: 'users'
   display: 'name'
   source: users
-  templates: header: '<h3 class="league-name">Users</h3>'
+  templates: header: '<h3 class="search-section">Users</h3>'
 }
