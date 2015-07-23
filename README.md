@@ -27,5 +27,5 @@ This release contains some non-essential but helpful features. Email notificatio
 Added a couple nice to have features, such as categories for equipment
 and search lookahead
 
-###2.0
+###2.0 (not really started)
 Eventually, the product should be enhanced by replacing a few of the static pages (such as the lab monitor views) with AngularJS apps. I might just use this along with the ionic framework to create a mobile app while I'm at it
