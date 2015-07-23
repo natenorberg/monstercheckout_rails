@@ -33,6 +33,8 @@ class SearchController < ApplicationController
 
       if current_user.monitor_access?
         matches = Reservation.where(project: keyword)
+      else
+        matches = Reservation.where(user: current_user, project: keyword)
         if !matches.nil? && matches.count > 0
           return matches
         end

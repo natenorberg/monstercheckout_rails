@@ -29,4 +29,26 @@ RSpec.describe 'equipment/index', :type => :view do
     assert_select 'tr>td', :text => 'Brand'.to_s, :count => 2
     assert_select 'tr>td', :text => 1.to_s, :count => 2
   end
+
+  describe 'when user is an admin' do
+    before do
+      @user.stub(:is_admin?).and_return(true)
+    end
+
+    it 'renders edit categories button' do
+      render
+      assert_select '.button-container a', :href => categories_path
+    end
+  end
+
+  describe 'when user is not an admin' do
+    before do
+      @user.stub(:is_admin?).and_return(false)
+    end
+
+    it 'renders category selectors' do
+      render
+      assert_select 'ul.nav.nav-pills'
+    end
+  end
 end

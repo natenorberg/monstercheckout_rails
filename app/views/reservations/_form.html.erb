@@ -15,15 +15,7 @@
         </div>
       <% end %>
 
-      <% # TODO: This should be taken care of in the controller %>
-      <% if current_user.is_admin? && ENV['TRANSITION_MODE'] # Temporary hack for Joe %>
-        <div class="field">
-          <%= f.label :user_id, 'Student' %>
-          <%= f.select :user_id, options_for_select(User.all.map{ |u| [u.name, u.id] }), class: 'form-control' %>
-        </div>
-      <% else %>
-        <%= f.hidden_field :user_id, value: current_user.id %>
-      <% end %>
+      <%= f.hidden_field :user_id, value: current_user.id %>
 
       <div class="field">
         <%= f.label :project %><br>
@@ -58,21 +50,32 @@
           <div id="equipment_list">
             <%= f.label :equipment %>
 
+            <% if @equipment.empty? %>
+            <h2>You have no approved equipment. Please contact your administrator.</h2>
+            <% else %>
             <ul class="equipment-list">
-              <% @equipment.each do |equipment| %>
-                <li>
-                <% check_box_class = 'kit-checkbox' if equipment.is_kit? %>
-                <%= check_box_tag 'reservation[equipment_ids][]', equipment.id, @reservation.equipment.include?(equipment), class: check_box_class %>
-                <span class="equipment-choice-label" title='<%= equipment.description %>'><%= equipment.name %></span>
-                <% if equipment.quantity > 1 %>
-                  <span class="equipment-choice-label pull-right">Quantity:
-                    <%= number_field_tag "reservation[quantity][#{equipment.id}]", get_previous_quantity(@reservation.id, equipment.id), min: 1, max: equipment.quantity, class: 'form-control quantity-box' %> / <%= equipment.quantity %></span>
-                <% else %>
-                  <%= hidden_field_tag "reservation[quantity][#{equipment.id}]", 1 %>
-                <% end %>
-                </li>
+              <% @categories.each do |category| %>
+                <div id="category_<%= category.id %>_header" data-id="<%= category.id %>" class="section-header">
+                  <i class="fa fa-caret-down"></i> <%= category.name %>
+                </div>
+                <div id="category_<%= category.id %>_list">
+                  <% @equipment.where(category_id: category.id).each do |equipment| %>
+                    <li>
+                    <% check_box_class = 'kit-checkbox' if equipment.is_kit? %>
+                    <%= check_box_tag 'reservation[equipment_ids][]', equipment.id, @reservation.equipment.include?(equipment), class: check_box_class %>
+                    <span class="equipment-choice-label" title='<%= equipment.description %>'><%= equipment.name %></span>
+                    <% if equipment.quantity > 1 %>
+                      <span class="equipment-choice-label pull-right">Quantity:
+                        <%= number_field_tag "reservation[quantity][#{equipment.id}]", get_previous_quantity(@reservation.id, equipment.id), min: 1, max: equipment.quantity, class: 'form-control quantity-box' %> / <%= equipment.quantity %></span>
+                    <% else %>
+                      <%= hidden_field_tag "reservation[quantity][#{equipment.id}]", 1 %>
+                    <% end %>
+                    </li>
+                  <% end %>
+                </div>
               <% end %>
             </ul>
+            <% end %>
           </div>
           <div id="sub_item_list" class="col-sm-5">
             <% @equipment.each do |equipment| %>

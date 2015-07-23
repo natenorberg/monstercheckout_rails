@@ -22,6 +22,8 @@ $grayMediumLight: #eaeaea;
 $grayDarker: #dddddd;
 $grayLighter: #aaaaaa;
 
+$fadeTransition: 0.2s ease-in-out all;
+
 /* universal */ 
 
 html {
@@ -54,6 +56,11 @@ h2.inline-header, h3.inline-header, h4.inline-header {
 
 a {
   color: #326fa7;
+}
+
+.button-container {
+  margin-bottom: 10px;
+  float: right;
 }
 
 .dashboard {
@@ -101,6 +108,20 @@ a {
   margin-bottom: 10px;
 }
 
+.btn {
+  transition: $fadeTransition;
+}
+
+.nav.nav-pills {
+  a {
+    transition: $fadeTransition;
+
+    &:active {
+      background-color: #ddd;
+    }
+  }
+}
+
 /* Breadcrumbs */
 ol.breadcrumb {
   height: 36px;
@@ -138,6 +159,7 @@ p {
 a.quick_link {
   color: #333;
   text-decoration: none;
+  transition: $fadeTransition;
 
   & > p {
     font-size: 20px;

@@ -4,7 +4,7 @@ class PermissionsController < ApplicationController
   # GET /permissions
   # GET /permissions.json
   def index
-    @permissions = Permission.all
+    redirect_to admin_path
   end
 
   # GET /permissions/1

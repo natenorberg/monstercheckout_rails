@@ -16,4 +16,8 @@
 /tmp
 .idea/*
 
+# Ignore test coverage results
+coverage/
+
+# Ignore ctags
 tags

@@ -91,4 +91,21 @@ RSpec.configure do |config|
     end
   end
 
+  def sign_in(user)
+    visit signin_path
+    fill_in 'Email', with: user.email
+    fill_in 'Password', with: user.password
+    click_button 'Sign in'
+
+    cookies[:remember_token] = user.remember_token
+  end
+
+  config.around(:each, type: :feature, js: true) do |ex|
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.start
+    self.use_transactional_fixtures = false
+    ex.run
+    self.use_transactional_fixtures = true
+    DatabaseCleaner.clean
+  end
 end

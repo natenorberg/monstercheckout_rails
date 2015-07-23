@@ -6,13 +6,15 @@ RSpec.describe 'equipment/show', :type => :view do
     mock_user.stub(:is_admin?).and_return(true)
     view.stub(:current_user).and_return(mock_user)
     @permission = FactoryGirl.create(:permission)
+    @category = FactoryGirl.create(:category)
     @equipment = assign(:equipment, Equipment.create!(
       :name => 'Name',
       :brand => 'Brand',
       :quantity => 1,
       :condition => 'Condition_',
       :description => 'Description_',
-      :permissions => [@permission]
+      :permissions => [@permission],
+      :category => @category
     ))
   end
 
@@ -22,6 +24,7 @@ RSpec.describe 'equipment/show', :type => :view do
     expect(rendered).to match(/Brand/)
     expect(rendered).to match(/1/)
     expect(rendered).to match(/Condition_/)
+    expect(rendered).to match(/Category/)
     expect(rendered).to match(/Description_/)
     expect(rendered).to match(/Permissions/)
     expect(rendered).to have_selector 'ul.permissions-list>li', :text => @permission.name
@@ -35,7 +38,7 @@ RSpec.describe 'equipment/show', :type => :view do
   end
 
   describe 'when equipment is kit' do
-    before do 
+    before do
       @equipment.is_kit = true
       SubItem.create(kit_id: @equipment.id, name: 'Item', description: 'An item')
       @equipment.save

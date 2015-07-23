@@ -11,12 +11,14 @@
 #  updated_at  :datetime
 #  description :string(255)
 #  is_kit      :boolean
+#  type        :integer
+#  category_id :integer
 #
 
 require 'rails_helper'
 
 RSpec.describe Equipment, :type => :model do
-  
+
   before { @equipment = FactoryGirl.create(:equipment) }
 
   it 'should respond to attributes' do
@@ -29,6 +31,7 @@ RSpec.describe Equipment, :type => :model do
     expect(@equipment).to respond_to(:permissions)
     expect(@equipment).to respond_to(:is_kit?)
     expect(@equipment).to respond_to(:sub_items)
+    expect(@equipment).to respond_to(:category)
   end
 
   it 'should have a valid factory' do
@@ -61,12 +64,12 @@ RSpec.describe Equipment, :type => :model do
   end
 
   describe 'can_be_checked_out_by' do
-    before do 
+    before do
       @user = stub_model(User)
     end
 
     describe 'when user has permission' do
-      before do 
+      before do
         permission = FactoryGirl.create(:permission)
         @equipment.permissions = [permission]
         @user.stub(:permissions).and_return [permission]
@@ -78,7 +81,7 @@ RSpec.describe Equipment, :type => :model do
     end
 
     describe 'when user does not have permission' do
-      before do 
+      before do
         permission = FactoryGirl.create(:permission)
         other_permission = FactoryGirl.create(:permission)
 

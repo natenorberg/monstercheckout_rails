@@ -9,6 +9,10 @@ RSpec.describe 'equipment/edit', :type => :view do
       :condition => 'MyString',
       :description => 'MyString'
     ))
+    @categories = assign(:categories, [Category.create!(
+      :name => 'Mic',
+      :description => 'Blah blah blah'
+    )])
   end
 
   it 'renders the edit equipment form' do
@@ -20,13 +24,15 @@ RSpec.describe 'equipment/edit', :type => :view do
 
       assert_select 'input#equipment_brand[name=?]', 'equipment[brand]'
 
+      assert_select 'select#equipment_category_id[name=?]', 'equipment[category_id]'
+
       assert_select 'input#equipment_quantity[name=?]', 'equipment[quantity]'
 
       assert_select 'input#equipment_condition[name=?]', 'equipment[condition]'
 
       assert_select 'input[name=?]', 'equipment[permission_ids][]'
 
-      assert_select 'textarea#equipment_description[name=?]', 'equipment[description]' 
+      assert_select 'textarea#equipment_description[name=?]', 'equipment[description]'
 
       assert_select 'input#equipment_is_kit[name=?]', 'equipment[is_kit]'
 

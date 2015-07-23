@@ -1,20 +1,11 @@
 require 'rails_helper'
 
-def sign_in(user)
-  visit signin_path
-  fill_in 'Email', with: user.email
-  fill_in 'Password', with: user.password
-  click_button 'Sign in'
-
-  cookies[:remember_token] = user.remember_token
-end
-
 describe 'Equipment pages' do
   subject { page }
 
   describe 'index page', type: :request do
     let(:user) { FactoryGirl.create(:user) }
-    before do 
+    before do
       sign_in(user)
       visit equipment_index_path
     end
@@ -34,7 +25,7 @@ describe 'Equipment pages' do
   end
 
   describe 'new page', type: :request do
-    
+
     describe 'without signing in' do
       before { visit new_equipment_path }
 
@@ -64,7 +55,7 @@ describe 'Equipment pages' do
 
   describe 'edit page', type: :request do
     let(:equipment) { FactoryGirl.create(:equipment) }
-    
+
     describe 'without signing in' do
       before { visit edit_equipment_path(equipment) }
 

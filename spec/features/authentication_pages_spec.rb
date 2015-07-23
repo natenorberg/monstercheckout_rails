@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'Authentication' do
-  
+
   subject { page }
 
   describe 'login page' do

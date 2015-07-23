@@ -27,6 +27,11 @@
 				<h3 class="panel-title">Manage Permissions</h3>
 			</div>
 			<ul class="list-group">
+				<li class="list-group-item">
+					<%= link_to new_permission_path, class: 'btn btn-large btn-primary' do %>
+						<i class="fa fa-plus"></i> New Permission
+					<% end %>
+				</li>
 				<% @permissions.each do |permission| %>
 				<li class="list-group-item">
 					<%= link_to permission do %> <%= permission.name %> <% end %>
@@ -38,11 +43,6 @@
                     <% end %>
 				</li>
 				<% end %>
-				<li class="list-group-item">
-					<%= link_to new_permission_path, class: 'btn btn-large btn-primary' do %>
-						<i class="fa fa-plus"></i> New Permission
-					<% end %>
-				</li>
 			</ul>
 		</div>
 

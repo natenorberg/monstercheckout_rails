@@ -13,10 +13,10 @@ class ReservationsController < ApplicationController
   # GET /reservations
   # GET /reservations.json
   def index
-    @user_reservations = Reservation.where(user: current_user).paginate(page: params[:user_reservations_page], :per_page => 5)
+    @user_reservations = query_reservations(user: current_user).paginate(page: params[:user_reservations_page], :per_page => 5)
     if current_user.is_admin?
-      @awaiting_approval = Reservation.where(status: 'requested')
-      @all_reservations = Reservation.all.paginate(page: params[:all_reservations_page], :per_page => 5)
+      @awaiting_approval = query_reservations(status: 'requested')
+      @all_reservations = query_reservations.paginate(page: params[:all_reservations_page], :per_page => 5)
       render :admin_index
     end
   end
@@ -44,47 +44,38 @@ class ReservationsController < ApplicationController
 
   # POST /reservations
   # POST /reservations.json
+  # TODO: Complex method
   def create
     format_time_input
-    params[:reservation][:equipment_ids] ||= []
-    @conflicts = conflicts
+    check_input
     @reservation = Reservation.new(reservation_params)
     @reservation.status = :requested
     respond_to do |format|
+      # TODO: Duplication
       if @conflicts.any?
-        add_conflict_errors
-        format.html { render :new }
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
+        respond_to_conflicts :new, format
       elsif @reservation.save
-        update_quantities
-        format.html { redirect_to @reservation, flash: { success: 'Reservation was successfully updated.' }}
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
+        respond_to_update format
       else
-        format.html { render :new }
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
+        respond_to_errors :new, format
       end
     end
   end
 
   # PATCH/PUT /reservations/1
   # PATCH/PUT /reservations/1.json
+  # TODO: Complex method
   def update
     format_time_input
-    params[:reservation][:equipment_ids] ||= []
-    @conflicts = conflicts
+    check_input
     respond_to do |format|
+      # TODO: Duplication
       if @conflicts.any?
-        add_conflict_errors
-        format.html { render :edit }
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
+        respond_to_conflicts :edit, format
       elsif @reservation.update(reservation_params)
-        update_quantities
-        reset_approval_status
-        format.html { redirect_to @reservation, flash: { success: 'Reservation was successfully updated.' } }
-        format.json { render :show, status: :ok, location: @reservation }
+        respond_to_update format
       else
-        format.html { render :edit }
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
+        respond_to_errors :edit, format
       end
     end
   end
@@ -101,12 +92,12 @@ class ReservationsController < ApplicationController
         format.html { redirect_to @reservation, flash: { success: 'Reservation is checked out' } }
         format.json { render :show, status: :ok, location: @reservation }
       else
-        format.html { render :checkout }
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
+        respond_to_errors :checkout, format
       end
     end
   end
 
+  # TODO: Complex method
   def checkin_update
     params[:reservation][:checked_in_time] = Time.now
     params[:reservation][:checked_in_by_id] = current_user.id
@@ -122,8 +113,7 @@ class ReservationsController < ApplicationController
         format.html { redirect_to @reservation, flash: { success: 'Reservation is checked in' } }
         format.json { render :show, status: :ok, location: @reservation }
       else
-        format.html { render :checkin }
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
+        respond_to_errors :checkin, format
       end
     end
   end
@@ -150,8 +140,7 @@ class ReservationsController < ApplicationController
         format.html { redirect_to @reservation, flash: { success: 'Reservation has been approved' } }
         format.json { render :show, status: :ok, location: @reservation }
       else
-        format.html { render :show }
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
+        respond_to_errors :show, format
       end
     end
   end
@@ -168,8 +157,7 @@ class ReservationsController < ApplicationController
         format.html { redirect_to @reservation, flash: { error: 'Reservation has been denied' } }
         format.json { render :show, status: :ok, location: @reservation }
       else
-        format.html { render :show }
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
+        respond_to_errors :show, format
       end
     end
   end
@@ -192,6 +180,7 @@ class ReservationsController < ApplicationController
 
     def set_equipment
       @equipment = current_user.allowed_equipment
+      @categories = Category.all
     end
 
     def format_time_input
@@ -201,6 +190,11 @@ class ReservationsController < ApplicationController
         params[:reservation][:in_time] += " MDT"
         params[:reservation][:in_time] = DateTime.strptime(params[:reservation][:in_time], '%m/%d/%Y %I:%M %p %z')
       end
+    end
+
+    def check_input
+      params[:reservation][:equipment_ids] ||= []
+      @conflicts = conflicts(params)
     end
 
     def update_quantities
@@ -227,76 +221,6 @@ class ReservationsController < ApplicationController
       redirect_to root_path unless @reservation.can_checkin?
     end
 
-    # TODO: Move this into its own class
-    # TODO: Get tests around this
-    def conflicts
-      # Get the other reservations to check agains
-      # TODO: Be more selective here
-      if params[:id]
-        other_reservations = Reservation.where.not(id: params[:id])
-      else
-        other_reservations = Reservation.all
-      end
-
-      overlapping_reservations = []
-      other_reservations.each do |reservation|
-        if overlap(reservation, params[:reservation][:out_time], params[:reservation][:in_time])
-          overlapping_reservations << reservation
-        end
-      end
-
-      conflicting_equipment(params[:reservation][:equipment_ids], params[:reservation][:quantity], overlapping_reservations)
-    end
-
-    # TODO: This logic probably belongs in its own class
-    def overlap(reservation, start_time, end_time)
-      if start_time < reservation.out_time
-        # New reservation starts before other one
-        if end_time < reservation.in_time
-          return false # Other reservation returned before new one checked out
-        else
-          return true
-        end
-
-      else
-        if start_time > reservation.in_time
-          return false # Reservation is returned before requested out_time
-        else
-          return true
-        end
-      end
-    end
-
-    def conflicting_equipment(equipment_ids, quantities, other_reservations)
-      equipment = Equipment.where(:id => equipment_ids)
-      conflicts = {}
-      total_quantities = {}
-
-      equipment.each do |item|
-        # Start with the total number of each item and substract the quantities from the reservations
-        # that overlap. If this goes below 0, then there's a conflict
-        total_quantities[item.id] = item.quantity - quantities[item.id.to_s].to_i
-      end
-
-      # Triple nested loops are bad, but they can't be very deep in this scenario and I'm not sure there's another way
-      other_reservations.each do |reservation|
-        reservation.reservation_equipment.each do |other_item|
-          equipment.each do |item|
-
-            if item == other_item.equipment
-              total_quantities[item.id] -= other_item.quantity
-
-              if total_quantities[item.id] < 0
-                conflicts[item.name] = reservation
-              end
-            end
-
-          end
-        end
-      end
-
-      conflicts
-    end
 
     def add_conflict_errors
       @conflicts.each do |item, reservation|
@@ -306,11 +230,38 @@ class ReservationsController < ApplicationController
       end
     end
 
+    def respond_to_conflicts(action, format)
+      add_conflict_errors
+      format.html { render action }
+      format.json { render json: @reservation.errors, status: :unprocessable_entity }
+    end
+
+    def respond_to_update(format)
+      update_quantities
+      reset_approval_status
+      format.html { redirect_to @reservation, flash: { success: 'Reservation was successfully updated.' } }
+      format.json { render :show, status: :ok, location: @reservation }
+    end
+
+    def respond_to_errors(action, format)
+      format.html { render action }
+      format.json { render json: @reservation.errors, status: :unprocessable_entity }
+    end
+
     def notify_approval_needed
       users = User.approval_needed_mailing_list
       users.each do |user|
         UserMailer.need_approval_email(user, @reservation).deliver
       end
+    end
+
+    def query_reservations(conditions=nil)
+      if conditions
+        reservations = Reservation.where(conditions)
+      else
+        reservations = Reservation.all
+      end
+      reservations.order(:out_time).reverse_order
     end
 
     def notify_approved

@@ -11,6 +11,7 @@ class SubItemsController < ApplicationController
   # GET /sub_items/1
   # GET /sub_items/1.json
   def show
+    redirect_to @kit
   end
 
   # GET /sub_items/new

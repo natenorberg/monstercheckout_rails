@@ -3,6 +3,8 @@ require 'rails_helper'
 RSpec.describe 'reservations/new', :type => :view do
   before(:each) do
     @equipment = [FactoryGirl.create(:equipment), FactoryGirl.create(:equipment)]
+    @equipment.stub(:where).and_return(@equipment)
+    @categories = [FactoryGirl.create(:category)]
     @out_time = 1.days.ago
     @in_time = 1.days.from_now
     @user = FactoryGirl.create(:user)
@@ -17,6 +19,18 @@ RSpec.describe 'reservations/new', :type => :view do
     assign(:equipment, @equipment)
   end
 
+  describe 'when user has no allowed equipment' do
+    before do
+      @equipment = []
+      assign(:equipment, @equipment)
+    end
+
+    it 'renders a message that there is no equipment' do
+      render
+      assert_select '#equipment_list>h2', text: 'You have no approved equipment. Please contact your administrator.'
+    end
+  end
+
   it 'renders new reservation form' do
     render
 
@@ -29,7 +43,7 @@ RSpec.describe 'reservations/new', :type => :view do
       assert_select 'input#reservation_in_time[name=?]', 'reservation[in_time]'
 
       assert_select 'ul.equipment-list' do
-        
+
         assert_select 'li>span.equipment-choice-label', @equipment.first.name
 
         assert_select 'li>input[name=?][value=?]', 'reservation[equipment_ids][]', @equipment.first.id
