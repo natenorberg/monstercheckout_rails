@@ -23,6 +23,9 @@ The original release will be when the rails version of the product reaches featu
 ###1.1
 This release contains some non-essential but helpful features. Email notifications is the biggest feature, but it also includes things like the ability for an admin to provide a reason why a reservation was denied and other simple features that were easy to implement but no one knew we'd want them until after it started being used.
 
-
 ###1.2
+Added a couple nice to have features, such as categories for equipment
+and search lookahead
+
+###2.0
 Eventually, the product should be enhanced by replacing a few of the static pages (such as the lab monitor views) with AngularJS apps. I might just use this along with the ionic framework to create a mobile app while I'm at it
