@@ -18,4 +18,7 @@ class StaticPagesController < ApplicationController
   # Release notes
   def v1_1
   end
+
+  def v1_2
+  end
 end
