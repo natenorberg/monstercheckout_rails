@@ -8,8 +8,6 @@ class ReservationsController < ApplicationController
   before_filter :reservation_can_be_checked_out, only: [:checkout, :checkout_update]
   before_filter :reservation_can_be_checked_in, only: [:checkin, :checkin_update]
 
-  after_filter :notify_approval_needed, only: [:create, :update]
-
   # GET /reservations
   # GET /reservations.json
   def index
@@ -55,6 +53,7 @@ class ReservationsController < ApplicationController
       if @conflicts.any?
         respond_to_conflicts :new, format
       elsif @reservation.save
+        notify_approval_needed
         respond_to_update format
       else
         respond_to_errors :new, format
@@ -73,6 +72,7 @@ class ReservationsController < ApplicationController
       if @conflicts.any?
         respond_to_conflicts :edit, format
       elsif @reservation.update(reservation_params)
+        notify_approval_needed
         respond_to_update format
       else
         respond_to_errors :edit, format
