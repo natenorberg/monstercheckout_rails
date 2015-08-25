@@ -73,6 +73,26 @@ RSpec.describe ReservationsController, :type => :controller do
     @user.stub(:monitor_access?).and_return false
   end
 
+  def setup_email
+    ENV['GMAIL_USERNAME'] = 'test@gmail.com'
+    ENV['GMAIL_PASSWORD'] = 'fakepassword'
+  end
+
+  def unsetup_email
+    ENV['GMAIL_USERNAME'] = nil
+    ENV['GMAIL_PASSWORD'] = nil
+  end
+
+  before(:each) do
+    @gmail_username = ENV['GMAIL_USERNAME']
+    @gmail_password = ENV['GMAIL_PASSWORD']
+  end
+
+  after(:each) do
+    ENV['GMAIL_USERNAME'] = @gmail_username
+    ENV['GMAIL_PASSWORD'] = @gmail_password
+  end
+
   describe 'GET index' do
     it 'assigns user reservations as @user_reservations' do
       reservation = Reservation.create! valid_attributes
@@ -148,11 +168,31 @@ RSpec.describe ReservationsController, :type => :controller do
         expect(response).to redirect_to(Reservation.last)
       end
 
-      it 'sends an email notification' do
-        User.stub(:approval_needed_mailing_list).and_return([FactoryGirl.create(:admin)])
-        expect { 
-          post :create, {:reservation => valid_attributes}, valid_session
-        }.to change { ActionMailer::Base.deliveries.count }.by(1)
+
+      describe 'when email is setup' do
+        before do
+          setup_email
+        end
+
+        it 'sends an email notification' do
+          User.stub(:approval_needed_mailing_list).and_return([FactoryGirl.create(:admin)])
+          expect {
+            post :create, {:reservation => valid_attributes}, valid_session
+          }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        end
+      end
+
+      describe 'when email is not setup' do
+        before do
+          unsetup_email
+        end
+
+        it 'does not send an email notification' do
+          User.stub(:approval_needed_mailing_list).and_return([FactoryGirl.create(:admin)])
+          expect {
+            post :create, {:reservation => valid_attributes}, valid_session
+          }.to change { ActionMailer::Base.deliveries.count }.by(0)
+        end
       end
     end
 
@@ -212,11 +252,30 @@ RSpec.describe ReservationsController, :type => :controller do
           expect(reservation.status).to eq('requested')
         end
 
-        it 'sends an email notification' do
-          User.stub(:approval_needed_mailing_list).and_return([FactoryGirl.create(:admin)])
-          expect { 
-            post :create, {:reservation => valid_attributes}, valid_session
-          }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        describe 'when email is setup' do
+          before do
+            setup_email
+          end
+
+          it 'sends an email notification' do
+            User.stub(:approval_needed_mailing_list).and_return([FactoryGirl.create(:admin)])
+            expect {
+              post :create, {:reservation => valid_attributes}, valid_session
+            }.to change { ActionMailer::Base.deliveries.count }.by(1)
+          end
+        end
+
+        describe 'when email is not setup' do
+          before do
+            unsetup_email
+          end
+
+          it 'does not send an email notification' do
+            User.stub(:approval_needed_mailing_list).and_return([FactoryGirl.create(:admin)])
+            expect {
+              post :create, {:reservation => valid_attributes}, valid_session
+            }.to change { ActionMailer::Base.deliveries.count }.by(0)
+          end
         end
       end
 
@@ -234,12 +293,31 @@ RSpec.describe ReservationsController, :type => :controller do
           expect(reservation.status).to eq('requested')
           expect(reservation.denied_reason).to eq(nil)
         end
-        
-        it 'sends an email notification' do
-          User.stub(:approval_needed_mailing_list).and_return([FactoryGirl.create(:admin)])
-          expect { 
-            post :create, {:reservation => valid_attributes}, valid_session
-          }.to change { ActionMailer::Base.deliveries.count }.by(1)
+
+        describe 'when email is setup' do
+          before do
+            setup_email
+          end
+
+          it 'sends an email notification' do
+            User.stub(:approval_needed_mailing_list).and_return([FactoryGirl.create(:admin)])
+            expect {
+              post :create, {:reservation => valid_attributes}, valid_session
+            }.to change { ActionMailer::Base.deliveries.count }.by(1)
+          end
+        end
+
+        describe 'when email is not setup' do
+          before do
+            unsetup_email
+          end
+
+          it 'does not send an email notification' do
+            User.stub(:approval_needed_mailing_list).and_return([FactoryGirl.create(:admin)])
+            expect {
+              post :create, {:reservation => valid_attributes}, valid_session
+            }.to change { ActionMailer::Base.deliveries.count }.by(0)
+          end
         end
       end
     end
@@ -312,12 +390,32 @@ RSpec.describe ReservationsController, :type => :controller do
       end
 
       describe 'when user has notifications enabled' do
-        it 'sends an email' do
-          @reservation.user.notify_on_approved = true
-          @reservation.save
-          expect { 
-            get :approve, {:id => @reservation.to_param}, admin_session
-          }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        describe 'when email is setup' do
+          before do
+            setup_email
+          end
+
+          it 'sends an email' do
+            @reservation.user.notify_on_approved = true
+            @reservation.save
+            expect {
+              get :approve, {:id => @reservation.to_param}, admin_session
+            }.to change { ActionMailer::Base.deliveries.count }.by(1)
+          end
+        end
+
+        describe 'when email is not setup' do
+          before do
+            unsetup_email
+          end
+
+          it 'does not send an email' do
+            @reservation.user.notify_on_approved = true
+            @reservation.save
+            expect {
+              get :approve, {:id => @reservation.to_param}, admin_session
+            }.to change { ActionMailer::Base.deliveries.count }.by(0)
+          end
         end
       end
 
@@ -325,7 +423,7 @@ RSpec.describe ReservationsController, :type => :controller do
         it 'does not send an email' do
           @reservation.user.notify_on_approved = false
           @reservation.user.save
-          expect { 
+          expect {
             get :approve, {:id => @reservation.to_param}, admin_session
           }.to change { ActionMailer::Base.deliveries.count }.by(0)
         end
@@ -353,7 +451,7 @@ RSpec.describe ReservationsController, :type => :controller do
   describe 'POST deny' do
     let(:reason) { "The administrator doesn't like you" }
 
-    before do 
+    before do
       @reservation = FactoryGirl.create(:reservation)
     end
 
@@ -373,20 +471,41 @@ RSpec.describe ReservationsController, :type => :controller do
       end
 
       describe 'when user has notifications enabled' do
-        it 'sends an email' do
-          @reservation.user.notify_on_denied = true
-          @reservation.user.save
-          expect { 
-            post :deny, {:id => @reservation.to_param, :reservation => {:denied_reason => reason}}, admin_session
-          }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        describe 'when email is setup' do
+          before do
+            setup_email
+          end
+
+          it 'sends an email' do
+            @reservation.user.notify_on_denied = true
+            @reservation.user.save
+            expect {
+              post :deny, {:id => @reservation.to_param, :reservation => {:denied_reason => reason}}, admin_session
+            }.to change { ActionMailer::Base.deliveries.count }.by(1)
+          end
+        end
+
+        describe 'when email is not setup' do
+          before do
+            unsetup_email
+          end
+
+          it 'does not send an email' do
+            @reservation.user.notify_on_denied = true
+            @reservation.user.save
+            expect {
+              post :deny, {:id => @reservation.to_param, :reservation => {:denied_reason => reason}}, admin_session
+            }.to change { ActionMailer::Base.deliveries.count }.by(0)
+          end
         end
       end
 
       describe 'when user does not have notifications enabled' do
         it 'does not send an email' do
+          setup_email
           @reservation.user.notify_on_denied = false
           @reservation.user.save
-          expect { 
+          expect {
             post :deny, {:id => @reservation.to_param, :reservation => {:denied_reason => reason}}, admin_session
           }.to change { ActionMailer::Base.deliveries.count }.by(0)
         end
@@ -437,7 +556,7 @@ RSpec.describe ReservationsController, :type => :controller do
 
   describe 'POST checkout_update' do
     describe 'when current_user is monitor' do
-      before do 
+      before do
         @reservation = Reservation.create! valid_attributes
         @reservation.approved!
       end
@@ -452,12 +571,32 @@ RSpec.describe ReservationsController, :type => :controller do
       end
 
       describe 'when user has notifications enabled' do
-        it 'sends an email' do
-          @reservation.user.notify_on_checked_out = true
-          @reservation.user.save
-          expect { 
-            put :checkout_update, {:id => @reservation.to_param, :reservation => {:check_out_comments => 'checkout comments'}}, monitor_session
-          }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        describe 'when email is setup' do
+          before do
+            setup_email
+          end
+
+          it 'sends an email' do
+            @reservation.user.notify_on_checked_out = true
+            @reservation.user.save
+            expect {
+              put :checkout_update, {:id => @reservation.to_param, :reservation => {:check_out_comments => 'checkout comments'}}, monitor_session
+            }.to change { ActionMailer::Base.deliveries.count }.by(1)
+          end
+        end
+
+        describe 'when email is not setup' do
+          before do
+            unsetup_email
+          end
+
+          it 'does not send an email' do
+            @reservation.user.notify_on_checked_out = true
+            @reservation.user.save
+            expect {
+              put :checkout_update, {:id => @reservation.to_param, :reservation => {:check_out_comments => 'checkout comments'}}, monitor_session
+            }.to change { ActionMailer::Base.deliveries.count }.by(0)
+          end
         end
       end
 
@@ -465,7 +604,7 @@ RSpec.describe ReservationsController, :type => :controller do
         it 'does not send an email' do
           @reservation.user.notify_on_checked_out = false
           @reservation.user.save
-          expect { 
+          expect {
             put :checkout_update, {:id => @reservation.to_param, :reservation => {:check_out_comments => 'checkout comments'}}, monitor_session
           }.to change { ActionMailer::Base.deliveries.count }.by(0)
         end
@@ -519,7 +658,7 @@ RSpec.describe ReservationsController, :type => :controller do
   describe 'POST checkin_update' do
     describe 'when current_user is monitor' do
       describe 'when returned on time' do
-        before do 
+        before do
           @reservation = FactoryGirl.create(:checkout)
         end
 
@@ -534,12 +673,32 @@ RSpec.describe ReservationsController, :type => :controller do
         end
 
         describe 'when user has notifications enabled' do
-          it 'sends an email' do
-            @reservation.user.notify_on_checked_in = true
-            @reservation.user.save
-            expect { 
-              put :checkin_update, {:id => @reservation.to_param, :reservation => {:check_in_comments => 'checkin comments'}}, monitor_session
-            }.to change { ActionMailer::Base.deliveries.count }.by(1)
+          describe 'when email is setup' do
+            before do
+              setup_email
+            end
+
+            it 'sends an email' do
+              @reservation.user.notify_on_checked_in = true
+              @reservation.user.save
+              expect {
+                put :checkin_update, {:id => @reservation.to_param, :reservation => {:check_in_comments => 'checkin comments'}}, monitor_session
+              }.to change { ActionMailer::Base.deliveries.count }.by(1)
+            end
+          end
+
+          describe 'when email is not setup' do
+            before do
+              unsetup_email
+            end
+
+            it 'does not send an email' do
+              @reservation.user.notify_on_checked_in = true
+              @reservation.user.save
+              expect {
+                put :checkin_update, {:id => @reservation.to_param, :reservation => {:check_in_comments => 'checkin comments'}}, monitor_session
+              }.to change { ActionMailer::Base.deliveries.count }.by(0)
+            end
           end
         end
 
@@ -547,7 +706,7 @@ RSpec.describe ReservationsController, :type => :controller do
           it 'does not send an email' do
             @reservation.user.notify_on_checked_in = false
             @reservation.user.save
-            expect { 
+            expect {
               put :checkin_update, {:id => @reservation.to_param, :reservation => {:check_in_comments => 'checkin comments'}}, monitor_session
             }.to change { ActionMailer::Base.deliveries.count }.by(0)
           end
