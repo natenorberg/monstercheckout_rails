@@ -2,7 +2,7 @@ class UserMailer < ActionMailer::Base
   default from: "noreply@montana.edu"
   layout 'email'
 
-  before_filter :check_environment
+  after_filter :check_environment
 
   def welcome_email(user)
     @user = user
