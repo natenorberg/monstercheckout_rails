@@ -46,5 +46,6 @@ class UserMailer < ActionMailer::Base
       if ENV['GMAIL_USERNAME'].nil? || ENV['GMAIL_PASSWORD'].nil?
         mail.perform_deliveries = false
       end
+      true
     end
 end
