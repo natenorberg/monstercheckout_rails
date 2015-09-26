@@ -7,7 +7,7 @@
 
 <ul class="equipment-show-list" style="list-style-type:none; margin:0; padding:0;">
   <% @reservation.reservation_equipment.each do |item| %>
-  <li><%= item.equipment.name %> <% if item.quantity > 1 %>(x<%= item.quantity %>) <% end %></li>
+  <li><%= item.equipment.name %> <% if item.quantity && item.quantity > 1 %>(x<%= item.quantity %>) <% end %></li>
   <% end %>
 </ul>
 

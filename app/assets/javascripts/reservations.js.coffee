@@ -1,5 +1,5 @@
 # Initialization
-$(document).on 'page:load', ->
+$(document).ready ->
   $('#reservation_out_time').datetimepicker();
   $('#reservation_in_time').datetimepicker();
   $('#comments_field').hide()

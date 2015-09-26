@@ -48,6 +48,27 @@ RSpec.describe UsersController, :type => :controller do
     controller.stub(:current_user_or_admin).and_return(true)
   end
 
+
+  def setup_email
+    ENV['GMAIL_USERNAME'] = 'test@gmail.com'
+    ENV['GMAIL_PASSWORD'] = 'fakepassword'
+  end
+
+  def unsetup_email
+    ENV['GMAIL_USERNAME'] = nil
+    ENV['GMAIL_PASSWORD'] = nil
+  end
+
+  before(:each) do
+    @gmail_username = ENV['GMAIL_USERNAME']
+    @gmail_password = ENV['GMAIL_PASSWORD']
+  end
+
+  after(:each) do
+    ENV['GMAIL_USERNAME'] = @gmail_username
+    ENV['GMAIL_PASSWORD'] = @gmail_password
+  end
+
   describe 'GET index' do
     it 'assigns all users as @users' do
       user = User.create! valid_attributes
@@ -121,10 +142,28 @@ RSpec.describe UsersController, :type => :controller do
         expect(response).to redirect_to(User.last)
       end
 
-      it 'sends an email notification' do
-        expect { 
-          post :create, {:user => valid_attributes}, valid_session
-        }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      describe 'when email is setup' do
+        before do
+          setup_email
+        end
+
+        it 'sends an email' do
+          expect {
+            post :create, {:user => valid_attributes}, valid_session
+          }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        end
+      end
+
+      describe 'when email is not setup' do
+        before do
+          unsetup_email
+        end
+
+        it 'does not send an email' do
+          expect {
+            post :create, {:user => valid_attributes}, valid_session
+          }.to change { ActionMailer::Base.deliveries.count }.by(0)
+        end
       end
     end
 
