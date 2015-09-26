@@ -18,3 +18,5 @@
 //= require twitter/typeahead.min
 //= require turbolinks
 //= require_tree .
+
+$('.dropdown-toggle').dropdown();
