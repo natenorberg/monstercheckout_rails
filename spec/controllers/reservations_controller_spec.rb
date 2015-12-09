@@ -339,17 +339,38 @@ RSpec.describe ReservationsController, :type => :controller do
 
   describe 'DELETE destroy' do
     describe 'when current_user is admin' do
-      it 'destroys the requested reservation' do
-        reservation = Reservation.create! valid_attributes
-        expect {
+      describe 'when reservation has not been checked out' do
+        it 'destroys the requested reservation' do
+          reservation = Reservation.create! valid_attributes
+          expect {
+            delete :destroy, {:id => reservation.to_param}, admin_session
+          }.to change(Reservation, :count).by(-1)
+        end
+
+        it 'redirects to the reservations list' do
+          reservation = Reservation.create! valid_attributes
           delete :destroy, {:id => reservation.to_param}, admin_session
-        }.to change(Reservation, :count).by(-1)
+          expect(response).to redirect_to(reservations_url)
+        end
       end
 
-      it 'redirects to the reservations list' do
-        reservation = Reservation.create! valid_attributes
-        delete :destroy, {:id => reservation.to_param}, admin_session
-        expect(response).to redirect_to(reservations_url)
+      describe 'when reservation has been checked out' do
+        it 'does not destroy the requested reservation' do
+          reservation = Reservation.create! valid_attributes
+          reservation.checked_out_time = 1.days.ago
+          reservation.save
+          expect {
+            delete :destroy, {:id => reservation.to_param}, admin_session
+          }.to_not change(Reservation, :count)
+        end
+
+        it 'redirects to the root path' do
+          reservation = Reservation.create! valid_attributes
+          reservation.checked_out_time = 1.days.ago
+          reservation.save
+          delete :destroy, {:id => reservation.to_param}, admin_session
+          expect(response).to redirect_to(root_path)
+        end
       end
     end
 
