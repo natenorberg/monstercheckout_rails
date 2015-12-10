@@ -3,6 +3,7 @@ class ReservationsController < ApplicationController
   before_action :set_equipment, only: [:new, :create, :edit, :update]
   before_filter :user_signed_in
   before_filter :current_user_or_admin, only: [:destroy]
+  before_filter :reservation_has_not_been_checked_out, only: [:destroy]
   before_filter :user_is_admin, only: [:archive, :approve, :deny]
   before_filter :user_is_monitor, only: [:checkout, :checkout_update, :checkin, :checkin_update]
   before_filter :reservation_can_be_checked_out, only: [:checkout, :checkout_update]
@@ -219,6 +220,10 @@ class ReservationsController < ApplicationController
 
     def reservation_can_be_checked_in
       redirect_to root_path unless @reservation.can_checkin?
+    end
+
+    def reservation_has_not_been_checked_out
+      redirect_to root_path if @reservation.checked_out?
     end
 
 

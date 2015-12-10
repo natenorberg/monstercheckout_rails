@@ -25,7 +25,9 @@
 
       <ul class="equipment-show-list">
         <% @reservation.reservation_equipment.each do |item| %>
+          <% if item.equipment %>
           <li><%= item.equipment.name %> <% if item.quantity > 1 %>(x<%= item.quantity %>)<% end %></li>
+          <% end %>
         <% end %>
       </ul>
 
@@ -63,6 +65,12 @@
           <%= link_to '#', id: 'deny_button', class: 'btn btn-large btn-danger' do %>
             <i class="fa fa-times"></i> Deny
           <% end %>
+        <% end %>
+        <% if current_user.is_admin? && !@reservation.checked_out? %>
+          <%= link_to @reservation, method: :delete, id: 'delete_button', class: 'btn btn-large btn-danger', data: { confirm: 'Are you sure?' } do %>
+            <i class="fa fa-trash-o"></i> Delete
+          <% end %>
+          
         <% end %>
       </div>
 
