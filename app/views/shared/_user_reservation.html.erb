@@ -1,3 +1,4 @@
+<% if reservation.user %>
 <div class="reservation-icon">
 	<%= gravatar_for(reservation.user, size=70) %>
 </div>
@@ -7,3 +8,4 @@
 	<span class="reservation-subheader status_text_<%= reservation.id %>"><%= status_text(reservation).html_safe %></span><br>
 	<span class="reservation-time"><%= reservation.out_time.strftime(ReservationsHelper::SHORT_DATETIME_FORMAT) %> to <%= reservation.in_time.strftime(ReservationsHelper::SHORT_DATETIME_FORMAT) %></span><br>
 </div>
+<% end %>
