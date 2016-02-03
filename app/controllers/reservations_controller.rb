@@ -262,7 +262,7 @@ class ReservationsController < ApplicationController
 
     def query_reservations(conditions=nil)
       if conditions
-        reservations = Reservation.where(conditions)
+        reservations = Reservation.where.not(user: nil).where(conditions)
       else
         reservations = Reservation.all
       end
