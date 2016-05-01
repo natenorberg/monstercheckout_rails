@@ -58,3 +58,12 @@ $(document).on 'click', '.equipment-list .section-header', ->
     list.show()
     icon.removeClass('fa-caret-right')
     icon.addClass('fa-caret-down')
+
+preventSubmitByEnter = ->
+  $(window).keydown ( event ) ->
+    if (event.keyCode == 13)
+      event.preventDefault()
+      return false
+
+$('.new_reservation').ready(preventSubmitByEnter)
+$('.edit_reservation').ready(preventSubmitByEnter)
